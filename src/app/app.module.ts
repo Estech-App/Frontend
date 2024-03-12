@@ -11,6 +11,8 @@ import { DashboardMainComponent } from './components/app-pages/dashboard/dashboa
 
 import { HttpClientModule } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms';
+import { DireccionMainComponent } from './components/app-pages/direccion/direccion-main/direccion-main.component';
+import { CheckinComponent } from './components/app-pages/dashboard/checkin/checkin.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     SideMenuComponent,
     TopBarComponent,
     MainComponent,
-    DashboardMainComponent
+    DashboardMainComponent,
+    DireccionMainComponent,
+    CheckinComponent
   ],
   imports: [
     BrowserModule,

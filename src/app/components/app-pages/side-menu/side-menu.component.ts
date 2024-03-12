@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ItemMenu } from 'src/app/models/ItemMenu';
 
 @Component({
@@ -7,6 +8,9 @@ import { ItemMenu } from 'src/app/models/ItemMenu';
   styleUrls: ['./side-menu.component.css']
 })
 export class SideMenuComponent {
+
+  constructor(private router: Router) { }
+
   items: ItemMenu[] = [
     { nombre: "Dashboard", src: "../../../assets/Images/sidebar/outlined/Dashboard.svg", srcHover: "../../../assets/Images/sidebar/filled/Dashboard.svg", link: 'dashboard' },
     { nombre: "Dirección", src: "../../../assets/Images/sidebar/outlined/Direccion.svg", srcHover: "../../../assets/Images/sidebar/filled/Direccion.svg", link: 'direccion' },
@@ -17,6 +21,10 @@ export class SideMenuComponent {
     { nombre: "Salas", src: "../../../assets/Images/sidebar/outlined/Salas.svg", srcHover: "../../../assets/Images/sidebar/filled/Salas.svg", link: 'salas' },
     { nombre: "Docs", src: "../../../assets/Images/sidebar/outlined/Docs.svg", srcHover: "../../../assets/Images/sidebar/filled/Docs.svg", link: 'docs' }
   ];
+
+  isActiveLink(item: ItemMenu): boolean {
+    return this.router.isActive(item.link, true);
+  }
 
   changeImage(item: ItemMenu, isHovered: boolean): void {
     if (isHovered) {

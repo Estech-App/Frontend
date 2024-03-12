@@ -1,0 +1,57 @@
+<section>
+    <article>
+        <p class="title">Fichaje</p>
+        <span class="content">
+            <span class="circleContent">
+                <div class="circle"></div>
+                <p>Debes fichar la salida</p>
+            </span>
+            <span class="date">
+                <span>
+                    <p><span class="bold">Hora:</span> {{hour}} </p>
+                    <p><span class="bold">Fecha:</span> {{date}}</p>
+                </span>
+            </span>
+            <button>
+                Fichar
+            </button>
+        </span>
+    </article>
+    <article>
+        <p class="title">Ultimos 4 fichajes</p>
+        <span class="content">
+            <table>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Entrada/Salida</th>
+                </tr>
+                <!-- <tr *ngFor="let checkin of checkins">
+                    <td>{{checkin.date}}</td>
+                    <td>{{checkin.hour}}</td>
+                    <td>{{checkin.type}}</td>
+                </tr> -->
+                <tr>
+                    <td>27/02/24</td>
+                    <td>08:30</td>
+                    <td>Entrada</td>
+                </tr>
+                <tr>
+                    <td>27/02/24</td>
+                    <td>13:30</td>
+                    <td>Salida</td>
+                </tr>
+                <tr>
+                    <td>27/02/24</td>
+                    <td>14:30</td>
+                    <td>Entrada</td>
+                </tr>
+                <tr>
+                    <td>27/02/24</td>
+                    <td>18:30</td>
+                    <td>Salida</td>
+                </tr>
+            </table>
+        </span>
+    </article>
+</section>

@@ -1,10 +1,11 @@
 <div>
     <img src="../../../../assets/Images/logo_estech.svg" alt="Logo estech" class="estech-img">
     <article>
-        <section *ngFor="let item of items" routerLinkActive="active">
-            <a [routerLink]="item.link" (mouseenter)="changeImage(item, true)" (mouseleave)="changeImage(item, false)">
+        <section *ngFor="let item of items">
+            <a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+               (mouseenter)="changeImage(item, true)" (mouseleave)="changeImage(item, false)">
                 <span>
-                    <img [src]="item.src" alt="Icono {{item.nombre}}" class="icon">
+                    <img [src]="isActiveLink(item) ? item.srcHover : item.src" alt="Icono {{item.nombre}}" class="icon">
                     <p>{{item.nombre}}</p>
                 </span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="24"
