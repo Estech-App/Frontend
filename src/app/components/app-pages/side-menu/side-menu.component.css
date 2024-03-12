@@ -1,0 +1,81 @@
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    width: 150px;
+    height: 100vh;
+    border-right: 1px solid #969696;
+}
+
+.estech-img {
+    width: 100%;
+    height: 36px;
+    padding: 16px 0;
+    border-bottom: 1px solid #969696;
+    object-fit: contain;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+}
+
+article {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    width: 100%;
+    height: 313px;
+    align-items: center;
+    gap: 10px;
+    margin: 1rem 0;
+}
+
+section {
+    width: 100%;
+}
+
+svg {
+    width: 20px;
+    aspect-ratio: 1/1;
+}
+
+a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-decoration: none;
+    color: black;
+    padding: 1rem 0;
+}
+
+a:hover {
+    background-color: #D9D9D9;
+    
+}
+
+.active {
+    background-color: #D9D9D9;
+}
+
+article span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+span img {
+    margin-left: 10px;
+}
+
+
+.icon-tabler-login {
+    place-self: end;
+    width: 40px;
+    height: 40px;
+    margin: 0.5rem;
+}
