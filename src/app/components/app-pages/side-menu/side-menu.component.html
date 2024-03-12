@@ -1,0 +1,26 @@
+<div>
+    <img src="../../../../assets/Images/logo_estech.svg" alt="Logo estech" class="estech-img">
+    <article>
+        <section *ngFor="let item of items" routerLinkActive="active">
+            <a [routerLink]="item.link" (mouseenter)="changeImage(item, true)" (mouseleave)="changeImage(item, false)">
+                <span>
+                    <img [src]="item.src" alt="Icono {{item.nombre}}" class="icon">
+                    <p>{{item.nombre}}</p>
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M9 6l6 6l-6 6" />
+                </svg>
+            </a>
+        </section>
+    </article>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login" viewBox="0 0 25 25"
+        stroke-width="1.5" stroke="#009CB5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="" />
+        <path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+        <path d="M21 12h-13l3 -3" />
+        <path d="M11 15l-3 -3" />
+    </svg>
+</div>
