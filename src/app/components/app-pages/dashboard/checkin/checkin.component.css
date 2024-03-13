@@ -1,11 +1,11 @@
-* {
+*:not(.title) {
     font-size: 16px;
 }
 
 section {
     border: 1px solid #969696;
     width: 514px;
-    height: 400px;
+    height: max-content;
 }
 
 article {
@@ -16,13 +16,7 @@ article {
     padding: 10px;
 }
 
-.title {
-    width: 100%;
-    font-size: 20px;
-    font-weight: 500;
-    border-bottom: 1px solid #969696;
-    padding: 10px 0;
-}
+
 
 .content {
     display: flex;
@@ -42,44 +36,29 @@ article {
 .circle {
     height: 35px;
     width: 35px;
+    border-radius: 100%;
+    background-color: gray;
+}
+
+.circleGreen {
+    height: 15px;
+    width: 15px;
     background-color: green;
     border-radius: 100%;
 }
 
-button {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    width: fit-content;
-    padding: 2% 3%;
-    background-color: #009CB5;
-    color: white;
-    border: 1px solid transparent;
-    border-radius: 5px;
+.circleRed {
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 100%;
 }
 
-button:hover {
-    background-color: transparent;
-    color: #099CB5;
-    border: 1px solid #009CB5;
-    cursor: pointer;
-}
-
-.bold {
-    font-weight: 500;
-}
-
-table {
-    width: 100%;
-    border: 1px solid #969696;
-    border-radius: 5px;
-}
-
-table th {
-    background-color: #009CB5;
-    color: white;
-    padding: 5px 10px;
-}
-
-table td {
-    text-align: center;
-    padding: 5px 10px;
+.enter {
+    justify-content: flex-end;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
 }

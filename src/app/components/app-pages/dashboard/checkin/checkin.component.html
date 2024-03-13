@@ -1,6 +1,6 @@
 <section>
     <article>
-        <p class="title">Fichaje</p>
+        <h2 class="title">Fichaje</h2>
         <span class="content">
             <span class="circleContent">
                 <div class="circle"></div>
@@ -21,36 +21,44 @@
         <p class="title">Ultimos 4 fichajes</p>
         <span class="content">
             <table>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Entrada/Salida</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Entrada/Salida</th>
+                    </tr>
+                </thead>
                 <!-- <tr *ngFor="let checkin of checkins">
                     <td>{{checkin.date}}</td>
                     <td>{{checkin.hour}}</td>
                     <td>{{checkin.type}}</td>
                 </tr> -->
-                <tr>
-                    <td>27/02/24</td>
-                    <td>08:30</td>
-                    <td>Entrada</td>
-                </tr>
-                <tr>
-                    <td>27/02/24</td>
-                    <td>13:30</td>
-                    <td>Salida</td>
-                </tr>
-                <tr>
-                    <td>27/02/24</td>
-                    <td>14:30</td>
-                    <td>Entrada</td>
-                </tr>
-                <tr>
-                    <td>27/02/24</td>
-                    <td>18:30</td>
-                    <td>Salida</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>27/02/24</td>
+                        <td>08:30</td>
+                        <td class="enter">Entrada <div class="circleGreen"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>27/02/24</td>
+                        <td>08:30</td>
+                        <td class="enter">Salida <div class="circleRed"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>27/02/24</td>
+                        <td>08:30</td>
+                        <td class="enter">Entrada <div class="circleGreen"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>27/02/24</td>
+                        <td>08:30</td>
+                        <td class="enter">Salida <div class="circleRed"></div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </span>
     </article>

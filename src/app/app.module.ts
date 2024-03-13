@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms';
 import { DireccionMainComponent } from './components/app-pages/direccion/direccion-main/direccion-main.component';
 import { CheckinComponent } from './components/app-pages/dashboard/checkin/checkin.component';
+import { MonthHoursComponent } from './components/app-pages/dashboard/month-hours/month-hours.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CheckinComponent } from './components/app-pages/dashboard/checkin/check
     MainComponent,
     DashboardMainComponent,
     DireccionMainComponent,
-    CheckinComponent
+    CheckinComponent,
+    MonthHoursComponent
   ],
   imports: [
     BrowserModule,

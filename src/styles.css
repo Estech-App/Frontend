@@ -7,3 +7,79 @@
     font-weight: 400;
     font-style: normal
 }
+
+/* Tables Styles */
+
+.bold {
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #D9D9D9;
+    border-collapse: collapse;
+}
+
+table tr:nth-child(even) {
+    background-color: #D9D9D9; /* gris */
+}
+
+table tr:nth-child(odd) {
+    background-color: white; /* blanco */
+}
+
+th {
+    background-color: #009CB5;
+    color: white;
+    padding: 15px 10px;
+
+}
+
+td {
+    text-align: center;
+    padding: 15px 10px;
+}
+
+/*  Title Styles */
+
+.title{
+    width: 100%;
+    font-size: 20px;
+    font-weight: 500;
+    border-bottom: 1px solid #969696;
+    padding: 10px 0;
+}
+
+/*  Content Styles */
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    gap: 20px;
+}
+
+/* Generic styles */
+.bold {
+    font-weight: bold;
+}
+
+/* Button Styles */
+
+button {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    width: fit-content;
+    padding: 2% 3%;
+    background-color: #009CB5;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: transparent;
+    color: #099CB5;
+    border: 1px solid #009CB5;
+    cursor: pointer;
+}

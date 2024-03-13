@@ -12,6 +12,8 @@ export class CheckinComponent {
   checkins: any[] = []
 
   constructor() {
+    this.updateCurrentHour();
+      this.updateCurrentDate();
     setInterval(() => {
       this.updateCurrentHour();
       this.updateCurrentDate();

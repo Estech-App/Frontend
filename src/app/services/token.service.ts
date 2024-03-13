@@ -13,6 +13,6 @@ export class TokenService {
   constructor(private http: HttpClient) { }
 
   login(login: LoginModel): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>("http://192.168.192.108:8080/login", login, { headers: this.httpHeaders })
+    return this.http.post<TokenResponse>("http://localhost:8080/login", login, { headers: this.httpHeaders })
   }
 }
