@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { TokenResponse } from '../models/TokenResponse';
 import { Observable } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
+import { Constants } from '../global-vars/global';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,6 @@ export class TokenService {
   constructor(private http: HttpClient) { }
 
   login(login: LoginModel): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>("http://localhost:8080/login", login, { headers: this.httpHeaders })
+    return this.http.post<TokenResponse>(`${Constants.BASE_URL}login`, login, { headers: this.httpHeaders })
   }
 }
