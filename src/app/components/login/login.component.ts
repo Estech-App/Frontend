@@ -30,7 +30,11 @@ export class LoginComponent {
         if(sessionStorage.getItem('token') != null) {
           sessionStorage.removeItem('token')
         }
+        if(sessionStorage.getItem('email') != null) {
+          sessionStorage.removeItem('email')
+        }
         sessionStorage.setItem('token', res.token)
+        sessionStorage.setItem('email', res.username)
         if(res.token != null) {
           this.router.navigateByUrl('/dashboard')
         }
@@ -38,6 +42,7 @@ export class LoginComponent {
       error: err => {
         console.log(err)
         sessionStorage.removeItem('token')
+        sessionStorage.removeItem('username')
       }
     })
   }
