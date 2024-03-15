@@ -6,12 +6,48 @@ section {
     border: 1px solid #969696;
     height: max-content;
     border-radius: 5px;
+    width: 50%;
+    height: 100%;
 }
 
 article {
     display: flex;
     flex-direction: column;
-    align-items: space-between;
+    align-items: center;
     justify-content: center;
     padding: 10px;
+    height: 100%;
+}
+
+.content {
+    width: 100%;
+    justify-content: center;
+    height: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 100%;
+}
+
+input {
+    padding: 0.8em 1em;
+    border: 0;
+    border-bottom: 1px solid black;
+    background-color: #dbdbdb;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+}
+
+button {
+    padding: 1em;
 }

@@ -11,13 +11,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <tr *ngFor="let course of courses">
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.acronym }}</td>
+                        <td>0</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </article>
+</section>
+<section>
+    <article>
+        <h2 class="title">Crear/Actualizar Ciclos</h2>
+        <div class="content">
+            <form (submit)="createNewCourse()" [formGroup]="form">
+                <input type="text" formControlName="name" placeholder="Nombre" autocomplete="off" />
+                <input type="text" formControlName="acronym" placeholder="Acrónimo" autocomplete="off" />
+                <button type="submit">Crear ciclo</button>
+            </form>
         </div>
     </article>
 </section>

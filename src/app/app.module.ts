@@ -15,8 +15,8 @@ import { DireccionMainComponent } from './components/app-pages/direccion/direcci
 import { CheckinComponent } from './components/app-pages/dashboard/checkin/checkin.component';
 import { MonthHoursComponent } from './components/app-pages/dashboard/month-hours/month-hours.component';
 import { CoursesComponent } from './components/app-pages/direccion/courses/courses.component';
-import { CreateUpdateCoursesComponent } from './components/app-pages/direccion/create-update-courses/create-update-courses.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { ModulesComponent } from './components/app-pages/direccion/modules/modules.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     CheckinComponent,
     MonthHoursComponent,
     CoursesComponent,
-    CreateUpdateCoursesComponent
+    ModulesComponent
   ],
   imports: [
     BrowserModule,

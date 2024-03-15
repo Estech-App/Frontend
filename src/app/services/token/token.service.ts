@@ -10,15 +10,14 @@ import { UserInfo } from '../../models/login/UserInfo';
   providedIn: 'root'
 })
 export class TokenService {
-  private httpHeaders: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' })
 
   constructor(private http: HttpClient) { }
 
   login(login: LoginModel): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${Constants.BASE_URL}login`, login, { headers: this.httpHeaders })
+    return this.http.post<TokenResponse>(`${Constants.BASE_URL}login`, login, {headers: Constants.headers})
   }
 
   userInfo(email: string): Observable<UserInfo> {
-    return this.http.post<UserInfo>(`${Constants.BASE_URL}api/user/user-info`, {"email": email}, { headers: this.httpHeaders })
+    return this.http.post<UserInfo>(`${Constants.BASE_URL}api/user/user-info`, {"email": email}, {headers: Constants.headers})
   }
 }

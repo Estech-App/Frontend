@@ -1,10 +1,6 @@
-.main-row {
-    display: flex;
-    gap: 20px;
+app-courses {
     padding: 20px;
-    width: 95%;
-}
-
-app-courses, app-create-update-courses {
-    width: 50%;
+    display: flex;
+    width: 98%;
+    gap: 20px;
 }
