@@ -9,11 +9,14 @@ import { TopBarComponent } from './components/app-pages/top-bar/top-bar.componen
 import { MainComponent } from './components/app-pages/main/main.component';
 import { DashboardMainComponent } from './components/app-pages/dashboard/dashboard-main/dashboard-main.component';
 
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms';
 import { DireccionMainComponent } from './components/app-pages/direccion/direccion-main/direccion-main.component';
 import { CheckinComponent } from './components/app-pages/dashboard/checkin/checkin.component';
 import { MonthHoursComponent } from './components/app-pages/dashboard/month-hours/month-hours.component';
+import { CoursesComponent } from './components/app-pages/direccion/courses/courses.component';
+import { CreateUpdateCoursesComponent } from './components/app-pages/direccion/create-update-courses/create-update-courses.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { MonthHoursComponent } from './components/app-pages/dashboard/month-hour
     DashboardMainComponent,
     DireccionMainComponent,
     CheckinComponent,
-    MonthHoursComponent
+    MonthHoursComponent,
+    CoursesComponent,
+    CreateUpdateCoursesComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,9 @@ import { MonthHoursComponent } from './components/app-pages/dashboard/month-hour
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
