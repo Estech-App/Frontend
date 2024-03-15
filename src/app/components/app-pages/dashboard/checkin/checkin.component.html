@@ -2,9 +2,10 @@
     <article>
         <h2 class="title">Fichaje</h2>
         <span class="content">
+            <!-- #TODO: Arreglar -->
             <span class="circleContent">
-                <div class="circle"></div>
-                <p>Debes fichar la salida</p>
+                <div class="{{lastFourCheckins[lastFourCheckins.length - 1] ? 'bigCircleRed' : 'bigCircleGreen'}}"></div>
+                <p>Debes fichar la {{lastFourCheckins[lastFourCheckins.length - 1] ? 'salida' : 'entrada'}}</p>
             </span>
             <span class="date">
                 <span>
@@ -12,7 +13,7 @@
                     <p><span class="bold">Fecha:</span> {{date}}</p>
                 </span>
             </span>
-            <button>
+            <button (click)="checkin()">
                 Fichar
             </button>
         </span>
@@ -28,35 +29,11 @@
                         <th>Entrada/Salida</th>
                     </tr>
                 </thead>
-                <!-- <tr *ngFor="let checkin of checkins">
-                    <td>{{checkin.date}}</td>
-                    <td>{{checkin.hour}}</td>
-                    <td>{{checkin.type}}</td>
-                </tr> -->
                 <tbody>
-                    <tr>
-                        <td>27/02/24</td>
-                        <td>08:30</td>
-                        <td class="enter">Entrada <div class="circleGreen"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>27/02/24</td>
-                        <td>08:30</td>
-                        <td class="enter">Salida <div class="circleRed"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>27/02/24</td>
-                        <td>08:30</td>
-                        <td class="enter">Entrada <div class="circleGreen"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>27/02/24</td>
-                        <td>08:30</td>
-                        <td class="enter">Salida <div class="circleRed"></div>
-                        </td>
+                    <tr *ngFor="let checkin of lastFourCheckins">
+                        <td>{{checkin.date.split('T')[0].replaceAll('-', '/').split('/').reverse().join('/')}}</td>
+                        <td>{{checkin.date.split('T')[1].split('.')[0]}}</td>
+                        <td>{{checkin.checkIn ? 'Entrada' : 'Salida'}} <div class="{{checkin.checkIn ? 'circleGreen' : 'circleRed'}}"></div></td>
                     </tr>
                 </tbody>
             </table>

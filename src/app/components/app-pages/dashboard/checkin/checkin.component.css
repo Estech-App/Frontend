@@ -3,9 +3,12 @@
 }
 
 section {
+    display: flex;
     border: 1px solid #969696;
     width: 514px;
-    height: max-content;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 article {
@@ -16,13 +19,9 @@ article {
     padding: 10px;
 }
 
-
-
-.content {
+tbody tr td:last-child {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
+    justify-content: end;
     gap: 20px;
 }
 
@@ -33,11 +32,18 @@ article {
     gap: 10px;
 }
 
-.circle {
+.bigCircleGreen {
     height: 35px;
     width: 35px;
     border-radius: 100%;
-    background-color: gray;
+    background-color: green;
+}
+
+.bigCircleRed {
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    background-color: red;
 }
 
 .circleGreen {
