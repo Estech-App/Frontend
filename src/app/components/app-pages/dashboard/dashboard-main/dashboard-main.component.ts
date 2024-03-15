@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard-main.component.css']
 })
 export class DashboardMainComponent {
-
+  name = sessionStorage.getItem('name') != null ? sessionStorage.getItem('name') : '';
 }

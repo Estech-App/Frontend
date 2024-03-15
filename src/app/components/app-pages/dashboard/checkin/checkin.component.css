@@ -19,6 +19,12 @@ article {
     padding: 10px;
 }
 
+tbody tr td:last-child {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}
+
 .circleContent {
     display: flex;
     align-items: center;
@@ -26,11 +32,18 @@ article {
     gap: 10px;
 }
 
-.circle {
+.bigCircleGreen {
     height: 35px;
     width: 35px;
     border-radius: 100%;
-    background-color: gray;
+    background-color: green;
+}
+
+.bigCircleRed {
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    background-color: red;
 }
 
 .circleGreen {
