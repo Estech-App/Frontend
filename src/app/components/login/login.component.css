@@ -20,6 +20,7 @@ label p{
 input {
     width: 38rem;
     height: 4rem;
+    padding: 0;
     border: 0;
     border-bottom: 1px solid #969696;
     border-radius: 5px 5px 0 0;

@@ -4,10 +4,8 @@
 
 section {
     border: 1px solid #969696;
-    height: max-content;
     border-radius: 5px;
     width: 50%;
-    height: 100%;
 }
 
 article {
@@ -16,9 +14,9 @@ article {
     align-items: center;
     justify-content: center;
     padding: 10px;
-    height: 100%;
 }
 
 .content {
-    justify-content: center;
+    height: 300px;
+    overflow: auto;   
 }

@@ -12,7 +12,9 @@ import { CourseService } from 'src/app/services/courses/course.service';
 export class CoursesComponent {
 
   courses: Course[] = []
+  displayedColumns = ['name', 'acronym', 'n-groups'];
   form: FormGroup
+  value = 'Clear me'
 
   constructor(
     private courseService: CourseService,
