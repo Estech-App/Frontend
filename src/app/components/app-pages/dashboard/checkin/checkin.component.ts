@@ -15,6 +15,7 @@ export class CheckinComponent {
   hour: string = ''
   checkins: CheckinDTO[] = []
   lastFourCheckins: CheckinDTO[] = []
+  displayedColumns: string[] = ['date', 'time', 'checkin', 'icon'];
 
   ngOnInit() {
     this.getCheckins()

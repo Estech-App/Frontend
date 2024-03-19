@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./month-hours.component.css']
 })
 export class MonthHoursComponent {
-
+  displayedColumns = ['name', 'school', 'mentoring', 'total']
+  dataPlaceHolder = []
 }

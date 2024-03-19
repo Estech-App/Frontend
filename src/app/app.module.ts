@@ -23,6 +23,12 @@ import { CoursesComponent } from './components/app-pages/direccion/courses/cours
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ModulesComponent } from './components/app-pages/direccion/modules/modules.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GroupsDashboardComponent } from './components/app-pages/dashboard/groups-dashboard/groups-dashboard.component';
+import { CalendarDashboardComponent } from './components/app-pages/dashboard/calendar-dashboard/calendar-dashboard.component';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
+import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -36,7 +42,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CheckinComponent,
     MonthHoursComponent,
     CoursesComponent,
-    ModulesComponent
+    ModulesComponent,
+    GroupsDashboardComponent,
+    CalendarDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -49,10 +57,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatNativeDateModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
   ],
   bootstrap: [AppComponent]
 })

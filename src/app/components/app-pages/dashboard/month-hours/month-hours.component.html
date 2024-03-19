@@ -2,47 +2,33 @@
     <article>
         <p class="title">Horas Mensuales de Profesores</p>
         <div class="content">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Horas Lectivas</th>
-                        <th>Horas Tutorías</th>
-                        <th>Horas Totales</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Alejandro Muñoz</td>
-                        <td>18:30</td>
-                        <td>2:00</td>
-                        <td>20:30</td>
-                    </tr>
-                    <tr>
-                        <td>Carlos García</td>
-                        <td>18:30</td>
-                        <td>2:00</td>
-                        <td>20:30</td>
-                    </tr>
-                    <tr>
-                        <td>María Pérez</td>
-                        <td>18:30</td>
-                        <td>2:00</td>
-                        <td>20:30</td>
-                    </tr>
-                    <tr>
-                        <td>Carlos García</td>
-                        <td>18:30</td>
-                        <td>2:00</td>
-                        <td>20:30</td>
-                    </tr>
-                    <tr>
-                        <td>María Pérez</td>
-                        <td>18:30</td>
-                        <td>2:00</td>
-                        <td>20:30</td>
-                    </tr>
-                </tbody>
+            <table mat-table [dataSource]="dataPlaceHolder">
+
+                <!-- Date Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <!-- Time Column -->
+                <ng-container matColumnDef="school">
+                    <th mat-header-cell *matHeaderCellDef> Horas lectivas </th>
+                    <td mat-cell *matCellDef="let element"> {{element.school}} </td>
+                </ng-container>
+
+                <!-- Checkin Column -->
+                <ng-container matColumnDef="mentoring">
+                    <th mat-header-cell *matHeaderCellDef> Horas tutorias </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mentoring}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Horas totales </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.total }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>
     </article>

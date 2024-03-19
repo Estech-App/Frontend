@@ -18,3 +18,8 @@ article {
     justify-content: center;
     padding: 10px;
 }
+
+.content {
+    height: 300px;
+    overflow: auto;   
+}

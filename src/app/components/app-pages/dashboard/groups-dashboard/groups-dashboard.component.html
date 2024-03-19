@@ -1,0 +1,40 @@
+<section>
+    <article>
+        <p class="title">Grupos</p>
+        <div class="content">
+            <table mat-table [dataSource]="dataPlaceHolder">
+
+                <!-- Date Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <!-- Time Column -->
+                <ng-container matColumnDef="year">
+                    <th mat-header-cell *matHeaderCellDef> Año </th>
+                    <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+                </ng-container>
+
+                <!-- Checkin Column -->
+                <ng-container matColumnDef="students">
+                    <th mat-header-cell *matHeaderCellDef> Alumnos </th>
+                    <td mat-cell *matCellDef="let element"> {{element.students}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tutor">
+                    <th mat-header-cell *matHeaderCellDef> Tutor </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.tutor }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="details">
+                    <th mat-header-cell *matHeaderCellDef> Detalles </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.details }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </article>
+</section>
