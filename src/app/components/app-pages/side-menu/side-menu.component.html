@@ -1,7 +1,7 @@
-<div>
+<div class="sideContainer">
     <img src="../../../../assets/Images/logo_estech.svg" alt="Logo estech" class="estech-img">
-    <article>
-        <section *ngFor="let item of items">
+    <div class="sideMenuContainer">
+        <div class="sideMenuOptionsContainer" *ngFor="let item of items">
             <a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
                (mouseenter)="changeImage(item, true)" (mouseleave)="changeImage(item, false)">
                 <span>
@@ -15,8 +15,8 @@
                     <path d="M9 6l6 6l-6 6" />
                 </svg>
             </a>
-        </section>
-    </article>
+        </div>
+    </div>
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login" viewBox="0 0 25 25"
         stroke-width="1.5" stroke="#009CB5" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="" />
