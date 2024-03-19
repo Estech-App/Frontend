@@ -7,13 +7,15 @@ import { MainComponent } from './components/app-pages/main/main.component';
 import { DashboardMainComponent } from './components/app-pages/dashboard/dashboard-main/dashboard-main.component';
 import { tokenGuard } from './guards/token.guard';
 import { DireccionMainComponent } from './components/app-pages/direccion/direccion-main/direccion-main.component';
+import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, title: 'Login | Estech'},
   {path: '', component: MainComponent, children: [
     {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
     {path: 'dashboard', component: DashboardMainComponent, title: 'Dashboard | Estech'},
-    {path: 'direccion', component: DireccionMainComponent, title: 'Direccion | Estech'}
+    {path: 'direccion', component: DireccionMainComponent, title: 'Direccion | Estech'},
+    {path: 'usuarios', component: UsuariosComponent, title: 'Usuarios | Estech'}
   ], canActivate: [tokenGuard]},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
