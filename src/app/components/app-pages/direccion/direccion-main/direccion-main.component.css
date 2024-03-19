@@ -1,6 +1,7 @@
-app-courses {
+app-courses, app-modules {
     padding: 20px;
     display: flex;
     width: 98%;
     gap: 20px;
 }
+
