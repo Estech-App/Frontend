@@ -14,62 +14,18 @@
     font-weight: bold;
 }
 
-/* table {
-    width: 100%;
-    border: 1px solid #D9D9D9;
-    border-collapse: collapse;
-} */
-
-/* thead {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    position: sticky;
-    top: 0;
+tr[mat-header-row] {
+    background-color: #009CB5;
+    color: white;
+    font-weight: bold;
 }
 
-thead tr {
-    position: sticky;
-    top: 0;
-} */
-
-/* tbody {
-    display: table;
-    overflow: auto;
-    width: 100%;
-} */
-
-table tr:nth-child(even) {
+table tr[mat-row]:nth-child(even) {
     background-color: #D9D9D9; /* gris */
 }
 
-table tr:nth-child(odd) {
-    background-color: white; /* blanco */
-}
-
-.headRow {
-    background-color: #009CB5;
-}
-
-/* td {
-    text-align: center;
-    padding: 15px 10px;
-} */
-
-.tableRow2Elements {
-    width: 50%;
-}
-
-.tableRow3Elements {
-    width: 33%;
-}
-
-.tableRow4Elements {
-    width: 25%;
-}
-
-.tableRow5Elements {
-    width: 20%;
+table tr[mat-row]:nth-child(odd) {
+    background-color: white;
 }
 
 /*  Title Styles */

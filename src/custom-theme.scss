@@ -14,12 +14,6 @@
 // hue. Available color palettes: https://material.io/design/color/
 $Frontend-primary: mat.define-palette(mat.$blue-palette);
 $Frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$Estech-blue: (
-  50: #009cb5,
-  contrast: (
-    300: white
-  )
-);
 
 // The warn palette is optional (defaults to red).
 $Frontend-warn: mat.define-palette(mat.$red-palette);
@@ -28,7 +22,7 @@ $Frontend-warn: mat.define-palette(mat.$red-palette);
 // theming systems such as "color" or "typography".
 $Frontend-theme: mat.define-light-theme((
   color: (
-    primary: $Estech-blue,
+    primary: $Frontend-primary,
     accent: $Frontend-accent,
     warn: $Frontend-warn,
   )

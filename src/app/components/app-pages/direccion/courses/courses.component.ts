@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Course } from 'src/app/models/courses/Course';
 import { CourseService } from 'src/app/services/courses/course.service';
@@ -14,7 +15,9 @@ export class CoursesComponent {
   courses: Course[] = []
   displayedColumns = ['name', 'acronym', 'n-groups'];
   form: FormGroup
-  value = 'Clear me'
+  name = 'Clear me'
+  color = '#009CB5'
+  fontColor = 'white'
 
   constructor(
     private courseService: CourseService,
