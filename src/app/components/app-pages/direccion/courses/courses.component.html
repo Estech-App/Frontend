@@ -22,7 +22,7 @@
                   <td mat-cell *matCellDef="let course"> {{0}} </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
         </div>
@@ -35,8 +35,8 @@
             <form (submit)="createNewCourse()" [formGroup]="form">
                 <mat-form-field class="example-form-field">
                     <mat-label>Clearable input</mat-label>
-                    <input matInput type="text" [(ngModel)]="value">
-                    <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                    <input matInput type="text" [(ngModel)]="name">
+                    <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
                       <mat-icon>close</mat-icon>
                     </button>
                   </mat-form-field>
