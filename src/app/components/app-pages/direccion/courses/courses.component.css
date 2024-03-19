@@ -1,4 +1,4 @@
-*:not(.title) {
+*:not(.title):no-button {
     font-size: 16px;
 }
 
