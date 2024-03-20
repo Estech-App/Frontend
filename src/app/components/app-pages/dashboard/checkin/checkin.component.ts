@@ -16,10 +16,7 @@ export class CheckinComponent {
   checkins: CheckinDTO[] = []
   lastFourCheckins: CheckinDTO[] = []
   displayedColumns: string[] = ['date', 'time', 'checkin', 'icon'];
-
-  ngOnInit() {
-    this.getCheckins()
-  }
+  buttonText: string = 'Entrar';
 
   constructor(private checkinService: CheckinService) {
     this.updateCurrentHour();
@@ -28,6 +25,7 @@ export class CheckinComponent {
       this.updateCurrentHour();
       this.updateCurrentDate();
     }, 1000);
+    this.getCheckins()
   }
 
   updateCurrentHour() {
@@ -49,7 +47,7 @@ export class CheckinComponent {
       user: {
         id: sessionStorage.getItem('userId') != null ? sessionStorage.getItem('userId')! : ''
       },
-      checkIn: this.checkinStatus(this.lastFourCheckins[0])
+      checkIn: this.lastFourCheckins.length == 0 ? true : this.checkinStatus(this.lastFourCheckins[0])
     }
     this.checkinService.checkin(checkin).subscribe({
       next: res => {
@@ -57,26 +55,26 @@ export class CheckinComponent {
           date: res.date,
           userId: Number(res.user.id),
           checkIn: res.checkIn
-          
         }
         this.checkins = [];
         this.checkins.push(tmp);
-        this.getCheckins()
-        print
+        this.getCheckins();
       },
       error: err => {
         console.log(err);
       }
     })
+
   }
 
   getCheckins() {
     this.checkinService.getCheckIn().subscribe({
       next: res => {
         this.checkins = res;
-        console.log(this.checkins);
         this.lastFourCheckins = [];
-        this.getLastFourCheckinsOfUser(this.checkins)
+        if (this.checkins.length != 0) {
+          this.getLastFourCheckinsOfUser(this.checkins)
+        }
       },
       error: err => {
         console.log(err);
@@ -89,11 +87,11 @@ export class CheckinComponent {
       return checkin.userId === Number(sessionStorage.getItem('userId'));
     }).slice(-4);
     this.lastFourCheckins = this.lastFourCheckins.reverse();
+    this.buttonText = this.checkinStatus(this.lastFourCheckins[0]) ? 'Entrar' : 'Salir';
   }
 
   checkinStatus(checkin: CheckinDTO) {
     return checkin.checkIn ? false : true;
   }
-
 
 }

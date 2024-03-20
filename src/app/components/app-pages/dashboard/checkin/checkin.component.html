@@ -2,56 +2,60 @@
     <article>
         <h2 class="title">Fichaje</h2>
         <span class="content">
-            <!-- #TODO: Arreglar -->
-            <span class="circleContent">
-                <div class="{{lastFourCheckins[lastFourCheckins.length - 1].checkIn ? 'bigCircleRed' : 'bigCircleGreen'}}"></div>
-                <p>Debes fichar la {{lastFourCheckins[lastFourCheckins.length - 1].checkIn ? 'entrada' : 'salida'}}</p>
-            </span>
-            <span class="date">
-                <span>
-                    <p><span class="bold">Hora:</span> {{hour}} </p>
-                    <p><span class="bold">Fecha:</span> {{date}}</p>
+            <div class="fichar">
+                <span class="circleContent" *ngIf="checkins.length > 0">
+                    <div [ngClass]="(lastFourCheckins.length > 0 && checkins[checkins.length - 1].checkIn) ? 'bigCircleRed' : 'bigCircleGreen'">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="{{(lastFourCheckins.length > 0 && checkins[checkins.length - 1].checkIn) ? 'stop' : 'play_arrow'}}"></mat-icon>
+                    </div>
+                    <p>Vas a fichar la {{(lastFourCheckins.length > 0 && lastFourCheckins[lastFourCheckins.length - 1].checkIn) ? 'entrada' : 'salida'}}
+                    </p>
                 </span>
-            </span>
-            <button (click)="checkin()">
-                Fichar
-            </button>
-        </span>
-    </article>
-    <article>
-        <p class="title">Ultimos 4 fichajes</p>
-        <span class="content">
-            <table mat-table [dataSource]="lastFourCheckins">
+                <span class="date">
+                    <span>
+                        <p><span class="bold">Hora:</span> {{hour}} </p>
+                        <p><span class="bold">Fecha:</span> {{date}}</p>
+                    </span>
+                </span>
+                <button (click)="checkin()">
+                    {{buttonText}}
+                </button>
+            </div>
+            <div *ngIf="checkins.length > 0">
+                <p class="title">Ultimos 4 fichajes</p>
+                <span class="content">
+                    <table mat-table [dataSource]="lastFourCheckins">
 
-                <!-- Date Column -->
-                <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                    <td mat-cell *matCellDef="let element"> {{element.date.split('T')[0].replaceAll('-',
-                        '/').split('/').reverse().join('/')}} </td>
-                </ng-container>
+                        <!-- Date Column -->
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                            <td mat-cell *matCellDef="let element"> {{element.date.split('T')[0].replaceAll('-',
+                                '/').split('/').reverse().join('/')}} </td>
+                        </ng-container>
 
-                <!-- Time Column -->
-                <ng-container matColumnDef="time">
-                    <th mat-header-cell *matHeaderCellDef> Hora </th>
-                    <td mat-cell *matCellDef="let element"> {{element.date.split('T')[1].split('.')[0]}} </td>
-                </ng-container>
+                        <!-- Time Column -->
+                        <ng-container matColumnDef="time">
+                            <th mat-header-cell *matHeaderCellDef> Hora </th>
+                            <td mat-cell *matCellDef="let element"> {{element.date.split('T')[1].split('.')[0]}} </td>
+                        </ng-container>
 
-                <!-- Checkin Column -->
-                <ng-container matColumnDef="checkin">
-                    <th mat-header-cell *matHeaderCellDef> Checkin </th>
-                    <td mat-cell *matCellDef="let element"> {{element.checkIn ? 'Entrada' : 'Salida'}} </td>
-                </ng-container>
+                        <!-- Checkin Column -->
+                        <ng-container matColumnDef="checkin">
+                            <th mat-header-cell *matHeaderCellDef> Checkin </th>
+                            <td mat-cell *matCellDef="let element"> {{element.checkIn ? 'Entrada' : 'Salida'}} </td>
+                        </ng-container>
 
-                <ng-container matColumnDef="icon">
-                    <th mat-header-cell *matHeaderCellDef> </th>
-                    <td mat-cell *matCellDef="let element">
-                        <div class="{{element.checkIn ? 'circleGreen' : 'circleRed'}}"></div>
-                    </td>
-                </ng-container>
+                        <ng-container matColumnDef="icon">
+                            <th mat-header-cell *matHeaderCellDef> </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="{{element.checkIn ? 'circleGreen' : 'circleRed'}}"></div>
+                            </td>
+                        </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </span>
+            </div>
         </span>
     </article>
 </section>

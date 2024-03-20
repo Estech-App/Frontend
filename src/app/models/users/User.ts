@@ -1,12 +1,13 @@
 export interface User {
-    id: number;
     name: string;
+    lastname: string;
     email: string;
     role: string;
-    course: {
-        id: string
-    }
-    group: {
-        id: string
-    }
+    password: string;
+    // course: {
+    //     id: string
+    // }
+    // group: {
+    //     id: string
+    // }
 }

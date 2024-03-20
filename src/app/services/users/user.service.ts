@@ -14,4 +14,8 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${Constants.BASE_URL}api/user`, {headers: Constants.headers});
   }
+
+  createNewUser(user: User): Observable<User> {
+    return this.http.post<User>(`${Constants.BASE_URL}api/user/new-user`, user, {headers: Constants.headers});
+  }
 }

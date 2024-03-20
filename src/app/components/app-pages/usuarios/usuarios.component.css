@@ -5,9 +5,10 @@
 main {
     display: flex;
     width: 98%;
-    height: 100%;
+    height: 98%;
     margin: 20px;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .firstRow {
@@ -23,14 +24,17 @@ main {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    gap: 20px;
 }
 
 section {
     border: 1px solid #969696;
     border-radius: 5px;
     width: 100%;
-    flex: .5
+    height: 100%;
+}
+
+.secondRow section {
+    height: 100%;
 }
 
 article {
@@ -41,9 +45,17 @@ article {
     padding: 10px;
 }
 
+.firstRow .content {
+    height: 450px;
+}
+
 .content {
-    height: 400px;
+    height: 98%;
     overflow: auto;
+}
+
+td button {
+    margin: .5em 0;
 }
 
 

@@ -20,7 +20,22 @@ article {
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 400px;
     align-items: center;
+    gap: 20px;
+}
+
+div {width: 100%;}
+
+.fichar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
 }
 
 .circleContent {
@@ -31,6 +46,9 @@ article {
 }
 
 .bigCircleGreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 35px;
     width: 35px;
     border-radius: 100%;
@@ -38,10 +56,17 @@ article {
 }
 
 .bigCircleRed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 35px;
     width: 35px;
     border-radius: 100%;
     background-color: red;
+}
+
+mat-icon::before {
+    font-size: 24px;
 }
 
 .circleGreen {
