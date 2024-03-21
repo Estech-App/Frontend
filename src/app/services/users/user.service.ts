@@ -18,4 +18,12 @@ export class UserService {
   createNewUser(user: User): Observable<User> {
     return this.http.post<User>(`${Constants.BASE_URL}api/user/new-user`, user, {headers: Constants.headers});
   }
+
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${Constants.BASE_URL}api/user/${id}`, {headers: Constants.headers});
+  }
+
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${Constants.BASE_URL}api/user/update-user`, user, {headers: Constants.headers});
+  }
 }

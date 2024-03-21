@@ -31,6 +31,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 
+import {MatSelectModule} from '@angular/material/select';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +64,8 @@ import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.comp
     MatButtonModule,
     MatDatepickerModule,
     MatCardModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

@@ -57,7 +57,7 @@
             <!-- edit Column -->
             <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef> Editar </th>
-              <td mat-cell *matCellDef="let element"> <button>Editar</button> </td>
+              <td mat-cell *matCellDef="let element"> <button (click)="getUserById(element.id)">Editar</button> </td>
             </ng-container>
 
 
@@ -73,54 +73,50 @@
       <article>
         <h2 class="title">Crear/Modificar Usuarios</h2>
         <div class="content">
-          <!-- <form>
-                        <mat-form-field class="example-form-field">
-                            <mat-label>Clearable input</mat-label>
-                            <input matInput type="text">
-                            <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
-                              <mat-icon>close</mat-icon>
-                            </button>
-                          </mat-form-field>
-                        <input type="text" formControlName="acronym" placeholder="Acrónimo" autocomplete="off" />
-                        <button type="submit">Crear ciclo</button>
-                    </form> -->
-          <form (submit)="createNewUser()" [formGroup]="form">
-            <mat-form-field class="example-form-field">
+          <form (submit)="post ? createNewUser() : updateUser()" [formGroup]="form">
+            <input type="text" formControlName="id" hidden> <!-- Hidden input to store the id of the user -->
+            <mat-form-field>
               <mat-label>Nombre</mat-label>
-              <input matInput type="text" formControlName="name" [(ngModel)]="name">
-              <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
-                <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
-              </button>
+              <input type="text" matInput placeholder="Nombre" formControlName="name" required>
+              <mat-error *ngIf="nameFormControl.hasError('required')">
+                El nombre es <strong>necesario</strong>
+              </mat-error>
             </mat-form-field>
-            <mat-form-field class="example-form-field">
+            <mat-form-field >
               <mat-label>Apellidos</mat-label>
-              <input matInput type="text" formControlName="lastname" [(ngModel)]="lastname">
-              <button *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
-                <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
-              </button>
+              <input type="text" matInput placeholder="Apellidos" formControlName="lastname" required>
+              <mat-error *ngIf="lastnameFormControl.hasError('required')">
+                Los apellidos son <strong>necesarios</strong>
+              </mat-error>
             </mat-form-field>
-            <mat-form-field class="example-form-field">
+            <mat-form-field>
               <mat-label>Email</mat-label>
-              <input matInput type="email" formControlName="email" [(ngModel)]="email">
-              <button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
-                <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
-              </button>
+              <input type="email" matInput placeholder="Ej. nombre@ejemplo.com" formControlName="email" required>
+              <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                Porfavor introduce un email valido
+              </mat-error>
+              <mat-error *ngIf="emailFormControl.hasError('required')">
+                El email es <strong>necesario</strong>
+              </mat-error>
             </mat-form-field>
-            <mat-form-field class="example-form-field">
+            <mat-form-field >
               <mat-label>Contraseña</mat-label>
-              <input matInput type="text" formControlName="password" [(ngModel)]="password">
-              <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
-                <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
-              </button>
+              <input type="text" matInput placeholder="Contraseña" formControlName="password" required>
+              <mat-error *ngIf="passwordFormControl.hasError('required')">
+                Lo contraseña es <strong>necesaria</strong>
+              </mat-error>
             </mat-form-field>
-            <mat-form-field class="example-form-field">
-              <mat-label>Rol</mat-label>
-              <input matInput type="text" formControlName="role" [(ngModel)]="role">
-              <button *ngIf="role" matSuffix mat-icon-button aria-label="Clear" (click)="role=''">
-                <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
-              </button>
+            <mat-form-field>
+              <mat-label>Roles</mat-label>
+              <mat-select formControlName="role" name="mySelect" required>
+                <mat-option>--- Elige uno ---</mat-option>
+                <mat-option *ngFor="let role of roles" [value]="role.roleName">
+                  {{role.roleName}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="roleFormControl.hasError('required')">Tienes que seleccionar un rol</mat-error>
             </mat-form-field>
-            <button type="submit">Crear ciclo</button>
+            <button type="submit">Crear Usuario</button>
           </form>
         </div>
       </article>
