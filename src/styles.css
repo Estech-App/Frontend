@@ -54,7 +54,7 @@ table tr[mat-row]:nth-child(odd) {
 
 /* Button Styles */
 
-button:not(button[matSuffix]) {
+button:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(button[mat-icon-button]):not(button[mat-button]):not(button[class="mat-calendar-body-cell mat-calendar-body-active"]) {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     width: fit-content;
     padding: 1em;
@@ -65,7 +65,7 @@ button:not(button[matSuffix]) {
     font-size: 16px;
 }
 
-button:hover:not(button[matSuffix]) {
+button:hover:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(button[mat-icon-button]):not(button[mat-button]):not(button[class="mat-calendar-body-cell mat-calendar-body-active"]) {
     background-color: transparent;
     color: #099CB5;
     border: 1px solid #009CB5;

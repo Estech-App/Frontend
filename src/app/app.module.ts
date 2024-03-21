@@ -29,6 +29,9 @@ import { CalendarDashboardComponent } from './components/app-pages/dashboard/cal
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
+
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,8 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
     CoursesComponent,
     ModulesComponent,
     GroupsDashboardComponent,
-    CalendarDashboardComponent
+    CalendarDashboardComponent,
+    UsuariosComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,8 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
     MatButtonModule,
     MatDatepickerModule,
     MatCardModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
