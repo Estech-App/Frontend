@@ -151,4 +151,8 @@ export class UsuariosComponent {
       }
     })
   }
+
+  cleanForm() {
+    window.location.reload()
+  }
 }

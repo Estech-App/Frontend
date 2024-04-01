@@ -54,7 +54,8 @@ export class CheckinComponent {
         let tmp: CheckinDTO = {
           date: res.date,
           userId: Number(res.user.id),
-          checkIn: res.checkIn
+          checkIn: res.checkIn,
+          name: ''
         }
         this.checkins = [];
         this.checkins.push(tmp);
