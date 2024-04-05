@@ -45,18 +45,8 @@
 				</mat-error>
 				</mat-form-field>
 
-				<!-- REPLACE BY RADIO BUTTON WITH TWO OPTIONS -->
 				<mat-form-field>
-				<mat-label>Año</mat-label>
-				<input type="number" matInput placeholder="Año 1 o 2" formControlName="year" required>
-				<mat-error *ngIf="yearFormControl.hasError('required') && formError">
-					Debe indicar el <strong>año</strong> al que pertenece el módulo
-				</mat-error>
-				</mat-form-field>
-				<!-- REPLACE BY RADIO BUTTON WITH TWO OPTIONS -->
-
-				<mat-form-field>
-				<mat-label>Curso</mat-label>
+				<mat-label>Ciclo</mat-label>
 				<mat-select formControlName="course" name="mySelect" required>
 					<mat-option>--- Elige uno ---</mat-option>
 					<mat-option *ngFor="let course of courses" [value]="course.id">
@@ -66,18 +56,17 @@
 				<mat-error *ngIf="courseFormControl.hasError('required') && formError">Tienes que seleccionar un ciclo</mat-error>
 				</mat-form-field>
 
-				<!-- REPLACE BY CHECKBOX WITH ALL TEACHERS -->
+				<mat-radio-group aria-label="Selecciona el curso al que pertenece el módulo" formControlName="year">
+					<mat-radio-button value="1">Primer Curso</mat-radio-button>
+					<mat-radio-button value="2">Segundo Curso</mat-radio-button>
+				</mat-radio-group>
+
 				<mat-form-field>
-				<mat-label>Profesor</mat-label>
-				<mat-select formControlName="teacher" name="mySelect2" required>
-					<mat-option>--- Elige uno ---</mat-option>
-					<mat-option *ngFor="let teacher of teachers" [value]="teacher.id">
-					{{teacher.name}}
-					</mat-option>
-				</mat-select>
-				<mat-error *ngIf="teacherFormControl.hasError('required') && formError">Tienes que seleccionar un profesor</mat-error>
+					<mat-label>Profesores</mat-label>
+					<mat-select formControlName="teachers" multiple>
+						<mat-option *ngFor="let teacher of teachers" [value]="teacher.id">{{teacher.name}} {{teacher.lastname}}</mat-option>
+					</mat-select>
 				</mat-form-field>
-				<!-- REPLACE BY CHECKBOX WITH ALL TEACHERS -->
 
 				<button type="submit">Crear Módulo</button>
             </form>

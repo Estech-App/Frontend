@@ -28,7 +28,7 @@ export class ModulesComponent {
   acronymFormControl = new FormControl('', Validators.required)
   yearFormControl = new FormControl(0, Validators.required) // Radio Button!!!
   courseFormControl = new FormControl<Course | null>(null, Validators.required)
-  teacherFormControl = new FormControl<User | null>(null, Validators.required)
+  teacherFormControl = new FormControl<User[] | null>(null, Validators.required)
 
   constructor(
 	private courseService: CourseService,
@@ -46,7 +46,7 @@ export class ModulesComponent {
       acronym: ['', Validators.required],
 	  year: ['', Validators.required],
 	  course: [null, Validators.required],
-	  teacher: [null, Validators.required]
+	  teachers: [[null], Validators.required]
     })
   }
 
@@ -80,7 +80,7 @@ export class ModulesComponent {
 	let acronym = this.form.get('acronym')?.value
 	let year = this.form.get('year')?.value
 	let course: number = this.form.get('course')?.value
-	let user: number = this.form.get('teacher')?.value
+	let user: number[] = this.form.get('teachers')?.value
 
 	if (
 		name == null || name == '' ||
@@ -98,8 +98,10 @@ export class ModulesComponent {
 	newModule.year = year
 	newModule.course.id = course
 
-	// NEEDS IMPROVEMENT WHEN CHECKBOX SELECTION IS IMPLEMMENTED
-	newModule.users[0].id = user
+	newModule.users = []
+	user.forEach(teacherId => {
+		newModule.users.push({id: teacherId})
+	});
 
 	this.moduleService.createNewModule(newModule).subscribe({
 		next: res => {
@@ -109,7 +111,6 @@ export class ModulesComponent {
 
 	// FIND ANOTHER WAY TO RESET THE FORM FIELDS
 	window.location.reload()
-
   }
 
 }

@@ -13,6 +13,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,8 +32,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
-
-import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -65,7 +65,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatDatepickerModule,
     MatCardModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+	MatRadioModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
