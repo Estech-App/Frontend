@@ -24,6 +24,7 @@ export class CoursesComponent {
   ) {
     this.getAllCourses()
     this.form = this.formBuilder.group({
+	  id: '',
       name: '',
       acronym: ''
     })
@@ -31,6 +32,7 @@ export class CoursesComponent {
 
   createNewCourse(): void {
     let course: Course = {
+	  id: this.form.get('id')?.value,
       name: this.form.get('name')?.value,
       acronym: this.form.get('acronym')?.value,
       description: ''
@@ -44,6 +46,9 @@ export class CoursesComponent {
         console.log(err);
       }
     })
+
+	this.name = ''
+	this.acronym = ''
   }
 
   getAllCourses(): void {

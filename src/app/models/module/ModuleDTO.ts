@@ -1,4 +1,4 @@
-export interface Module {
+export interface ModuleDTO {
     id: number,
     year: number,
     name: string,
