@@ -16,7 +16,7 @@ import { UserService } from 'src/app/services/users/user.service';
 })
 export class ModulesComponent {
   modules: ModuleDTO[] = []
-  displayedColumns = ['nameAndTeacher', 'acronym'];
+  displayedColumns = ['nameAndTeacher', 'acronym', 'edit'];
   form: FormGroup
   name = ''
   acronym = ''
@@ -72,7 +72,10 @@ export class ModulesComponent {
 			this.courses = res
 		}
 	})
+  }
 
+  getModuleById(id: number) {
+	// TODO - NEEDS TO FILL THE FORM WITH MODULE INFO (INCLUDING TEACHERS)
   }
 
   createNewModule() {

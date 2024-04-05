@@ -19,4 +19,12 @@ export class CourseService {
     return this.http.post<Course>(`${Constants.BASE_URL}api/course/new-course`, course, {headers: Constants.headers});
   }
 
+  getCourseById(id: number): Observable<Course> {
+	return this.http.get<Course>(`${Constants.BASE_URL}api/course/${id}`, {headers: Constants.headers})
+  }
+
+  updateCourse(course: Course): Observable<Course> {
+	return this.http.put<Course>(`${Constants.BASE_URL}api/course/update-course`, course, {headers: Constants.headers})
+  }
+
 }
