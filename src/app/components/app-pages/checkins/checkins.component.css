@@ -82,8 +82,28 @@ td button {
     width: 5%;
 }
 
-.two-columns {
+form {
+    justify-content: center;
+}
+
+.buttons-group {
     display: flex;
-    justify-content: space-around;
-    gap: 10px;
+    gap: 20px;
+}
+
+.clicked-row {
+    background: #D5F1FA !important;
+    font-weight: bold !important;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: #D5F1FA;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.selected-name-class {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 400;
 }

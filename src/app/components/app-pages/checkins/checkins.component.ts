@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormGroupDirective, NgForm, FormControl } from '@angular/forms';
 import { Checkin } from 'src/app/models/checkin/Checkin';
 import { CheckinDTO } from 'src/app/models/checkin/CheckinDTO';
 import { User } from 'src/app/models/users/User';
@@ -15,6 +15,12 @@ export class CheckinsComponent {
 
   employees: User[] = []
   checkins: CheckinDTO[] = []
+  selectedRow: string = ''
+  selectedName: string = ''
+
+  dayFormControl = new FormControl('', Validators.required)
+  hourFormControl = new FormControl('', Validators.required)
+  checkinFormControl = new FormControl(['', '--- Seleccionar ---'], Validators.required)
 
   displayedEmployeesColumns = ['name', 'role', 'show']
   displayedCheckinsColumns = ['name', 'date', 'time', 'checkin', 'icon']
@@ -26,10 +32,10 @@ export class CheckinsComponent {
     this.getEmployees()
 
     this.form = this.formBuilder.group({
-      userId: [''],
+      id: [''],
+      day: ['', Validators.required],
       hour: ['', Validators.required],
-      date: ['', Validators.required],
-      checkin: ['', Validators.required]
+      checkinSelect: ['', Validators.required]
     })
   }
 
@@ -38,6 +44,7 @@ export class CheckinsComponent {
       next: res => {
         this.checkins = res
         console.log(this.checkins);
+        
       },
       error: err => {
         console.log(err)
@@ -45,15 +52,54 @@ export class CheckinsComponent {
     })
   }
 
-  async getEmployees() {
+  checkin() {
+    let checkin: Checkin = {
+      date: this.form.get('day')?.value + 'T' + this.form.get('hour')?.value + ':00.000Z',
+      user: {
+        id: this.selectedRow
+      },
+      checkIn: this.form.get('checkinSelect')?.value == '0' ? true : false
+    }
+
+    this.checkinService.checkin(checkin).subscribe({
+      next: res => {
+        let tmp: CheckinDTO = {
+          date: res.date,
+          userId: Number(res.user.id),
+          checkIn: res.checkIn,
+          user: ''
+        }
+        this.checkins = [];
+        this.checkins.push(tmp);
+        this.getCheckins();
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  getEmployees() {
     this.userService.getUsers().subscribe({
       next: res => {
         this.employees = res
-        console.log(this.employees);
       },
       error: err => {
         console.log(err)
       }
     })
+  }
+
+  addRowIdToSelectedRow(id: string) {
+    this.selectedRow = id
+    this.selectedName = this.employees.find(employee => employee.id == id)?.name! + ' ' + this.employees.find(employee => employee.id == id)?.lastname!
+    console.log(this.selectedRow);
+  }
+
+  //TODO: Arreglar filtrado
+
+  filterCheckinsBySelectedUser(id: number) {
+    this.checkins = this.checkins.filter(checkin => checkin.userId == id)    
+    console.log(this.checkins);
   }
 }

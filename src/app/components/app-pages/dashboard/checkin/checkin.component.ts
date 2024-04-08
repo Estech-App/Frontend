@@ -55,7 +55,7 @@ export class CheckinComponent {
           date: res.date,
           userId: Number(res.user.id),
           checkIn: res.checkIn,
-          name: ''
+          user: ''
         }
         this.checkins = [];
         this.checkins.push(tmp);
