@@ -23,10 +23,12 @@ export class ModulesComponent {
   teachers: User[] = []
   courses: Course[] = []
   formError = false
+  selections: string[] = []
+  post = true
 
   nameFormControl = new FormControl('', Validators.required)
   acronymFormControl = new FormControl('', Validators.required)
-  yearFormControl = new FormControl(0, Validators.required) // Radio Button!!!
+  yearFormControl = new FormControl(0, Validators.required)
   courseFormControl = new FormControl<Course | null>(null, Validators.required)
   teacherFormControl = new FormControl<User[] | null>(null, Validators.required)
 
@@ -76,6 +78,28 @@ export class ModulesComponent {
 
   getModuleById(id: number) {
 	// TODO - NEEDS TO FILL THE FORM WITH MODULE INFO (INCLUDING TEACHERS)
+	this.post = false
+	this.selections = []
+	this.moduleService.getModuleById(id).subscribe({
+		next: res => {
+			res.usersName.forEach(teacherName => {
+				this.teachers.forEach(teacher => {
+					if (teacherName === teacher.name) {
+						this.selections.push(teacher.id);
+					}
+				})
+			})
+			console.log(this.selections);
+			this.form.setValue({
+				id: res.id,
+				name: res.name,
+				acronym: res.acronym,
+				year: res.year,
+				course: null,
+				teachers: this.teachers
+			})
+		}
+	})
   }
 
   createNewModule() {
