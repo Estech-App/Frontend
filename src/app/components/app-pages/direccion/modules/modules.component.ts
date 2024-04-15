@@ -102,6 +102,8 @@ export class ModulesComponent {
 	})
   }
 
+  // TODO - UPDATE MODULE FUNCTION!!!!!
+
   createNewModule() {
 	let name = this.form.get('name')?.value
 	let acronym = this.form.get('acronym')?.value

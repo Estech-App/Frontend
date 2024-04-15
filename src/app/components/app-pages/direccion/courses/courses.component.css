@@ -2,6 +2,11 @@
     font-size: 16px;
 }
 
+.buttons-group {
+    display: flex;
+    gap: 20px;
+}
+
 section {
     border: 1px solid #969696;
     border-radius: 5px;
