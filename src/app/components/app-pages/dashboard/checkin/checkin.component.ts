@@ -52,6 +52,7 @@ export class CheckinComponent {
     this.checkinService.checkin(checkin).subscribe({
       next: res => {
         let tmp: CheckinDTO = {
+          id: '',
           date: res.date,
           userId: Number(res.user.id),
           checkIn: res.checkIn,
