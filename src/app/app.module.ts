@@ -32,6 +32,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
+import { GruposComponent } from './components/app-pages/grupos/grupos.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.comp
     ModulesComponent,
     GroupsDashboardComponent,
     CalendarDashboardComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    GruposComponent
   ],
   imports: [
     BrowserModule,
