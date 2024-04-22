@@ -34,6 +34,8 @@ import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.comp
 import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CheckinsComponent } from './components/app-pages/checkins/checkins.component';
+import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { CheckinsComponent } from './components/app-pages/checkins/checkins.comp
     GroupsDashboardComponent,
     CalendarDashboardComponent,
     UsuariosComponent,
-    CheckinsComponent
+    CheckinsComponent,
+    RoomsComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,8 @@ import { CheckinsComponent } from './components/app-pages/checkins/checkins.comp
     MatCardModule,
     MatNativeDateModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCheckboxModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

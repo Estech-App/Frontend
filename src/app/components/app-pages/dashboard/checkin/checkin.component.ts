@@ -43,6 +43,7 @@ export class CheckinComponent {
 
   checkin() {
     let checkin: Checkin = {
+      id: null,
       date: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds()).toString(),
       user: {
         id: sessionStorage.getItem('userId') != null ? sessionStorage.getItem('userId')! : ''
