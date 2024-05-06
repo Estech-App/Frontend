@@ -15,7 +15,7 @@ main {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+    width: 50%;
     gap: 20px;
 }
 
@@ -27,10 +27,10 @@ main {
 }
 
 section {
-   border: 1px solid #969696;
+    border: 1px solid #969696;
     border-radius: 5px;
     width: 100%;
-  height: 100%;
+    height: 100%;
 }
 
 .secondRow section {
@@ -46,7 +46,7 @@ article {
 }
 
 .firstRow .content {
-  height: 325px;
+    height: 400px;
 }
 
 .content {
@@ -110,4 +110,61 @@ form {
 
 .filter-input {
     width: 40%;
+}
+
+.content .title {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.contenido-solicitudes {
+    flex-direction: column;
+}
+
+td span {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+}
+
+td .detail {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.solicitud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 90%;
+    border: 1px solid #969696;
+}
+
+.schedule {
+    display: table;
+    width: 100%;
+}
+
+.schedule tbody tr td {
+    border: 1px solid gray;
+    height: 30px;
+}
+.schedule tbody {
+    display: block;
+    height: 350px;
+    overflow: auto;
+}
+.schedule thead, .schedule tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;/* even columns width , fix width of table too*/
+}
+.schedule thead {
+    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+
+.td-selected {
+    background-color: gray !important;
 }

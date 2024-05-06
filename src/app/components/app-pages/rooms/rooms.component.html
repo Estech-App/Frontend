@@ -1,53 +1,150 @@
 <main>
     <div class="firstRow">
-        <p class="title">Salas</p>
-        <div class="content">
-            <table mat-table [dataSource]="rooms">
+        <section>
+            <article>
+                <p class="title">Salas</p>
+                <div class="content">
+                    <table mat-table [dataSource]="rooms">
 
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Sala </th>
-                    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-                </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Sala </th>
+                            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                        </ng-container>
 
-                <ng-container matColumnDef="group">
-                    <th mat-header-cell *matHeaderCellDef> Grupo </th>
-                    <td mat-cell *matCellDef="let element">{{ element.group }}</td>
-                </ng-container>
+                        <ng-container matColumnDef="group">
+                            <th mat-header-cell *matHeaderCellDef> Grupo </th>
+                            <td mat-cell *matCellDef="let element">{{ element.groups }}</td>
+                        </ng-container>
 
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                    <td mat-cell *matCellDef="let element"><button>Seleccionar</button></td>
-                </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                            <td mat-cell *matCellDef="let element"><button>Seleccionar</button></td>
+                        </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="roomColumns; sticky: true"></tr>
-                <tr mat-row [class.clicked-row]="selectedRow === row" *matRowDef="let row; columns: roomColumns;">
-                </tr>
-            </table>
-        </div>
+                        <tr mat-header-row *matHeaderRowDef="roomColumns; sticky: true"></tr>
+                        <tr mat-row [class.clicked-row]="selectedRow === row"
+                            *matRowDef="let row; columns: roomColumns;">
+                        </tr>
+                    </table>
+                </div>
+            </article>
+        </section>
+        <section>
+            <article>
+                <p class="title">Solicitudes de practica libre</p>
+                <div class="content contenido-solicitudes">
+                    <div class="title">SOLICITUDES ENTRANTES</div>
+                    <div class="content">
+                        <table mat-table [dataSource]="solicitudes">
+                            <ng-container matColumnDef="details">
+                                <th mat-header-cell *matHeaderCellDef> Sala </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span>
+                                        {{ element.name }}
+                                    </span>
+                                    <span class="detail">{{element.group + " - " + element.date}}</span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="buttons-group">
+                                        <button>✔</button>
+                                        <button>X</button>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-row *matRowDef="let row; columns: solicitudesColumns;"></tr>
+                        </table>
+                    </div>
+                    <div class="title">SOLICITUDES ACEPTADAS</div>
+                    <div class="content">
+                        <table mat-table [dataSource]="solicitudes">
+                            <ng-container matColumnDef="details">
+                                <th mat-header-cell *matHeaderCellDef> Sala </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span>
+                                        {{ element.name }}
+                                    </span>
+                                    <span class="detail">{{element.group + " - " + element.date}}</span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="buttons-group">
+                                        <button>✔</button>
+                                        <button>X</button>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-row *matRowDef="let row; columns: solicitudesColumns;">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </article>
+        </section>
     </div>
+
     <div class="secondRow">
-        <div class="title">Crear / Modificar salas</div>
-        <div class="content">
-            <form [formGroup]="form">
-                <mat-form-field>
-                    <input matInput placeholder="Nombre de la sala" formControlName="name" required>
-                </mat-form-field>
-                <mat-form-field formControlName="groups" name="groupSelect" required>
-                    <mat-label>--- Seleccionar grupo ---</mat-label>
-                    <mat-select>
-                        <mat-option>--- Seleccionar ---</mat-option>
-                        <!-- TODO: Descomentar cuando se puedan obtener los grupos -->
-                        <!-- <mat-option *ngFor="let group of groups" [value]="group.id">{{ group }}</mat-option> -->
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-checkbox formControlName="studyRoom">Estudio</mat-checkbox>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-checkbox formControlName="mentoringRoom">Tutoria</mat-checkbox>
-                </mat-form-field>
-                <button mat-raised-button type="submit">Guardar</button>
-            </form>
-        </div>
+        <section>
+            <article>
+                <div class="title">Crear / Modificar salas</div>
+                <div class="content">
+                    <form [formGroup]="form" (submit)="createRoom()">
+                        <mat-form-field>
+                            <input matInput placeholder="Nombre de la sala" formControlName="name" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Descripción</mat-label>
+                            <textarea matInput formControlName="description"></textarea>
+                        </mat-form-field>
+                        <mat-form-field name="groupSelect" required>
+                            <mat-label>--- Seleccionar grupo ---</mat-label>
+                            <mat-select formControlName="groups" multiple>
+                                <mat-option>--- Seleccionar ---</mat-option>
+                                <!-- TODO: Descomentar cuando se puedan obtener los grupos -->
+                                <!-- <mat-option *ngFor="let group of groups" [value]="group.id">{{ group }}</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="buttons-group">
+                            <mat-checkbox formControlName="studyRoom">Estudio</mat-checkbox>
+                            <mat-checkbox formControlName="mentoringRoom">Tutoria</mat-checkbox>
+                        </div>
+                        <button mat-raised-button type="submit">Guardar</button>
+                    </form>
+                </div>
+            </article>
+        </section>
+        <section>
+            <article>
+                <p class="title">Horario de sala</p>
+                <div class="content">
+                    <table class="schedule">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th *ngFor="let day of scheduleColumns">{{day}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let hour of scheduleRows">
+                                <td>{{hour}}</td>
+                                <td (click)="selectHour(hour, 'L')" [ngClass]="{'td-selected': selectedHours.has({hour: hour, day: 'L'})}"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
     </div>
 </main>
