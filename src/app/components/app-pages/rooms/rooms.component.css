@@ -165,6 +165,14 @@ td .detail {
     width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
 }
 
+.schedule tbody tr td {
+    cursor: pointer;
+}
+
+.schedule tbody tr td:hover {
+    background-color: #D5F1FA !important;
+}
+
 .td-selected {
     background-color: gray !important;
 }

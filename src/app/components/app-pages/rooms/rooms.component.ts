@@ -1,8 +1,15 @@
 import { group } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { GroupDTO } from 'src/app/models/group/GroupDTO';
 import { Room } from 'src/app/models/rooms/Room';
+import { GroupService } from 'src/app/services/groups/group.service';
 import { RoomService } from 'src/app/services/rooms/room.service';
+
+interface RoomTimeTable {
+  day: string
+  hour: string
+}
 
 @Component({
   selector: 'app-rooms',
@@ -14,14 +21,15 @@ export class RoomsComponent {
   form: FormGroup
   roomColumns: string[] = ["name", "group", "actions"]
   rooms: Room[] = []
-  selectedRow: Room
+  groups: GroupDTO[] = []
+  selectedRoom: Room
   solicitudes: any[] = []
   solicitudesColumns = ["details", "actions"]
   scheduleColumns = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
   scheduleRows = ["8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"]
-  selectedHours: Set<any> = new Set()
+  selectedHours: RoomTimeTable[] = []
 
-  constructor(private formBuilder: FormBuilder, private roomService: RoomService) {
+  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private groupService: GroupService) {
     this.form = this.formBuilder.group({
       id: null,
       name: '',
@@ -31,17 +39,17 @@ export class RoomsComponent {
       description: ''
     })
 
-    this.selectedRow = {
-      id: 0,
+    this.selectedRoom = {
+      id: null,
       name: '',
       description: '',
       mentoringRoom: false,
       studyRoom: false,
-      freeUsages: [{ id: 0 }],
-      mentorings: [{ id: 0 }],
-      stocks: [{ id: 0 }],
-      groups: [{ id: 0 }],
-      roomTimeTables: [{ id: 0 }]
+      freeUsages: [{ id: null }],
+      mentorings: [{ id: null }],
+      stocks: [{ id: null }],
+      groups: [{ id: null }],
+      roomTimeTables: [{ id: null }]
     }
 
     this.solicitudes = [
@@ -70,6 +78,8 @@ export class RoomsComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getRooms()
+    this.getGroups()
+    
   }
 
   createRoom() {
@@ -100,6 +110,7 @@ export class RoomsComponent {
     this.roomService.getRooms().subscribe({
       next: (rooms) => {
         this.rooms = rooms
+        console.log(this.rooms)
       },
       error: (error) => {
         console.error(error)
@@ -107,13 +118,31 @@ export class RoomsComponent {
     })
   }
 
-  selectHour(hour: string, day: string) {
-    let object = {
-      hour: hour,
-      day: day
-    }
-    this.selectedHours.add(object)
-    console.log("Seleccionando");
+  getGroups() {
+    this.groupService.getGroups().subscribe({
+      next: (groups) => {
+        this.groups = groups
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
   }
 
+  addAndDeleteToSelectedHours(day: string, hour: string) {
+    let selectedHour = this.checkIfSelected(day, hour)
+    if (selectedHour) {
+      this.selectedHours = this.selectedHours.filter((time) => time !== selectedHour)
+    } else {
+      this.selectedHours.push({ day, hour })
+    }
+  }
+
+  checkIfSelected(day: string, hour: string) {
+    return this.selectedHours.find((time) => time.day === day && time.hour === hour)
+  }
+
+  addRowToClicked(row: Room) {
+    this.selectedRoom = row
+  }
 }
