@@ -37,6 +37,9 @@ import { CheckinsComponent } from './components/app-pages/checkins/checkins.comp
 import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { FullCalendarTestComponent } from './components/app-pages/full-calendar-test/full-calendar-test.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +57,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CalendarDashboardComponent,
     UsuariosComponent,
     CheckinsComponent,
-    RoomsComponent
+    RoomsComponent,
+    FullCalendarTestComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatNativeDateModule,
     MatSelectModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FullCalendarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
