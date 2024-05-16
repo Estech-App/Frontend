@@ -65,6 +65,7 @@
                     <div class="title">SOLICITUDES ACEPTADAS</div>
                     <div class="content">
                         <table mat-table [dataSource]="solicitudes">
+
                             <ng-container matColumnDef="details">
                                 <th mat-header-cell *matHeaderCellDef> Sala </th>
                                 <td mat-cell *matCellDef="let element">
@@ -132,29 +133,7 @@
             <article>
                 <p class="title">Horario de sala</p>
                 <div class="content">
-                    <table class="schedule">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th *ngFor="let day of scheduleColumns">{{day}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let hour of scheduleRows">
-                                <td>{{hour}}</td>
-                                <td (click)="addAndDeleteToSelectedHours('L', hour)"
-                                    [class.td-selected]="checkIfSelected('L', hour)"></td>
-                                <td (click)="addAndDeleteToSelectedHours('M', hour)"
-                                    [class.td-selected]="checkIfSelected('M', hour)"></td>
-                                <td (click)="addAndDeleteToSelectedHours('X', hour)"
-                                    [class.td-selected]="checkIfSelected('X', hour)"></td>
-                                <td (click)="addAndDeleteToSelectedHours('J', hour)"
-                                    [class.td-selected]="checkIfSelected('J', hour)"></td>
-                                <td (click)="addAndDeleteToSelectedHours('V', hour)"
-                                    [class.td-selected]="checkIfSelected('V', hour)"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <full-calendar #calendar [options]="calendarOptions()"></full-calendar>
                 </div>
             </article>
         </section>

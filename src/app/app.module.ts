@@ -36,6 +36,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { CheckinsComponent } from './components/app-pages/checkins/checkins.component';
 import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatNativeDateModule,
     MatSelectModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FullCalendarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

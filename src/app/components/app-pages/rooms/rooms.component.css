@@ -14,7 +14,7 @@ main {
 .firstRow {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 830px;
     width: 50%;
     gap: 20px;
 }
@@ -22,8 +22,9 @@ main {
 .secondRow {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 830px;
     width: 100%;
+    gap: 20px;
 }
 
 section {
@@ -31,6 +32,10 @@ section {
     border-radius: 5px;
     width: 100%;
     height: 100%;
+}
+
+.secondRow .content {
+    height: 300px;
 }
 
 .secondRow section {
@@ -46,7 +51,7 @@ article {
 }
 
 .firstRow .content {
-    height: 400px;
+    height: 300px;
 }
 
 .content {
@@ -142,37 +147,7 @@ td .detail {
     border: 1px solid #969696;
 }
 
-.schedule {
-    display: table;
+full-calendar  {
     width: 100%;
-}
-
-.schedule tbody tr td {
-    border: 1px solid gray;
-    height: 30px;
-}
-.schedule tbody {
-    display: block;
-    height: 350px;
-    overflow: auto;
-}
-.schedule thead, .schedule tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;/* even columns width , fix width of table too*/
-}
-.schedule thead {
-    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
-}
-
-.schedule tbody tr td {
-    cursor: pointer;
-}
-
-.schedule tbody tr td:hover {
-    background-color: #D5F1FA !important;
-}
-
-.td-selected {
-    background-color: gray !important;
+    height: 100%;
 }

@@ -1,15 +1,17 @@
-import { group } from '@angular/animations';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Calendar, CalendarOptions, DateInput, DateSelectArg, DurationInput, EventApi, EventClickArg, FormatterInput } from '@fullcalendar/core';
 import { GroupDTO } from 'src/app/models/group/GroupDTO';
 import { Room } from 'src/app/models/rooms/Room';
 import { GroupService } from 'src/app/services/groups/group.service';
 import { RoomService } from 'src/app/services/rooms/room.service';
-
-interface RoomTimeTable {
-  day: string
-  hour: string
-}
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import esLocale from '@fullcalendar/core/locales/es';
+import { RoomTimeTable } from 'src/app/models/rooms/RoomTimeTable';
+import { au } from '@fullcalendar/core/internal-common';
+import { Dictionary } from '@fullcalendar/core/internal';
 
 @Component({
   selector: 'app-rooms',
@@ -25,13 +27,40 @@ export class RoomsComponent {
   selectedRoom: Room
   solicitudes: any[] = []
   solicitudesColumns = ["details", "actions"]
-  scheduleColumns = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
-  scheduleRows = ["8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"]
-  selectedHours: RoomTimeTable[] = []
 
-  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private groupService: GroupService) {
+  @ViewChild('calendar') calendar!: Calendar
+
+  calendarVisible = signal(true);
+  currentEvents = signal<EventApi[]>([]);
+  calendarOptions = signal<CalendarOptions>({
+    timeZone: 'Europe/Madrid',
+    plugins: [
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin
+    ],
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    initialView: 'dayGridMonth',
+    weekends: false,
+    editable: true,
+    selectable: true,
+    selectMirror: true,
+    locale: esLocale,
+    dayMaxEvents: 2,
+    select: this.handleDateSelect.bind(this),
+    eventClick: this.handleEventClick.bind(this),
+    eventsSet: this.handleEvents.bind(this),
+
+  });
+
+  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private groupService: GroupService, private changeDetector: ChangeDetectorRef) {
+
     this.form = this.formBuilder.group({
-      id: null,
+      id: '',
       name: '',
       mentoringRoom: null,
       studyRoom: null,
@@ -45,11 +74,8 @@ export class RoomsComponent {
       description: '',
       mentoringRoom: false,
       studyRoom: false,
-      freeUsages: [{ id: null }],
-      mentorings: [{ id: null }],
-      stocks: [{ id: null }],
       groups: [{ id: null }],
-      roomTimeTables: [{ id: null }]
+      timeTables: []
     }
 
     this.solicitudes = [
@@ -79,22 +105,22 @@ export class RoomsComponent {
     //Add 'implements OnInit' to the class.
     this.getRooms()
     this.getGroups()
-    
+
   }
 
   createRoom() {
     let room: Room = {
-      id: this.form.get('id')?.value,
+      id: this.form.get('id')?.value ?? '',
       name: this.form.get('name')?.value,
-      mentoringRoom: this.form.get('mentoringRoom')?.value,
-      studyRoom: this.form.get('studyRoom')?.value,
+      mentoringRoom: this.form.get('mentoringRoom')?.value ?? false,
+      studyRoom: this.form.get('studyRoom')?.value ?? false,
       groups: this.form.get('groups')?.value ?? 1,
       description: this.form.get('description')?.value,
-      stocks: [{ id: null }],
-      mentorings: [{ id: null }],
-      freeUsages: [{ id: null }],
-      roomTimeTables: [{ id: null }]
+      timeTables: this.transformCurrentEventsToTimeTable()
     }
+
+    console.log(room)
+
     this.roomService.createRoom(room).subscribe({
       next: (room) => {
         this.rooms.push(room)
@@ -104,6 +130,20 @@ export class RoomsComponent {
         console.error(error)
       }
     })
+  }
+
+  transformCurrentEventsToTimeTable(): RoomTimeTable[] {
+    let roomTimeTable: RoomTimeTable[] = []
+    this.currentEvents().forEach((event) => {
+      let id = ''
+      let start = event.start?.toISOString()
+      let end = event.end?.toISOString()
+      let status = "OCCUPIED"
+      let roomId = ''
+      roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId })
+    });
+
+    return roomTimeTable
   }
 
   getRooms() {
@@ -129,20 +169,139 @@ export class RoomsComponent {
     })
   }
 
-  addAndDeleteToSelectedHours(day: string, hour: string) {
-    let selectedHour = this.checkIfSelected(day, hour)
-    if (selectedHour) {
-      this.selectedHours = this.selectedHours.filter((time) => time !== selectedHour)
+  addRowToClicked(row: Room) {
+    if (this.selectedRoom.id === row.id) {
+      this.selectedRoom = {
+        id: null,
+        name: '',
+        description: '',
+        mentoringRoom: false,
+        studyRoom: false,
+        groups: [{ id: null }],
+        timeTables: []
+      }
     } else {
-      this.selectedHours.push({ day, hour })
+      this.selectedRoom = row
+      console.log(row.groups);
+
+      this.form.setValue({
+        id: row.id,
+        name: row.name,
+        mentoringRoom: row.mentoringRoom,
+        studyRoom: row.studyRoom,
+        groups: row.groups ?? [],
+        description: row.description
+      })
+
+      this.calendarOptions.set({
+        ...this.calendarOptions(),
+        events: this.toEventApi(row.timeTables).map(event => ({
+          ...event,
+          start: event.start ? event.start.toISOString() : undefined,
+          end: event.end ? event.end.toISOString() : undefined
+        }))
+      })
     }
   }
 
-  checkIfSelected(day: string, hour: string) {
-    return this.selectedHours.find((time) => time.day === day && time.hour === hour)
+  // * FullCalendar Methods
+
+  toEventApi(timeTables: RoomTimeTable[]): EventApi[] {
+    let events: EventApi[] = []
+    timeTables.forEach((timeTable) => {
+      events.push({
+        id: timeTable.id!.toString(),
+        title: timeTable.status,
+        start: new Date(timeTable.start),
+        end: new Date(timeTable.end),
+        allDay: false,
+        source: null,
+        startStr: timeTable.start.split('T')[0],
+        endStr: timeTable.end.split('T')[0],
+        groupId: '',
+        url: '',
+        display: '',
+        startEditable: false,
+        durationEditable: false,
+        constraint: undefined,
+        overlap: false,
+        allow: undefined,
+        backgroundColor: '',
+        borderColor: '',
+        textColor: '',
+        classNames: [],
+        extendedProps: {},
+        setProp: function (name: string, val: any): void {
+          throw new Error('Function not implemented.');
+        },
+        setExtendedProp: function (name: string, val: any): void {
+          throw new Error('Function not implemented.');
+        },
+        setStart: function (startInput: DateInput, options?: { granularity?: string | undefined; maintainDuration?: boolean | undefined; } | undefined): void {
+          throw new Error('Function not implemented.');
+        },
+        setEnd: function (endInput: DateInput | null, options?: { granularity?: string | undefined; } | undefined): void {
+          throw new Error('Function not implemented.');
+        },
+        setDates: function (startInput: DateInput, endInput: DateInput | null, options?: { allDay?: boolean | undefined; granularity?: string | undefined; } | undefined): void {
+          throw new Error('Function not implemented.');
+        },
+        moveStart: function (deltaInput: DurationInput): void {
+          throw new Error('Function not implemented.');
+        },
+        moveEnd: function (deltaInput: DurationInput): void {
+          throw new Error('Function not implemented.');
+        },
+        moveDates: function (deltaInput: DurationInput): void {
+          throw new Error('Function not implemented.');
+        },
+        setAllDay: function (allDay: boolean, options?: { maintainDuration?: boolean | undefined; } | undefined): void {
+          throw new Error('Function not implemented.');
+        },
+        formatRange: function (formatInput: FormatterInput) {
+          throw new Error('Function not implemented.');
+        },
+        remove: function (): void {
+          throw new Error('Function not implemented.');
+        },
+        toPlainObject: function (settings?: { collapseExtendedProps?: boolean | undefined; collapseColor?: boolean | undefined; } | undefined): au {
+          throw new Error('Function not implemented.');
+        },
+        toJSON: function (): au {
+          throw new Error('Function not implemented.');
+        }
+      })
+    })
+    return events
   }
 
-  addRowToClicked(row: Room) {
-    this.selectedRoom = row
+  handleDateSelect(selectInfo: DateSelectArg) {
+    const title = "Ocupado"
+    const calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect(); // clear date selection
+    console.log(selectInfo)
+
+    if (title) {
+      calendarApi.addEvent({
+        id: '',
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay
+      });
+    }
   }
+
+  handleEventClick(clickInfo: EventClickArg) {
+    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      clickInfo.event.remove();
+    }
+  }
+
+  handleEvents(events: EventApi[]) {
+    this.currentEvents.set(events);
+    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+  }
+
 }

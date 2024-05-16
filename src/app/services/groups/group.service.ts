@@ -12,6 +12,6 @@ export class GroupService {
   constructor(private http: HttpClient) { }
 
   getGroups(): Observable<GroupDTO[]> {
-    return this.http.get<GroupDTO[]>(`${Constants.BASE_URL}api/groups`, {headers: Constants.headers});
+    return this.http.get<GroupDTO[]>(`${Constants.BASE_URL}api/group`, {headers: Constants.headers});
   }
 }
