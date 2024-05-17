@@ -20,6 +20,6 @@ export class RoomService {
   }
 
   updateRoom(room: Room): Observable<Room> {
-    return this.http.put<Room>(`${Constants.BASE_URL}api/room/update-room`, room, {headers: Constants.headers});
+    return this.http.put<Room>(`${Constants.BASE_URL}api/room`, room, {headers: Constants.headers});
   }
 }

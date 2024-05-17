@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Calendar, CalendarOptions, DateInput, DateSelectArg, DurationInput, EventApi, EventClickArg, FormatterInput } from '@fullcalendar/core';
-import { GroupDTO } from 'src/app/models/group/GroupDTO';
 import { Room } from 'src/app/models/rooms/Room';
-import { GroupService } from 'src/app/services/groups/group.service';
 import { RoomService } from 'src/app/services/rooms/room.service';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -11,7 +9,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { RoomTimeTable } from 'src/app/models/rooms/RoomTimeTable';
 import { au } from '@fullcalendar/core/internal-common';
-import { Dictionary } from '@fullcalendar/core/internal';
+import { MatTableDataSource } from '@angular/material/table';
+import { FreeUsageService } from 'src/app/services/freeUsages/free-usage.service';
+import { FreeUsage } from 'src/app/models/freeUsages/freeUsage';
 
 @Component({
   selector: 'app-rooms',
@@ -21,12 +21,13 @@ import { Dictionary } from '@fullcalendar/core/internal';
 export class RoomsComponent {
 
   form: FormGroup
-  roomColumns: string[] = ["name", "group", "actions"]
-  rooms: Room[] = []
-  groups: GroupDTO[] = []
+  roomColumns: string[] = ["name", "actions"]
+  rooms: MatTableDataSource<Room> = new MatTableDataSource<Room>()
   selectedRoom: Room
-  solicitudes: any[] = []
+  freeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
+  gestionedFreeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
   solicitudesColumns = ["details", "actions"]
+  post = true
 
   @ViewChild('calendar') calendar!: Calendar
 
@@ -57,14 +58,13 @@ export class RoomsComponent {
 
   });
 
-  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private groupService: GroupService, private changeDetector: ChangeDetectorRef) {
+  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private freeUsageService: FreeUsageService, private changeDetector: ChangeDetectorRef) {
 
     this.form = this.formBuilder.group({
       id: '',
       name: '',
       mentoringRoom: null,
       studyRoom: null,
-      groups: [],
       description: ''
     })
 
@@ -74,38 +74,13 @@ export class RoomsComponent {
       description: '',
       mentoringRoom: false,
       studyRoom: false,
-      groups: [{ id: null }],
       timeTables: []
     }
-
-    this.solicitudes = [
-      {
-        name: "Vicente Pedraza",
-        group: "DAM",
-        date: "16-may",
-        status: "pending"
-      },
-      {
-        name: "Alberto Montavez",
-        group: "DAM",
-        date: "16-may",
-        status: "pending"
-      },
-      {
-        name: "Julian",
-        group: "DAM",
-        date: "16-may",
-        status: "accepted"
-      }
-    ]
   }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     this.getRooms()
-    this.getGroups()
-
+    this.getFreeUsages()
   }
 
   createRoom() {
@@ -114,17 +89,17 @@ export class RoomsComponent {
       name: this.form.get('name')?.value,
       mentoringRoom: this.form.get('mentoringRoom')?.value ?? false,
       studyRoom: this.form.get('studyRoom')?.value ?? false,
-      groups: this.form.get('groups')?.value ?? 1,
       description: this.form.get('description')?.value,
       timeTables: this.transformCurrentEventsToTimeTable()
     }
-
+    console.log("Create Room")
     console.log(room)
 
     this.roomService.createRoom(room).subscribe({
       next: (room) => {
-        this.rooms.push(room)
+        this.rooms.data.push(room)
         this.form.reset()
+        this.getRooms()
       },
       error: (error) => {
         console.error(error)
@@ -132,36 +107,37 @@ export class RoomsComponent {
     })
   }
 
-  transformCurrentEventsToTimeTable(): RoomTimeTable[] {
-    let roomTimeTable: RoomTimeTable[] = []
-    this.currentEvents().forEach((event) => {
-      let id = ''
-      let start = event.start?.toISOString()
-      let end = event.end?.toISOString()
-      let status = "OCCUPIED"
-      let roomId = ''
-      roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId })
-    });
+  updateRoom() {
+    let room: Room = {
+      id: this.form.get('id')?.value ?? '',
+      name: this.form.get('name')?.value,
+      mentoringRoom: this.form.get('mentoringRoom')?.value ?? false,
+      studyRoom: this.form.get('studyRoom')?.value ?? false,
+      description: this.form.get('description')?.value,
+      timeTables: this.transformCurrentEventsToTimeTable()
+    }
+    console.log("Update Room")
 
-    return roomTimeTable
+    console.log(room)
+
+    this.roomService.updateRoom(room).subscribe({
+      next: (room) => {
+        this.rooms.data = this.rooms.data.map((r) => r.id === room.id ? room : r)
+        this.post = true
+        this.form.reset()
+        this.getRooms()
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
   }
 
   getRooms() {
     this.roomService.getRooms().subscribe({
       next: (rooms) => {
-        this.rooms = rooms
+        this.rooms.data = rooms
         console.log(this.rooms)
-      },
-      error: (error) => {
-        console.error(error)
-      }
-    })
-  }
-
-  getGroups() {
-    this.groupService.getGroups().subscribe({
-      next: (groups) => {
-        this.groups = groups
       },
       error: (error) => {
         console.error(error)
@@ -177,19 +153,21 @@ export class RoomsComponent {
         description: '',
         mentoringRoom: false,
         studyRoom: false,
-        groups: [{ id: null }],
         timeTables: []
       }
+      this.form.reset()
+      this.calendarOptions.set({ ...this.calendarOptions(), events: [] })
+      this.post = true
     } else {
+      this.post = false
       this.selectedRoom = row
-      console.log(row.groups);
+      console.log(row);
 
       this.form.setValue({
         id: row.id,
         name: row.name,
         mentoringRoom: row.mentoringRoom,
         studyRoom: row.studyRoom,
-        groups: row.groups ?? [],
         description: row.description
       })
 
@@ -202,6 +180,46 @@ export class RoomsComponent {
         }))
       })
     }
+  }
+
+  // * Free Usage Methods
+  getFreeUsages() {
+    this.freeUsageService.getFreeUsages().subscribe({
+      next: (freeUsages) => {
+        this.freeUsages.data = freeUsages
+        this.gestionedFreeUsages.data = this.freeUsages.data.filter(fu => fu.status !== "PENDING")
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
+  }
+
+  updateFreeUsage(freeUsage: FreeUsage, status: boolean) {
+    console.log(freeUsage);
+    freeUsage.status = status ? "APPROVED" : "DENIED"
+    console.log(freeUsage);
+    this.freeUsageService.updateFreeUsage(freeUsage).subscribe({
+      next: (freeUsage) => {
+        this.freeUsages.data = this.freeUsages.data.map((fu) => fu.id === freeUsage.id ? freeUsage : fu)
+        this.getFreeUsages()
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
+  }
+
+  createFreeUsage(freeUsage: FreeUsage) {
+    freeUsage.status = "PENDING"
+    this.freeUsageService.createFreeUsage(freeUsage).subscribe({
+      next: (freeUsage) => {
+        this.freeUsages.data.push(freeUsage)
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
   }
 
   // * FullCalendar Methods
@@ -304,4 +322,17 @@ export class RoomsComponent {
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 
+  transformCurrentEventsToTimeTable(): RoomTimeTable[] {
+    let roomTimeTable: RoomTimeTable[] = []
+    this.currentEvents().forEach((event) => {
+      let id = ''
+      let start = event.start?.toISOString()
+      let end = event.end?.toISOString()
+      let status = "OCCUPIED"
+      let roomId = ''
+      roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId })
+    });
+
+    return roomTimeTable
+  }
 }

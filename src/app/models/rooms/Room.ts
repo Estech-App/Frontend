@@ -6,11 +6,5 @@ export interface Room {
     description: string;
     mentoringRoom: boolean
     studyRoom: boolean
-    //TODO: Change to Group[]
-    groups: [
-        {
-            id: number | null
-        }
-    ]
     timeTables: RoomTimeTable[]
 }
