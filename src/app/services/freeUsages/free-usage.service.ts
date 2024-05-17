@@ -22,4 +22,9 @@ export class FreeUsageService {
   updateFreeUsage(freeUsage: FreeUsage): Observable<FreeUsage> {
     return this.http.put<FreeUsage>(`${Constants.BASE_URL}api/free-usage`, freeUsage, {headers: Constants.headers});
   }
+
+  getFreeUsagesByRoomId(roomId: Number): Observable<FreeUsage[]> {
+	return this.http.get<FreeUsage[]>(`${Constants.BASE_URL}api/free-usage/by-room/${roomId}`, {headers: Constants.headers});
+  }
+
 }

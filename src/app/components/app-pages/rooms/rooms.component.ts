@@ -158,6 +158,17 @@ export class RoomsComponent {
       this.form.reset()
       this.calendarOptions.set({ ...this.calendarOptions(), events: [] })
       this.post = true
+	  // ! Fernando - New Code not working:
+	  // Should be displaying all existing free usages
+	  this.freeUsageService.getFreeUsages().subscribe({
+		next: (freeUsages) => {
+			this.freeUsages.data = freeUsages
+			this.gestionedFreeUsages.data = this.freeUsages.data.filter(fu => fu.status !== "PENDING")
+		},
+		error: (error) => {
+			console.error(error)
+		}
+	  })
     } else {
       this.post = false
       this.selectedRoom = row
@@ -170,6 +181,18 @@ export class RoomsComponent {
         studyRoom: row.studyRoom,
         description: row.description
       })
+
+	  // ! Fernando - New Code not working:
+	  // Should be displaying selected room free usages.
+	  this.freeUsageService.getFreeUsagesByRoomId(row.id!).subscribe({
+		next: (freeUsages) => {
+			this.freeUsages.data = freeUsages
+			this.gestionedFreeUsages.data = this.freeUsages.data.filter(fu => fu.status !== "PENDING")
+		},
+		error: (error) => {
+			console.error(error)
+		}
+	  })
 
       this.calendarOptions.set({
         ...this.calendarOptions(),

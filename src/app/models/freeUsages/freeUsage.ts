@@ -3,7 +3,8 @@ import { User } from "../users/User"
 
 export interface FreeUsage {
     id: number | null
-    date: string
+	start: string
+	end: string
     status: string
     room: Room
     user: User
