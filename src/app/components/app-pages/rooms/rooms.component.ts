@@ -24,14 +24,14 @@ export class RoomsComponent {
   roomColumns: string[] = ["name", "actions"]
   rooms: MatTableDataSource<Room> = new MatTableDataSource<Room>()
   selectedRoom: Room
-  freeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
+  freeUsages: FreeUsage[] = []
+  pendingFreeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
   gestionedFreeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
   solicitudesColumns = ["details", "actions"]
   post = true
 
   @ViewChild('calendar') calendar!: Calendar
 
-  calendarVisible = signal(true);
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     timeZone: 'Europe/Madrid',
@@ -85,7 +85,7 @@ export class RoomsComponent {
 
   createRoom() {
     let room: Room = {
-      id: this.form.get('id')?.value ?? '',
+      id: null,
       name: this.form.get('name')?.value,
       mentoringRoom: this.form.get('mentoringRoom')?.value ?? false,
       studyRoom: this.form.get('studyRoom')?.value ?? false,
@@ -158,17 +158,9 @@ export class RoomsComponent {
       this.form.reset()
       this.calendarOptions.set({ ...this.calendarOptions(), events: [] })
       this.post = true
-	  // ! Fernando - New Code not working:
-	  // Should be displaying all existing free usages
-	  this.freeUsageService.getFreeUsages().subscribe({
-		next: (freeUsages) => {
-			this.freeUsages.data = freeUsages
-			this.gestionedFreeUsages.data = this.freeUsages.data.filter(fu => fu.status !== "PENDING")
-		},
-		error: (error) => {
-			console.error(error)
-		}
-	  })
+      // ! Fernando - New Code not working:
+      // Should be displaying all existing free usages
+      this.getFreeUsages()
     } else {
       this.post = false
       this.selectedRoom = row
@@ -182,17 +174,9 @@ export class RoomsComponent {
         description: row.description
       })
 
-	  // ! Fernando - New Code not working:
-	  // Should be displaying selected room free usages.
-	  this.freeUsageService.getFreeUsagesByRoomId(row.id!).subscribe({
-		next: (freeUsages) => {
-			this.freeUsages.data = freeUsages
-			this.gestionedFreeUsages.data = this.freeUsages.data.filter(fu => fu.status !== "PENDING")
-		},
-		error: (error) => {
-			console.error(error)
-		}
-	  })
+      // ! Fernando - New Code not working:
+      // Should be displaying selected room free usages.
+      this.getFreeUsages()
 
       this.calendarOptions.set({
         ...this.calendarOptions(),
@@ -209,8 +193,9 @@ export class RoomsComponent {
   getFreeUsages() {
     this.freeUsageService.getFreeUsages().subscribe({
       next: (freeUsages) => {
-        this.freeUsages.data = freeUsages
-        this.gestionedFreeUsages.data = this.freeUsages.data.filter(fu => fu.status !== "PENDING")
+        this.freeUsages = freeUsages
+        this.gestionedFreeUsages.data = this.freeUsages.filter(fu => fu.status !== "PENDING")
+        this.pendingFreeUsages.data = this.freeUsages.filter(fu => fu.status === "PENDING")
       },
       error: (error) => {
         console.error(error)
@@ -224,7 +209,7 @@ export class RoomsComponent {
     console.log(freeUsage);
     this.freeUsageService.updateFreeUsage(freeUsage).subscribe({
       next: (freeUsage) => {
-        this.freeUsages.data = this.freeUsages.data.map((fu) => fu.id === freeUsage.id ? freeUsage : fu)
+        this.freeUsages = this.freeUsages.map((fu) => fu.id === freeUsage.id ? freeUsage : fu)
         this.getFreeUsages()
       },
       error: (error) => {
@@ -237,7 +222,7 @@ export class RoomsComponent {
     freeUsage.status = "PENDING"
     this.freeUsageService.createFreeUsage(freeUsage).subscribe({
       next: (freeUsage) => {
-        this.freeUsages.data.push(freeUsage)
+        this.freeUsages.push(freeUsage)
       },
       error: (error) => {
         console.error(error)

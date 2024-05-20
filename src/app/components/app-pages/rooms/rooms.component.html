@@ -33,7 +33,7 @@
                 <div class="content contenido-solicitudes">
                     <div class="title">SOLICITUDES ENTRANTES</div>
                     <div class="content">
-                        <table mat-table [dataSource]="freeUsages">
+                        <table mat-table [dataSource]="pendingFreeUsages">
                             <ng-container matColumnDef="details">
                                 <th mat-header-cell *matHeaderCellDef> Sala </th>
                                 <td mat-cell *matCellDef="let element">
