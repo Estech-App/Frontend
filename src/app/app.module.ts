@@ -8,13 +8,13 @@ import { SideMenuComponent } from './components/app-pages/side-menu/side-menu.co
 import { TopBarComponent } from './components/app-pages/top-bar/top-bar.component';
 import { MainComponent } from './components/app-pages/main/main.component';
 import { DashboardMainComponent } from './components/app-pages/dashboard/dashboard-main/dashboard-main.component';
-import {MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatSelectModule} from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,11 +28,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupsDashboardComponent } from './components/app-pages/dashboard/groups-dashboard/groups-dashboard.component';
 import { CalendarDashboardComponent } from './components/app-pages/dashboard/calendar-dashboard/calendar-dashboard.component';
 
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatCardModule} from '@angular/material/card';
-import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 import { GruposComponent } from './components/app-pages/grupos/grupos.component';
+
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -68,11 +70,12 @@ import { GruposComponent } from './components/app-pages/grupos/grupos.component'
     MatCardModule,
     MatNativeDateModule,
     MatSelectModule,
-	MatRadioModule
+    MatRadioModule,
+    FullCalendarModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
-    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
   ],
   bootstrap: [AppComponent]
 })
