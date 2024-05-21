@@ -25,4 +25,8 @@ export class CheckinService {
   updateCheckin(checkin: Checkin): Observable<Checkin> {
     return this.http.put<Checkin>(`${Constants.BASE_URL}api/check-in/update-checkin`, checkin, {headers: this.httpHeaders});
   }
+
+  getCheckinByUserId(userId: String): Observable<Checkin[]> {
+    return this.http.get<Checkin[]>(`${Constants.BASE_URL}api/check-in/by-user/${userId}`);
+  }
 }
