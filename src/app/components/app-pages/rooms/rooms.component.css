@@ -28,6 +28,7 @@ main {
     gap: 20px;
 }
 
+
 section {
     border: 1px solid #969696;
     border-radius: 5px;
@@ -147,6 +148,10 @@ td .detail {
     height: 50px;
     width: 90%;
     border: 1px solid #969696;
+}
+
+.second-section {
+    height: 500px !important;
 }
 
 .second-section .content {

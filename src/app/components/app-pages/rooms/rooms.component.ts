@@ -12,6 +12,8 @@ import { au } from '@fullcalendar/core/internal-common';
 import { MatTableDataSource } from '@angular/material/table';
 import { FreeUsageService } from 'src/app/services/freeUsages/free-usage.service';
 import { FreeUsage } from 'src/app/models/freeUsages/freeUsage';
+import { Mentoring } from 'src/app/models/mentorings/Mentoring';
+import { MentoringService } from 'src/app/services/mentorings/mentoring.service';
 
 @Component({
   selector: 'app-rooms',
@@ -25,16 +27,18 @@ export class RoomsComponent {
   rooms: MatTableDataSource<Room> = new MatTableDataSource<Room>()
   selectedRoom: Room
   freeUsages: FreeUsage[] = []
-  pendingFreeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
+  mentorings: Mentoring[] = []
   gestionedFreeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
+  pendingFreeUsages: MatTableDataSource<FreeUsage> = new MatTableDataSource<FreeUsage>()
   solicitudesColumns = ["details", "actions"]
   post = true
 
   @ViewChild('calendar') calendar!: Calendar
 
+  calendarVisible = signal(true);
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
-    timeZone: 'Europe/Madrid',
+    timeZone: 'local',
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -58,7 +62,7 @@ export class RoomsComponent {
 
   });
 
-  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private freeUsageService: FreeUsageService, private changeDetector: ChangeDetectorRef) {
+  constructor(private formBuilder: FormBuilder, private roomService: RoomService, private freeUsageService: FreeUsageService, private mentoringService: MentoringService, private changeDetector: ChangeDetectorRef) {
 
     this.form = this.formBuilder.group({
       id: '',
@@ -81,11 +85,12 @@ export class RoomsComponent {
   ngOnInit(): void {
     this.getRooms()
     this.getFreeUsages()
+    this.getMentorings()
   }
 
   createRoom() {
     let room: Room = {
-      id: null,
+      id: this.form.get('id')?.value ?? '',
       name: this.form.get('name')?.value,
       mentoringRoom: this.form.get('mentoringRoom')?.value ?? false,
       studyRoom: this.form.get('studyRoom')?.value ?? false,
@@ -158,9 +163,9 @@ export class RoomsComponent {
       this.form.reset()
       this.calendarOptions.set({ ...this.calendarOptions(), events: [] })
       this.post = true
-      // ! Fernando - New Code not working:
-      // Should be displaying all existing free usages
+
       this.getFreeUsages()
+      this.getMentorings()
     } else {
       this.post = false
       this.selectedRoom = row
@@ -174,17 +179,43 @@ export class RoomsComponent {
         description: row.description
       })
 
-      // ! Fernando - New Code not working:
-      // Should be displaying selected room free usages.
-      this.getFreeUsages()
+      this.freeUsageService.getFreeUsagesByRoomId(row.id ?? 0).subscribe({
+        next: (freeUsages) => {
+          console.log(freeUsages)
+          this.freeUsages = freeUsages
+          this.gestionedFreeUsages.data = this.freeUsages.filter(fu => fu.status !== "PENDING")
+          this.pendingFreeUsages.data = this.freeUsages.filter(fu => fu.status === "PENDING")
 
-      this.calendarOptions.set({
-        ...this.calendarOptions(),
-        events: this.toEventApi(row.timeTables).map(event => ({
-          ...event,
-          start: event.start ? event.start.toISOString() : undefined,
-          end: event.end ? event.end.toISOString() : undefined
-        }))
+          this.mentoringService.getMentoringsByRoomId(row.id ?? 0).subscribe({
+            next: (mentorings) => {
+              this.mentorings = mentorings
+              this.calendarOptions.set({
+                ...this.calendarOptions(),
+                events: this.toEventApi(row.timeTables).map(event => ({
+                  ...event,
+                  start: event.start ? event.start.toISOString() : undefined,
+                  end: event.end ? event.end.toISOString() : undefined
+                })).concat(this.toEventApi(this.freeUsages).map(event => ({
+                  ...event,
+                  title: event.title,
+                  start: event.start ? event.start.toISOString() : undefined,
+                  end: event.end ? event.end.toISOString() : undefined
+                }))).concat(this.toEventApi(this.mentorings).map(event => ({
+                  ...event,
+                  title: event.title,
+                  start: event.start ? event.start.toISOString() : undefined,
+                  end: event.end ? event.end.toISOString() : undefined
+                })))
+              })
+            },
+            error: (error) => {
+              console.error(error)
+            }
+          })
+        },
+        error: (error) => {
+          console.error(error)
+        }
       })
     }
   }
@@ -218,11 +249,11 @@ export class RoomsComponent {
     })
   }
 
-  createFreeUsage(freeUsage: FreeUsage) {
-    freeUsage.status = "PENDING"
-    this.freeUsageService.createFreeUsage(freeUsage).subscribe({
-      next: (freeUsage) => {
-        this.freeUsages.push(freeUsage)
+  // * Mentorings Methods
+  getMentorings() {
+    this.mentoringService.getMentorings().subscribe({
+      next: (mentorings) => {
+        this.mentorings = mentorings
       },
       error: (error) => {
         console.error(error)
@@ -230,14 +261,48 @@ export class RoomsComponent {
     })
   }
 
+  getMentoringsByRoomId(roomId: number) {
+    this.mentoringService.getMentoringsByRoomId(roomId).subscribe({
+      next: (mentorings) => {
+        this.mentorings = mentorings
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
+  }
+  // * Utils
+
+  instanceOfFreeUsages(object: any): object is FreeUsage {
+    return 'user' in object;
+  }
+
+  instanceOfMentorings(object: any): object is Mentoring {
+    return 'student' in object;
+  }
+
+
   // * FullCalendar Methods
 
-  toEventApi(timeTables: RoomTimeTable[]): EventApi[] {
+  toEventApi(timeTables: RoomTimeTable[] | FreeUsage[] | Mentoring[]): EventApi[] {
     let events: EventApi[] = []
     timeTables.forEach((timeTable) => {
+      let title = ''
+      console.log("asidjh");
+
+      if (typeof timeTable === 'object') {
+        if (this.instanceOfFreeUsages(timeTable)) {
+          title = (timeTable as FreeUsage).user.name + " - " + (timeTable as FreeUsage).status + " - Práctica libre"
+        } else if (this.instanceOfMentorings(timeTable)) {
+          title = (timeTable as Mentoring).student.name + " - " + (timeTable as Mentoring).status + " - Tutoria"
+        } else {
+          title = (timeTable as RoomTimeTable).status
+        }
+      }
+
       events.push({
         id: timeTable.id!.toString(),
-        title: timeTable.status,
+        title: title,
         start: new Date(timeTable.start),
         end: new Date(timeTable.end),
         allDay: false,
