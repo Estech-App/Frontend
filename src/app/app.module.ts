@@ -35,6 +35,7 @@ import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.comp
 import { GruposComponent } from './components/app-pages/grupos/grupos.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { GroupsDetailsComponent } from './components/app-pages/groups-details/groups-details.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     GroupsDashboardComponent,
     CalendarDashboardComponent,
     UsuariosComponent,
-    GruposComponent
+    GruposComponent,
+    GroupsDetailsComponent
   ],
   imports: [
     BrowserModule,
