@@ -6,7 +6,7 @@ export interface Mentoring {
 	start: string
 	end: string
     status: string
-    room: Room
+    roomId: number
     student: User
     teacher: User
 }

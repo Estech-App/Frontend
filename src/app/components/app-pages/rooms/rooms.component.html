@@ -69,7 +69,7 @@
                                         {{ element.user.name }}
                                     </span>
                                     <span class="detail">{{element.room.name + " - " +
-                                                            element.start.split('T')[0].split('-').reverse().join('/')}}</span>
+                                        element.start.split('T')[0].split('-').reverse().join('/')}}</span>
                                     <span>{{element.status}}</span>
                                 </td>
                             </ng-container>
@@ -118,7 +118,14 @@
         </section>
         <section class="second-section">
             <article>
-                <p class="title">Horario de sala</p>
+                <p class="title inline">
+                    <span>Horario de sala</span>
+                    <span>
+                        <form [formGroup]="reccurenceForm">
+                            <mat-slide-toggle formControlName="recurrToggle">Eventos recurrentes</mat-slide-toggle>
+                        </form>
+                    </span>
+                </p>
                 <div class="content">
                     <full-calendar #calendar [options]="calendarOptions()"></full-calendar>
                 </div>

@@ -4,4 +4,5 @@ export interface RoomTimeTable {
     start: string
     end: string
     roomId: number | null | string
+    reccurence: boolean
 }
