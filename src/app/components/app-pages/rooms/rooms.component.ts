@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, ViewChild, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Calendar, CalendarOptions, DateInput, DateSelectArg, DurationInput, EventApi, EventClickArg, EventInput, FormatterInput } from '@fullcalendar/core';
+import { Calendar, CalendarApi, CalendarOptions, DateInput, DateSelectArg, DurationInput, EventApi, EventClickArg, EventInput, FormatterInput } from '@fullcalendar/core';
 import { Room } from 'src/app/models/rooms/Room';
 import { RoomService } from 'src/app/services/rooms/room.service';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -8,13 +8,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { RoomTimeTable } from 'src/app/models/rooms/RoomTimeTable';
-import { au } from '@fullcalendar/core/internal-common';
+import { au, co } from '@fullcalendar/core/internal-common';
 import { MatTableDataSource } from '@angular/material/table';
 import { FreeUsageService } from 'src/app/services/freeUsages/free-usage.service';
 import { FreeUsage } from 'src/app/models/freeUsages/freeUsage';
 import { Mentoring } from 'src/app/models/mentorings/Mentoring';
 import { MentoringService } from 'src/app/services/mentorings/mentoring.service';
-import rrulePlugin from '@fullcalendar/rrule'
 
 @Component({
   selector: 'app-rooms',
@@ -35,7 +34,7 @@ export class RoomsComponent {
   solicitudesColumns = ["details", "actions"]
   post = true
 
-  @ViewChild('calendar') calendar!: Calendar
+  @ViewChild('calendar') calendar!: Calendar;
 
   calendarVisible = signal(true);
   currentEvents = signal<EventApi[]>([]);
@@ -44,8 +43,7 @@ export class RoomsComponent {
     plugins: [
       interactionPlugin,
       dayGridPlugin,
-      timeGridPlugin,
-      rrulePlugin
+      timeGridPlugin
     ],
     headerToolbar: {
       left: 'prev,next today',
@@ -62,7 +60,6 @@ export class RoomsComponent {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
-
   });
 
   constructor(private formBuilder: FormBuilder, private roomService: RoomService, private freeUsageService: FreeUsageService, private mentoringService: MentoringService, private changeDetector: ChangeDetectorRef) {
@@ -87,12 +84,18 @@ export class RoomsComponent {
       studyRoom: false,
       timeTables: []
     }
+
+    console.log(this.calendar)
+  }
+
+  ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
     this.getRooms()
     this.getFreeUsages()
     this.getMentorings()
+    console.log(this.calendar)
   }
 
   createRoom() {
@@ -391,11 +394,11 @@ export class RoomsComponent {
     let reccuToggle = this.reccurenceForm.get('recurrToggle')?.value
 
     calendarApi.unselect(); // clear date selection
-    console.log(selectInfo)
 
     if (title) {
       if(reccuToggle) {
-        calendarApi.addEvent({
+
+        let event: EventInput = {
           id: '',
           extendedProps: { 
             roomId: this.selectedRoom.id,
@@ -404,14 +407,20 @@ export class RoomsComponent {
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
+          startTime: selectInfo.start.toTimeString(),
+          endTime: selectInfo.end.toTimeString(),
+          startRecur: selectInfo.startStr,
           allDay: selectInfo.allDay,
-          rrule: {
-            freq: 'weekly',
-            dtstart: selectInfo.startStr
-          }
-        });
+          daysOfWeek: [selectInfo.start.getDay()],
+          color: 'purple'
+        }
+
+        console.log(event)
+
+        calendarApi.addEvent(event);
       } else {
-        calendarApi.addEvent({
+
+        let event: EventInput = {
           id: '',
           extendedProps: { 
             roomId: this.selectedRoom.id,
@@ -421,7 +430,11 @@ export class RoomsComponent {
           start: selectInfo.startStr,
           end: selectInfo.endStr,
           allDay: selectInfo.allDay
-        });
+        }
+
+        console.log(event)
+
+        calendarApi.addEvent(event);
       }
     }
   }
@@ -439,7 +452,18 @@ export class RoomsComponent {
 
   transformCurrentEventsToTimeTable(): RoomTimeTable[] {
     let roomTimeTable: RoomTimeTable[] = []
-    this.currentEvents().forEach((event) => {
+    // this.currentEvents().forEach((event) => {
+    //   if (!event.title.includes("-")) {
+    //     let id = event.id
+    //     let start = event.start?.toISOString()
+    //     let end = event.end?.toISOString()
+    //     let status = "OCCUPIED"
+    //     let roomId = event.extendedProps["roomId"]
+    //     roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId, reccurence: event.extendedProps["reccurence"]})
+    //   }
+    // });
+
+    this.calendar.getEvents().forEach((event) => {
       if (!event.title.includes("-")) {
         let id = event.id
         let start = event.start?.toISOString()
@@ -448,7 +472,8 @@ export class RoomsComponent {
         let roomId = event.extendedProps["roomId"]
         roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId, reccurence: event.extendedProps["reccurence"]})
       }
-    });
+    })
+
 
     return roomTimeTable
   }
