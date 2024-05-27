@@ -38,6 +38,7 @@ import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { StockComponent } from './components/app-pages/stock/stock.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     CalendarDashboardComponent,
     UsuariosComponent,
     CheckinsComponent,
-    RoomsComponent
+    RoomsComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule,

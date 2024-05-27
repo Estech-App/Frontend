@@ -1,0 +1,164 @@
+*:not(.title) {
+    font-size: 16px;
+}
+
+main {
+    display: flex;
+    width: 98%;
+    height: 98%;
+    margin: 20px;
+    margin-bottom: 0;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.firstRow {
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 50%;
+    gap: 20px;
+}
+
+.secondRow {
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 100%;
+    gap: 20px;
+}
+
+
+section {
+    border: 1px solid #969696;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.secondRow .content {
+    height: 200px;
+}
+
+.secondRow section {
+    height: 100%;
+}
+
+.secondRow .first-section {
+    height: fit-content;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 10px;
+}
+
+.firstRow .content {
+    height: 300px;
+}
+
+.content {
+    height: 98%;
+    overflow: auto;
+}
+
+td button {
+    margin: .5em 0;
+}
+
+.circleGreen {
+    height: 15px;
+    width: 15px;
+    background-color: green;
+    border-radius: 100%;
+}
+
+.circleRed {
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 100%;
+}
+
+.inline {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.last-column {
+    width: 5%;
+}
+
+
+.buttons-group {
+    display: flex;
+    gap: 20px;
+}
+
+.clicked-row {
+    background-color: #D5F1FA !important;
+    font-weight: bold !important;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: #D5F1FA;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.selected-name-class {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.filter-input {
+    width: 40%;
+}
+
+.content .title {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.contenido-solicitudes {
+    flex-direction: column;
+}
+
+td span {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+}
+
+td .detail {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.solicitud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 90%;
+    border: 1px solid #969696;
+}
+
+.second-section {
+    height: 500px !important;
+}
+
+.second-section .content {
+    height: 426px;
+}
+
+full-calendar {
+    width: 100%;
+    height: 100%;
+}
