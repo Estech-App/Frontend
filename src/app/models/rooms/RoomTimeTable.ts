@@ -5,4 +5,5 @@ export interface RoomTimeTable {
     end: string
     roomId: number | null | string
     reccurence: boolean
+    dayOfWeek: string
 }
