@@ -71,7 +71,17 @@
     <div class="secondRow">
         <section>
             <article>
-                <div class="title">Stock - {{currentRoom.id !== null ? currentRoom.name : 'General'}}</div>
+                <div class="title">
+                    <div class="inline">
+                        <span class="title-inline">
+                            Stock - {{currentRoom.id !== null ? currentRoom.name :
+                            'General'}}
+                        </span>
+                        <span class="title-inline">
+                            <input matInput (keyup)="searchFilter($event)" placeholder="Ej. nombre" #input>
+                        </span>
+                    </div>
+                </div>
                 <div class="content">
                     <table mat-table [dataSource]="stocks">
 

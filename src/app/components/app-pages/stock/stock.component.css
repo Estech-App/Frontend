@@ -37,7 +37,7 @@ section {
 }
 
 .secondRow .content {
-    height: 720px;
+    height: 700px;
 }
 
 .secondRow section {
@@ -87,6 +87,7 @@ td button {
     display: flex;
     gap: 10px;
     justify-content: space-between;
+    align-items: center;
 }
 
 .last-column {
@@ -170,4 +171,10 @@ textarea {
 .title-inline {
     font-size: 20px;
     font-weight: 500;
+
 }
+
+.title-inline input {
+    box-sizing: border-box;
+}
+

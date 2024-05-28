@@ -200,4 +200,11 @@ export class StockComponent {
     }
   }
 
+  //* Search methods
+
+  searchFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.stocks.filter = filterValue.trim().toLowerCase();
+  }
+
 }
