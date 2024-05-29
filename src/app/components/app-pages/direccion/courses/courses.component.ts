@@ -31,6 +31,7 @@ export class CoursesComponent {
 
   createNewCourse(): void {
     let course: Course = {
+      id: null,
       name: this.form.get('name')?.value,
       acronym: this.form.get('acronym')?.value,
       description: ''

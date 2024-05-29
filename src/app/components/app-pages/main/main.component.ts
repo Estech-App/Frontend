@@ -8,6 +8,9 @@ import { TokenService } from 'src/app/services/token/token.service';
 })
 export class MainComponent {
 
+  name = ''
+  lastname = ''
+
   constructor(private tokenService: TokenService) {
     let email = sessionStorage.getItem('email')
     if (email != null) {
@@ -24,7 +27,9 @@ export class MainComponent {
           }
           sessionStorage.setItem('userId', res.id.toString())
           sessionStorage.setItem('name', res.name)
+          this.name = res.name
           sessionStorage.setItem('lastname', res.lastname)
+          this.lastname = res.lastname
         }, error: err => {
           sessionStorage.removeItem('userId')
           sessionStorage.removeItem('name')

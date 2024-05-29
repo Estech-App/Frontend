@@ -1,8 +1,14 @@
 <section>
     <article>
-        <span>
-            <img src="../../../../assets/Images/role/admin.svg" alt="Admin Icon">
-        </span>
-        <p>{{ name }} {{ lastname }}</p>
+        <a [matMenuTriggerFor]="menu">
+            <span>
+                <img src="../../../../assets/Images/role/admin.svg" alt="Admin Icon">
+            </span>
+            <p>{{ name }} {{ lastname }}</p>
+            <mat-icon aria-hidden="false" aria-label="Arrow Down" fontIcon="keyboard_arrow_down"></mat-icon>
+        </a>
+        <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+            <a (click)="logout()" mat-menu-item>Logout</a>
+        </mat-menu>
     </article>
 </section>
