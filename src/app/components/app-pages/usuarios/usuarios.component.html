@@ -91,10 +91,10 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Contraseña</mat-label>
-              <input [type]="passwordIsHide ? 'password' : 'text'" matInput placeholder="Contraseña" formControlName="password"
-                autocomplete="new-password" required>
-              <button mat-icon-button type="button" matSuffix (click)="passwordIsHide = !passwordIsHide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="passwordIsHide">
+              <input [type]="passwordIsHide ? 'password' : 'text'" matInput placeholder="Contraseña"
+                formControlName="password" autocomplete="new-password" required>
+              <button mat-icon-button type="button" matSuffix (click)="passwordIsHide = !passwordIsHide"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordIsHide">
                 <mat-icon>{{passwordIsHide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
             </mat-form-field>
@@ -118,6 +118,15 @@
                     </mat-option>
                   </div>
                 </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="roleName === 'TEACHER'">
+              <mat-label>Modulos</mat-label>
+              <mat-select formControlName="modules" multiple required>
+                <mat-option [disabled]="true"> --- Seleccionar --- </mat-option>
+                <mat-option *ngFor="let module of modules" [value]="module">
+                  {{module.name}}
+                </mat-option>
               </mat-select>
             </mat-form-field>
             <div class="buttons-group">

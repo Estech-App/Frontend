@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Course } from 'src/app/models/courses/Course';
 import { Group } from 'src/app/models/groups/Group';
+import { Module } from 'src/app/models/modules/Module';
 import { Role } from 'src/app/models/roles/Role';
 import { Student } from 'src/app/models/users/Student';
 import { User } from 'src/app/models/users/User';
@@ -33,6 +34,7 @@ export class UsuariosComponent {
   roles: Role[] = []
   groups: Group[] = []
   courses: Course[] = []
+  modules: Module[] = []
   displayedTeachersColumns = ['name', 'role', 'edit']
   displayedStudentsColumns = ['name', 'course', 'group', 'edit']
   form: FormGroup
@@ -51,6 +53,7 @@ export class UsuariosComponent {
     this.getRoles()
     this.getCourses()
     this.getGroups()
+    this.getModules()
 
     this.form = this.formBuilder.group({
       id: [''],
@@ -143,6 +146,27 @@ export class UsuariosComponent {
         }
       })
 
+    } else if (this.form.get('modules')?.value !== null && this.roleName === 'TEACHER') {
+      let teacher = {
+        id: '',
+        name: this.form.get('name')?.value,
+        lastname: this.form.get('lastname')?.value,
+        email: this.form.get('email')?.value,
+        role: this.form.get('role')?.value,
+        password: this.form.get('password')?.value,
+        modules: this.form.get('modules')?.value
+      }
+
+      this.userService.createNewTeacher(teacher).subscribe({
+        next: res => {
+          this.getAllUsers()
+          this.form.reset()
+          this.post = true
+        }, error: err => {
+          console.log(err);
+        }
+      })
+
     } else {
       let user = {
         id: '',
@@ -193,7 +217,7 @@ export class UsuariosComponent {
         console.log(err);
       }
     })
-  
+
   }
 
   updateUser() {

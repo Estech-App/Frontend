@@ -22,7 +22,7 @@
             </div>
             <div *ngIf="checkins.length > 0">
                 <p class="title">Ultimos 4 fichajes</p>
-                <span class="content">
+                <span class="content content-table">
                     <table mat-table [dataSource]="lastFourCheckins">
 
                         <!-- Date Column -->
@@ -51,7 +51,7 @@
                             </td>
                         </ng-container>
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                 </span>
