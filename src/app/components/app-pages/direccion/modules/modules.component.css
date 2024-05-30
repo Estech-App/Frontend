@@ -26,6 +26,11 @@ article {
 
 .content {
     justify-content: center;
-    height: 600px;
-    overflow: scroll;
+    height: 450px;
+    overflow-y: auto;
+}
+
+td {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

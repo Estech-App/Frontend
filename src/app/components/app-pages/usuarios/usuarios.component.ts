@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { options } from '@fullcalendar/core/preact';
 import { Course } from 'src/app/models/courses/Course';
 import { Group } from 'src/app/models/groups/Group';
-import { Module } from 'src/app/models/modules/Module';
+import { ModuleDTO } from 'src/app/models/module/ModuleDTO';
 import { Role } from 'src/app/models/roles/Role';
 import { Student } from 'src/app/models/users/Student';
+import { Teacher } from 'src/app/models/users/Teacher';
 import { User } from 'src/app/models/users/User';
 import { CourseService } from 'src/app/services/courses/course.service';
 import { GroupService } from 'src/app/services/group/group.service';
+import { ModuleService } from 'src/app/services/module/module.service';
 import { RoleService } from 'src/app/services/roles/role.service';
 import { UserService } from 'src/app/services/users/user.service';
 
@@ -34,7 +37,7 @@ export class UsuariosComponent {
   roles: Role[] = []
   groups: Group[] = []
   courses: Course[] = []
-  modules: Module[] = []
+  modules: ModuleDTO[] = []
   displayedTeachersColumns = ['name', 'role', 'edit']
   displayedStudentsColumns = ['name', 'course', 'group', 'edit']
   form: FormGroup
@@ -47,14 +50,9 @@ export class UsuariosComponent {
     private roleService: RoleService,
     private formBuilder: FormBuilder,
     private courseService: CourseService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private moduleService: ModuleService
   ) {
-    this.getAllUsers()
-    this.getRoles()
-    this.getCourses()
-    this.getGroups()
-    this.getModules()
-
     this.form = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
@@ -63,6 +61,7 @@ export class UsuariosComponent {
       role: ['', Validators.required],
       password: ['', Validators.required],
       group: [''],
+      modules: [[]]
     })
 
     this.form.get('role')?.valueChanges.subscribe({
@@ -73,6 +72,14 @@ export class UsuariosComponent {
         }
       }
     })
+  }
+
+  ngOnInit(): void {
+    this.getAllUsers()
+    this.getRoles()
+    this.getCourses()
+    this.getGroups()
+    this.getModules()
   }
 
   getAllUsers(): void {
@@ -116,6 +123,16 @@ export class UsuariosComponent {
     })
   }
 
+  getModules(): void {
+    this.moduleService.getAllModules().subscribe({
+      next: res => {
+        this.modules = res
+      }, error: err => {
+        console.log(err);
+      }
+    })
+  }
+
   divideUsers() {
     this.staff = this.users.filter(user => user.role === 'ADMIN' || user.role === 'TEACHER' || user.role === 'SECRETARY')
     this.students = this.users.filter(user => user.role === 'STUDENT')
@@ -124,6 +141,7 @@ export class UsuariosComponent {
   createNewUser() {
 
     if (this.form.get('group')?.value !== null && this.roleName === 'STUDENT') {
+      let grp = this.form.get('group')?.value
       let student = {
         id: '',
         name: this.form.get('name')?.value,
@@ -131,7 +149,9 @@ export class UsuariosComponent {
         email: this.form.get('email')?.value,
         role: this.form.get('role')?.value,
         password: this.form.get('password')?.value,
-        groups: this.form.get('group')?.value
+        groups: grp.map((group: any) => {
+          return { id: group.id }
+        })
       }
 
       console.log(student)
@@ -147,6 +167,7 @@ export class UsuariosComponent {
       })
 
     } else if (this.form.get('modules')?.value !== null && this.roleName === 'TEACHER') {
+      let modul = this.form.get('modules')?.value
       let teacher = {
         id: '',
         name: this.form.get('name')?.value,
@@ -154,7 +175,9 @@ export class UsuariosComponent {
         email: this.form.get('email')?.value,
         role: this.form.get('role')?.value,
         password: this.form.get('password')?.value,
-        modules: this.form.get('modules')?.value
+        modules: modul.map((module: any) => {
+          return { id: module.id }
+        })
       }
 
       this.userService.createNewTeacher(teacher).subscribe({
@@ -209,15 +232,31 @@ export class UsuariosComponent {
         let student: Student = res
         console.log(student);
         this.form.patchValue(student)
-        this.form.controls['group'].setValue([
-          //TODO: FIX THIS
-          student.groups.map(group => group.id)
-        ])
+        this.form.patchValue({
+          group: student.groups.map(group => group.id)
+        })
       }, error: err => {
         console.log(err);
       }
     })
 
+  }
+
+  getTeacherById(id: string) {
+    this.post = false
+    this.userService.getTeacherById(id).subscribe({
+      next: res => {
+        let teacher = res
+        console.log(teacher);
+        this.form.patchValue(teacher)
+        this.form.patchValue({
+          modules: teacher.modules.map(module => module.id)
+        })
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
   }
 
   updateUser() {

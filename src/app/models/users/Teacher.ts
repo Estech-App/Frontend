@@ -1,4 +1,4 @@
-import { Module } from "../modules/Module";
+import { ModuleDTO } from "../module/ModuleDTO";
 
 export interface Teacher {
     id: string;
@@ -7,5 +7,5 @@ export interface Teacher {
     email: string;
     role: string;
     password: string;
-    modules: Module[];
+    modules: ModuleDTO[];
 }

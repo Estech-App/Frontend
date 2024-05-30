@@ -88,7 +88,7 @@ export class CoursesComponent {
 	this.courseService.updateCourse(course).subscribe({
 		next: res => {
 			this.getAllCourses()
-			window.location.reload()
+			this.form.reset()
 			this.post = true
 		}, error: err => {
 			console.log(err);

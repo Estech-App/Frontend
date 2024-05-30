@@ -20,7 +20,7 @@
             <!-- edit Column -->
             <ng-container matColumnDef="edit" stickyEnd>
               <th mat-header-cell *matHeaderCellDef> Editar </th>
-              <td mat-cell *matCellDef="let element"> <button (click)="getUserById(element.id)">Editar</button> </td>
+              <td mat-cell *matCellDef="let element"> <button (click)="getTeacherById(element.id)">Editar</button> </td>
             </ng-container>
 
 
@@ -101,7 +101,7 @@
             <mat-form-field>
               <mat-label>Roles</mat-label>
               <mat-select formControlName="role" name="mySelect" required>
-                <mat-option> --- Elige uno --- </mat-option>
+                <mat-option [disabled]="true"> --- Elige uno --- </mat-option>
                 <mat-option *ngFor="let role of roles" [value]="role.roleName">
                   {{role.roleName}}
                 </mat-option>
@@ -113,7 +113,7 @@
                 <mat-option [disabled]="true"> --- Seleccionar --- </mat-option>
                 <mat-optgroup *ngFor="let course of courses" [label]="course.name">
                   <div *ngFor="let group of groups">
-                    <mat-option *ngIf="group.courseId == course.id" [value]="group">
+                    <mat-option *ngIf="group.courseId == course.id" [value]="group.id">
                       {{group.name}}
                     </mat-option>
                   </div>
@@ -122,9 +122,9 @@
             </mat-form-field>
             <mat-form-field *ngIf="roleName === 'TEACHER'">
               <mat-label>Modulos</mat-label>
-              <mat-select formControlName="modules" multiple required>
+              <mat-select formControlName="modules"  multiple required>
                 <mat-option [disabled]="true"> --- Seleccionar --- </mat-option>
-                <mat-option *ngFor="let module of modules" [value]="module">
+                <mat-option *ngFor="let module of modules" [value]="module.id">
                   {{module.name}}
                 </mat-option>
               </mat-select>

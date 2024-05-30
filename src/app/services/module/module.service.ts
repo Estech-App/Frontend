@@ -13,15 +13,19 @@ export class ModuleService {
   constructor(private http: HttpClient) { }
 
   getAllModules(): Observable<ModuleDTO[]> {
-    return this.http.get<ModuleDTO[]>(`${Constants.BASE_URL}api/module`, {headers: Constants.headers});
+    return this.http.get<ModuleDTO[]>(`${Constants.BASE_URL}api/module`, { headers: Constants.headers });
   }
 
   createNewModule(module: ModuleCreationDTO): Observable<ModuleDTO> {
-	return this.http.post<ModuleDTO>(`${Constants.BASE_URL}api/module/new-module`, module, {headers: Constants.headers});
+    return this.http.post<ModuleDTO>(`${Constants.BASE_URL}api/module/new-module`, module, { headers: Constants.headers });
   }
 
   getModuleById(id: number): Observable<ModuleDTO> {
-	return this.http.get<ModuleDTO>(`${Constants.BASE_URL}api/module/${id}`, {headers: Constants.headers})
+    return this.http.get<ModuleDTO>(`${Constants.BASE_URL}api/module/${id}`, { headers: Constants.headers })
+  }
+
+  updateModule(module: ModuleCreationDTO): Observable<ModuleCreationDTO> {
+    return this.http.put<ModuleCreationDTO>(`${Constants.BASE_URL}api/module`, module, { headers: Constants.headers });
   }
 
 }
