@@ -44,4 +44,8 @@ export class UserService {
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${Constants.BASE_URL}api/user/update-user`, user, { headers: Constants.headers });
   }
+
+  getByRoleId(roleId: number): Observable<User[]> {
+	return this.http.get<User[]>(`${Constants.BASE_URL}api/user/find-by-role/${roleId}`, {headers: Constants.headers});
+  }
 }

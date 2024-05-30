@@ -8,11 +8,13 @@ import { SideMenuComponent } from './components/app-pages/side-menu/side-menu.co
 import { TopBarComponent } from './components/app-pages/top-bar/top-bar.component';
 import { MainComponent } from './components/app-pages/main/main.component';
 import { DashboardMainComponent } from './components/app-pages/dashboard/dashboard-main/dashboard-main.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import {  MatTableModule  } from '@angular/material/table';
+import {  MatInputModule  } from '@angular/material/input';
+import {  MatFormFieldModule  } from '@angular/material/form-field';
+import {  MatIconModule  } from '@angular/material/icon';
+import {  MatButtonModule  } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
@@ -31,8 +33,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
+import { GruposComponent } from './components/app-pages/grupos/grupos.component';
 
-import { MatSelectModule } from '@angular/material/select';
+import {  FullCalendarModule  } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,8 @@ import { MatSelectModule } from '@angular/material/select';
     ModulesComponent,
     GroupsDashboardComponent,
     CalendarDashboardComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    GruposComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +71,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatCardModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatRadioModule,
+    FullCalendarModule,
     MatMenuModule
   ],
   providers: [
