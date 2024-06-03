@@ -10,6 +10,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import esLocale from '@fullcalendar/core/locales/es';
+import { ModuleService } from 'src/app/services/module/module.service';
 
 @Component({
   selector: 'app-grupos',
@@ -31,6 +32,20 @@ export class GruposComponent {
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     timeZone: 'Europe/Madrid',
+    views: {
+      morning: {
+        type: 'timeGrid',
+        duration: { days: 5 },
+        buttonText: 'Mañana',
+        slotDuration: '00:30:00',
+        slotLabelInterval: '00:10:00',
+        slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: false, meridiem: 'short' },
+        slotMinTime: '08:30:00',
+        slotMaxTime: '15:00:00',
+        allDaySlot: false,
+        expandRows: true
+      }
+    },
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -39,15 +54,14 @@ export class GruposComponent {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      right: 'morning'
     },
-    initialView: 'dayGridMonth',
+    initialView: 'morning',
     weekends: false,
     editable: true,
     selectable: true,
     selectMirror: true,
     locale: esLocale,
-    dayMaxEvents: 2,
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
@@ -57,7 +71,7 @@ export class GruposComponent {
   constructor(
     private groupService: GroupService,
     private formBuilder: FormBuilder,
-    private router: Router,
+    private moduleService: ModuleService,
     private changeDetector: ChangeDetectorRef
   ) {
     this.getAllGroups()
@@ -79,6 +93,12 @@ export class GruposComponent {
     // }
   }
 
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.getModules()
+  }
+
   getAllGroups() {
     this.groupService.getAllGroups().subscribe({
       next: res => {
@@ -91,7 +111,15 @@ export class GruposComponent {
   }
 
   createNewGroup(): void {
-
+    let group: Group = {
+      id: null,
+      name: this.form.get('name')?.value,
+      description: this.form.get('description')?.value,
+      year: this.form.get('year')?.value,
+      roomId: this.form.get('roomId')?.value,
+      courseId: this.form.get('courseId')?.value,
+      users: [],
+    }
   }
 
   getGroupById(id: number) {
@@ -100,35 +128,48 @@ export class GruposComponent {
 
   updateGroup() { }
 
-    // * FullCalendar Methods
-  
-    handleDateSelect(selectInfo: DateSelectArg) {
-      const title = "Ocupado"
-      const calendarApi = selectInfo.view.calendar;
-  
-      calendarApi.unselect(); // clear date selection
-      console.log(selectInfo)
-  
-      if (title) {
-        calendarApi.addEvent({
-          id: '',
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        });
+  // * Modules Methods
+  getModules() {
+    this.moduleService.getAllModules().subscribe({
+      next: res => {
+        this.modules = res
+      }, error: err => {
+        console.log(err);
       }
+    })
+  }
+
+  // * FullCalendar Methods
+
+  handleDateSelect(selectInfo: DateSelectArg) {
+    const title = "Ocupado"
+    const calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect(); // clear date selection
+    console.log(selectInfo)
+
+    if (title) {
+      calendarApi.addEvent({
+        id: '',
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay
+      });
     }
+  }
+
+  handleEventClick(clickInfo: EventClickArg) {
+    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      clickInfo.event.remove();
+    }
+  }
+
+  handleEvents(events: EventApi[]) {
+    this.currentEvents.set(events);
+    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+  }
+
   
-    handleEventClick(clickInfo: EventClickArg) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove();
-      }
-    }
-  
-    handleEvents(events: EventApi[]) {
-      this.currentEvents.set(events);
-      this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
-    }
 
 }

@@ -3,12 +3,7 @@
     <section class="first-section">
       <article>
         <div class="title">
-          <div class="inline"><span>Crear / Modificar Grupos</span><span>
-              <div class="buttons-group">
-                <button mat-raised-button type="submit">Guardar</button>
-                <button mat-raised-button type="reset">Borrar</button>
-              </div>
-            </span></div>
+          Crear / Modificar Grupos
         </div>
         <div class="content">
           <form [formGroup]="form" (submit)="post ? createNewGroup() : updateGroup()">
@@ -31,8 +26,8 @@
 
             <div class="inline">
               <mat-form-field>
-                <mat-label>Cursos</mat-label>
-                <mat-select formControlName="courses" multiple>
+                <mat-label>Ciclo</mat-label>
+                <mat-select formControlName="courses">
                   <mat-option>---Seleccionar---</mat-option>
                   <mat-option *ngFor="let course of courses" [value]="course.id">{{course.name}}</mat-option>
                 </mat-select>
@@ -43,6 +38,11 @@
                 <mat-radio-button value="1">Mañana</mat-radio-button>
                 <mat-radio-button value="2">Tarde</mat-radio-button>
               </mat-radio-group>
+            </div>
+
+            <div class="buttons-group">
+              <button mat-raised-button type="submit">Guardar</button>
+              <button mat-raised-button type="reset">Borrar</button>
             </div>
 
           </form>
@@ -86,13 +86,26 @@
     </section>
   </div>
   <div class="secondRow">
-    <section>
+    <section class="first-section">
       <article>
         <div class="title">
-          <div class="inline"><span>Horario del grupo</span><span><button>Guardar Horario</button></span></div>
+          Horario del grupo
         </div>
         <div class="content">
           <full-calendar [options]="calendarOptions()"></full-calendar>
+        </div>
+      </article>
+    </section>
+    <section class="second-section">
+      <article>
+        <div class="title">Modulos</div>
+        <div class="content">
+          <div class="card-list">
+            <mat-card *ngFor="let module of modules" class="module-card" >
+              <mat-card-content>{{module.acronym}}</mat-card-content>
+              <mat-card-content>{{module.usersName}}</mat-card-content>
+            </mat-card>
+          </div>
         </div>
       </article>
     </section>

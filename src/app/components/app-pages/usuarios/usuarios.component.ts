@@ -11,7 +11,7 @@ import { Student } from 'src/app/models/users/Student';
 import { Teacher } from 'src/app/models/users/Teacher';
 import { User } from 'src/app/models/users/User';
 import { CourseService } from 'src/app/services/courses/course.service';
-import { GroupService } from 'src/app/services/group/group.service';
+import { GroupService } from 'src/app/services/groups/group.service';
 import { ModuleService } from 'src/app/services/module/module.service';
 import { RoleService } from 'src/app/services/roles/role.service';
 import { UserService } from 'src/app/services/users/user.service';
@@ -114,7 +114,7 @@ export class UsuariosComponent {
   }
 
   getGroups(): void {
-    this.groupService.getGroups().subscribe({
+    this.groupService.getAllGroups().subscribe({
       next: res => {
         this.groups = res
       }, error: err => {
@@ -175,10 +175,12 @@ export class UsuariosComponent {
         email: this.form.get('email')?.value,
         role: this.form.get('role')?.value,
         password: this.form.get('password')?.value,
-        modules: modul.map((module: any) => {
-          return { id: module.id }
+        modules: modul.map((module: ModuleDTO) => {
+          return { id: module }
         })
       }
+
+      console.log(teacher)
 
       this.userService.createNewTeacher(teacher).subscribe({
         next: res => {

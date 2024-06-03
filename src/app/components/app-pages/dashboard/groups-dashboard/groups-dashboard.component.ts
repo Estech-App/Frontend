@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GroupDTO } from 'src/app/models/group/GroupDTO';
+import { Group } from 'src/app/models/groups/Group';
 import { GroupService } from 'src/app/services/groups/group.service';
 
 @Component({
@@ -9,14 +9,14 @@ import { GroupService } from 'src/app/services/groups/group.service';
 })
 export class GroupsDashboardComponent {
   displayedColumns = ['name', 'year', 'students', 'details']
-  groups: GroupDTO[] = []
+  groups: Group[] = []
 
   constructor(private groupService: GroupService) {
     this.getGroups()
   }
 
   getGroups() {
-    this.groupService.getGroups().subscribe({
+    this.groupService.getAllGroups().subscribe({
       next: (groups) => {
         this.groups = groups
       },

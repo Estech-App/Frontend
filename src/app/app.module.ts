@@ -35,7 +35,6 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 import { GruposComponent } from './components/app-pages/grupos/grupos.component';
 
-import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CheckinsComponent } from './components/app-pages/checkins/checkins.component';
 import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
@@ -43,6 +42,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {  FullCalendarModule  } from '@fullcalendar/angular';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { StockComponent } from './components/app-pages/stock/stock.component';
+import { GroupsDetailsComponent } from './components/app-pages/groups-details/groups-details.component';
 
 @NgModule({
   declarations: [
