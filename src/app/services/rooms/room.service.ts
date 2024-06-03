@@ -12,14 +12,14 @@ export class RoomService {
   constructor(private http: HttpClient) { }
 
   createRoom(room: Room): Observable<Room> {
-    return this.http.post<Room>(`${Constants.BASE_URL}api/check-in/new`, room, {headers: Constants.headers});
+    return this.http.post<Room>(`${Constants.BASE_URL}api/room/new-room`, room, {headers: Constants.headers});
   }
 
   getRooms(): Observable<Room[]> {
-    return this.http.get<Room[]>(`${Constants.BASE_URL}api/check-in`);
+    return this.http.get<Room[]>(`${Constants.BASE_URL}api/room`);
   }
 
   updateRoom(room: Room): Observable<Room> {
-    return this.http.put<Room>(`${Constants.BASE_URL}api/check-in/update-checkin`, room, {headers: Constants.headers});
+    return this.http.put<Room>(`${Constants.BASE_URL}api/room`, room, {headers: Constants.headers});
   }
 }

@@ -21,7 +21,8 @@ tr[mat-header-row] {
 }
 
 table tr[mat-row]:nth-child(even) {
-    background-color: #D9D9D9; /* gris */
+    background-color: #D9D9D9;
+    /* gris */
 }
 
 table tr[mat-row]:nth-child(odd) {
@@ -30,7 +31,7 @@ table tr[mat-row]:nth-child(odd) {
 
 /*  Title Styles */
 
-.title{
+.title {
     width: 100%;
     font-size: 20px;
     font-weight: 500;
@@ -54,7 +55,7 @@ table tr[mat-row]:nth-child(odd) {
 
 /* Button Styles */
 
-button:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(button[mat-icon-button]):not(button[mat-button]):not(button[class="mat-calendar-body-cell mat-calendar-body-active"]) {
+button:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(button[mat-icon-button]):not(button[mat-button]):not(button[class="mat-calendar-body-cell mat-calendar-body-active"]):not(button[class="mdc-switch mdc-switch--unselected"]):not(button[class="mdc-switch mdc-switch--selected mdc-switch--checked"]) {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     width: fit-content;
     padding: 1em;
@@ -65,7 +66,7 @@ button:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(bu
     font-size: 16px;
 }
 
-button:hover:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(button[mat-icon-button]):not(button[mat-button]):not(button[class="mat-calendar-body-cell mat-calendar-body-active"]) {
+button:hover:not(button[matSuffix]):not(button[class="mat-calendar-body-cell"]):not(button[mat-icon-button]):not(button[mat-button]):not(button[class="mat-calendar-body-cell mat-calendar-body-active"]):not(button[class="mdc-switch mdc-switch--unselected"]):not(button[class="mdc-switch mdc-switch--selected mdc-switch--checked"]) {
     background-color: transparent;
     color: #099CB5;
     border: 1px solid #009CB5;
@@ -93,5 +94,13 @@ input {
     border-radius: 5px 5px 0 0;
     width: 100%;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}

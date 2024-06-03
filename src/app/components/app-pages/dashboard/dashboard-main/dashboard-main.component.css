@@ -28,7 +28,7 @@ span h4 {
 .sections {
     display: flex;
     align-items: flex-start;
-    justify-content: space-around;
+    justify-content: flex-start;
     width: 98%;
     height: 50%;
     gap: 20px;
@@ -43,9 +43,9 @@ app-checkin {
 }
 
 app-groups-dashboard {
-    flex: 1;
+    flex: 0.6;
 }
 
 app-calendar-dashboard {
-    flex: .2;
+    flex: .195;
 }

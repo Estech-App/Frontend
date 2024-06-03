@@ -2,7 +2,7 @@
     <article>
         <p class="title">Grupos</p>
         <div class="content">
-            <table mat-table [dataSource]="dataPlaceHolder">
+            <table mat-table [dataSource]="groups">
 
                 <!-- Date Column -->
                 <ng-container matColumnDef="name">
@@ -13,23 +13,18 @@
                 <!-- Time Column -->
                 <ng-container matColumnDef="year">
                     <th mat-header-cell *matHeaderCellDef> Año </th>
-                    <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.year}}º </td>
                 </ng-container>
 
                 <!-- Checkin Column -->
                 <ng-container matColumnDef="students">
-                    <th mat-header-cell *matHeaderCellDef> Alumnos </th>
-                    <td mat-cell *matCellDef="let element"> {{element.students}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="tutor">
-                    <th mat-header-cell *matHeaderCellDef> Tutor </th>
-                    <td mat-cell *matCellDef="let element"> {{ element.tutor }}</td>
+                    <th mat-header-cell *matHeaderCellDef> Nº Total Personas </th>
+                    <td mat-cell *matCellDef="let element"> {{element.users.length}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="details">
                     <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                    <td mat-cell *matCellDef="let element"> {{ element.details }}</td>
+                    <td mat-cell *matCellDef="let element"> <button>Detalles</button></td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>

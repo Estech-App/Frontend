@@ -8,13 +8,11 @@ import { SideMenuComponent } from './components/app-pages/side-menu/side-menu.co
 import { TopBarComponent } from './components/app-pages/top-bar/top-bar.component';
 import { MainComponent } from './components/app-pages/main/main.component';
 import { DashboardMainComponent } from './components/app-pages/dashboard/dashboard-main/dashboard-main.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,12 +32,14 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 import { GruposComponent } from './components/app-pages/grupos/grupos.component';
 
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { GroupsDetailsComponent } from './components/app-pages/groups-details/groups-details.component';
+import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CheckinsComponent } from './components/app-pages/checkins/checkins.component';
 import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { StockComponent } from './components/app-pages/stock/stock.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +60,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     GruposComponent,
     GroupsDetailsComponent,
     CheckinsComponent,
-    RoomsComponent
+    RoomsComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +82,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatRadioModule,
     FullCalendarModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FullCalendarModule,
+    MatSlideToggleModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
