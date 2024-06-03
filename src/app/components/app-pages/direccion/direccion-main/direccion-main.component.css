@@ -1,7 +1,18 @@
-app-courses, app-modules {
-    padding: 20px;
+main {
     display: flex;
+    flex-direction: column;
     width: 98%;
+    height: 98%;
+    margin: 20px;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
 }
 
+app-courses, app-modules {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    gap: 20px;
+}

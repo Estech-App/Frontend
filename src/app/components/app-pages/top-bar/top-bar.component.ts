@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-top-bar',
@@ -7,7 +7,13 @@ import { Component } from '@angular/core';
 })
 export class TopBarComponent {
 
-  name = sessionStorage.getItem('name') != null ? sessionStorage.getItem('name') : '';
-  lastname = sessionStorage.getItem('lastname') != null ? sessionStorage.getItem('lastname') : '';
+  @Input() name: string = '';
+  @Input() lastname: string = '';
+
+  logout(): void {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = '/';
+  }
 
 }

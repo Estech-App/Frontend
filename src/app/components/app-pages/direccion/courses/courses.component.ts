@@ -33,7 +33,7 @@ export class CoursesComponent {
 
   createNewCourse(): void {
     let course: Course = {
-	  id: null,
+      id: null,
       name: this.form.get('name')?.value,
       acronym: this.form.get('acronym')?.value,
       description: ''
@@ -88,7 +88,7 @@ export class CoursesComponent {
 	this.courseService.updateCourse(course).subscribe({
 		next: res => {
 			this.getAllCourses()
-			window.location.reload()
+			this.form.reset()
 			this.post = true
 		}, error: err => {
 			console.log(err);

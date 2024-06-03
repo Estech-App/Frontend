@@ -17,10 +17,16 @@ span {
     border-radius: 100%;
 }
 
-article {
+
+article a{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 2%;
+    width: max-content;
+    margin-right: 20px;
     gap: 12px;
+}
+
+a {
+    cursor: pointer;
 }

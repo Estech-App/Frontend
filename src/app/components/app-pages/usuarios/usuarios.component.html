@@ -20,8 +20,7 @@
             <!-- edit Column -->
             <ng-container matColumnDef="edit" stickyEnd>
               <th mat-header-cell *matHeaderCellDef> Editar </th>
-              <td mat-cell *matCellDef="let element"> <button (click)="getUserById(element.id)"
-                  matTooltip="Pulsa para editar" matTooltipPosition="after">Editar</button> </td>
+              <td mat-cell *matCellDef="let element"> <button (click)="getTeacherById(element.id)">Editar</button> </td>
             </ng-container>
 
 
@@ -58,8 +57,7 @@
             <!-- edit Column -->
             <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef> Editar </th>
-              <td mat-cell *matCellDef="let element"> <button (click)="getUserById(element.id)"
-                  matTooltip="Pulsa para editar" matTooltipPosition="after">Editar</button> </td>
+              <td mat-cell *matCellDef="let element"> <button (click)="getStudentById(element.id)">Editar</button> </td>
             </ng-container>
 
 
@@ -79,49 +77,61 @@
             <input type="text" formControlName="id" hidden> <!-- Hidden input to store the id of the user -->
             <mat-form-field>
               <mat-label>Nombre</mat-label>
-              <input type="text" matInput placeholder="Nombre" formControlName="name" required>
-              <mat-error *ngIf="nameFormControl.hasError('required')">
-                El nombre es <strong>necesario</strong>
-              </mat-error>
+              <input type="text" matInput placeholder="Nombre" formControlName="name" autocomplete="off" required>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Apellidos</mat-label>
-              <input type="text" matInput placeholder="Apellidos" formControlName="lastname" required>
-              <mat-error *ngIf="lastnameFormControl.hasError('required')">
-                Los apellidos son <strong>necesarios</strong>
-              </mat-error>
+              <input type="text" matInput placeholder="Apellidos" formControlName="lastname" autocomplete="off"
+                required>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Email</mat-label>
-              <input type="email" matInput placeholder="Ej. nombre@ejemplo.com" formControlName="email" required>
-              <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                Porfavor introduce un email valido
-              </mat-error>
-              <mat-error *ngIf="emailFormControl.hasError('required')">
-                El email es <strong>necesario</strong>
-              </mat-error>
+              <input type="email" matInput placeholder="Ej. nombre@ejemplo.com" formControlName="email"
+                autocomplete="new-email" required>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Contraseña</mat-label>
-              <input type="text" matInput placeholder="Contraseña" formControlName="password" required>
-              <mat-error *ngIf="passwordFormControl.hasError('required')">
-                Lo contraseña es <strong>necesaria</strong>
-              </mat-error>
+              <input [type]="passwordIsHide ? 'password' : 'text'" matInput placeholder="Contraseña"
+                formControlName="password" autocomplete="new-password" required>
+              <button mat-icon-button type="button" matSuffix (click)="passwordIsHide = !passwordIsHide"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordIsHide">
+                <mat-icon>{{passwordIsHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Roles</mat-label>
               <mat-select formControlName="role" name="mySelect" required>
-                <mat-option>--- Elige uno ---</mat-option>
-                <mat-option *ngFor="let role of roles" [value]="role.roleName" [matTooltip]="role.description"
-                  matTooltipPosition="before">
+                <mat-option [disabled]="true"> --- Elige uno --- </mat-option>
+                <mat-option *ngFor="let role of roles" [value]="role.roleName">
                   {{role.roleName}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="roleFormControl.hasError('required')">Tienes que seleccionar un rol</mat-error>
+            </mat-form-field>
+            <mat-form-field *ngIf="roleName === 'STUDENT'">
+              <mat-label>Grupo</mat-label>
+              <mat-select formControlName="group" multiple required>
+                <mat-option [disabled]="true"> --- Seleccionar --- </mat-option>
+                <mat-optgroup *ngFor="let course of courses" [label]="course.name">
+                  <div *ngFor="let group of groups">
+                    <mat-option *ngIf="group.courseId == course.id" [value]="group.id">
+                      {{group.name}}
+                    </mat-option>
+                  </div>
+                </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="roleName === 'TEACHER'">
+              <mat-label>Modulos</mat-label>
+              <mat-select formControlName="modules"  multiple required>
+                <mat-option [disabled]="true"> --- Seleccionar --- </mat-option>
+                <mat-option *ngFor="let module of modules" [value]="module.id">
+                  {{module.name}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
             <div class="buttons-group">
               <button type="submit">Crear Usuario</button>
-              <button (click)="cleanForm()">Limpiar</button>
+              <button type="reset">Limpiar</button>
             </div>
           </form>
         </div>

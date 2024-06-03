@@ -1,4 +1,5 @@
 export class ModuleCreationDTO {
+	id: string = ''
 	name: string = ''
 	acronym: string = ''
 	year: number = 0

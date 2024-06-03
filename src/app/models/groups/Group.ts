@@ -1,11 +1,11 @@
+import { User } from "../users/User"
+
 export interface Group {
-    id: number | null
+    id: number
     name: string
     description: string
-    year: number | null
-    users: [{id: number}]
-    files: [{id: number}]
-    course: {id: number}
-    timeTables: [{id: number}]
-    room: {id: number} | null
+    year: number
+    roomId: number
+    courseId: number
+    users: User[]
 }

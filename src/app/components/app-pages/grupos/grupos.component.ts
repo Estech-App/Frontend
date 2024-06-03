@@ -26,7 +26,7 @@ export class GruposComponent {
 
   post = true
 
-  selectedGroup: Group
+  // selectedGroup: Group
 
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
@@ -66,17 +66,17 @@ export class GruposComponent {
       name: '',
       description: ''
     })
-    this.selectedGroup = {
-      id: null,
-      name: '',
-      description: '',
-      year: null,
-      users: [{ id: 0 }],
-      files: [{ id: 0 }],
-      course: { id: 0 },
-      timeTables: [{ id: 0 }],
-      room: null
-    }
+    // this.selectedGroup = {
+    //   id: null,
+    //   name: '',
+    //   description: '',
+    //   year: null,
+    //   users: [{ id: 0 }],
+    //   files: [{ id: 0 }],
+    //   course: { id: 0 },
+    //   timeTables: [{ id: 0 }],
+    //   room: null
+    // }
   }
 
   getAllGroups() {
