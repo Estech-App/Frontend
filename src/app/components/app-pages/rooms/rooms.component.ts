@@ -34,9 +34,8 @@ export class RoomsComponent {
   solicitudesColumns = ["details", "actions"]
   post = true
 
-  @ViewChild('calendar') calendar!: Calendar;
+  @ViewChild('calendar') calendar!: any;
 
-  calendarVisible = signal(true);
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     timeZone: 'local',
@@ -48,9 +47,9 @@ export class RoomsComponent {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      right: 'timeGridWeek,timeGridDay'
     },
-    initialView: 'dayGridMonth',
+    initialView: 'timeGridWeek',
     weekends: false,
     editable: true,
     selectable: true,
@@ -85,17 +84,13 @@ export class RoomsComponent {
       timeTables: []
     }
 
-    console.log(this.calendar)
-  }
 
-  ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
     this.getRooms()
     this.getFreeUsages()
     this.getMentorings()
-    console.log(this.calendar)
   }
 
   createRoom() {
@@ -107,14 +102,14 @@ export class RoomsComponent {
       description: this.form.get('description')?.value,
       timeTables: this.transformCurrentEventsToTimeTable()
     }
-    console.log("Create Room")
-    console.log(room)
 
     this.roomService.createRoom(room).subscribe({
       next: (room) => {
         this.rooms.data.push(room)
         this.form.reset()
         this.getRooms()
+        this.calendar.calendar.removeAllEvents()
+        this.reccurenceForm.setValue({ recurrToggle: false })
       },
       error: (error) => {
         console.error(error)
@@ -131,9 +126,6 @@ export class RoomsComponent {
       description: this.form.get('description')?.value,
       timeTables: this.transformCurrentEventsToTimeTable()
     }
-    console.log("Update Room")
-
-    console.log(room)
 
     this.roomService.updateRoom(room).subscribe({
       next: (room) => {
@@ -141,6 +133,8 @@ export class RoomsComponent {
         this.post = true
         this.form.reset()
         this.getRooms()
+        this.calendar.calendar.removeAllEvents()
+        this.reccurenceForm.setValue({ recurrToggle: false })
       },
       error: (error) => {
         console.error(error)
@@ -152,7 +146,6 @@ export class RoomsComponent {
     this.roomService.getRooms().subscribe({
       next: (rooms) => {
         this.rooms.data = rooms
-        console.log(this.rooms)
       },
       error: (error) => {
         console.error(error)
@@ -171,7 +164,7 @@ export class RoomsComponent {
         timeTables: []
       }
       this.form.reset()
-      this.calendarOptions.set({ ...this.calendarOptions(), events: [] })
+      this.calendar.calendar.removeAllEvents()
       this.post = true
 
       this.getFreeUsages()
@@ -179,7 +172,6 @@ export class RoomsComponent {
     } else {
       this.post = false
       this.selectedRoom = row
-      console.log(row);
 
       this.form.setValue({
         id: row.id,
@@ -191,7 +183,6 @@ export class RoomsComponent {
 
       this.freeUsageService.getFreeUsagesByRoomId(row.id ?? 0).subscribe({
         next: (freeUsages) => {
-          console.log(freeUsages);
           this.freeUsages = freeUsages;
           this.gestionedFreeUsages.data = this.freeUsages.filter(fu => fu.status !== "PENDING");
           this.pendingFreeUsages.data = this.freeUsages.filter(fu => fu.status === "PENDING");
@@ -200,31 +191,30 @@ export class RoomsComponent {
             next: (mentorings) => {
               this.mentorings = mentorings;
 
-              this.calendarOptions.set({
-                ...this.calendarOptions(),
-                events: this.toEventApi(row.timeTables).map(event => ({
-                  ...event,
-                  id: event.id,
-                  extendedProps: { roomId: row.id },
-                  title: event.title,
-                  start: event.start?.toString(),
-                  end: event.end?.toString()
-                })).concat(this.toEventApi(this.freeUsages).map(event => ({
-                  ...event,
-                  id: '',
-                  extendedProps: { roomId: row.id },
-                  title: event.title,
-                  start: event.start?.toString(),
-                  end: event.end?.toString()
-                }))).concat(this.toEventApi(this.mentorings).map(event => ({
-                  ...event,
-                  id: '',
-                  extendedProps: { roomId: row.id },
-                  title: event.title,
-                  start: event.start?.toString(),
-                  end: event.end?.toString()
-                })))
-              });
+              row.timeTables.forEach((event: any) => {
+                event.title = "Ocupado"
+                if (event.reccurence) {
+                  event.color = 'purple'
+                  event.daysOfWeek = event.dayOfWeek
+                  let startString: Date = new Date(event.start)
+                  event.startTime = startString.toTimeString()
+                  let endString: Date = new Date(event.end)
+                  event.endTime = endString.toTimeString()
+                  event.startRecur = event.startStr
+                  event.allDay = false
+                }
+                this.calendar.calendar.addEvent(event)
+              })
+              this.mentorings.forEach((event: any) => {
+                event.title = event.student.name + " - " + event.status + " - Tutoria"
+                event.color = 'orange'
+                this.calendar.calendar.addEvent(event)
+              })
+              this.freeUsages.forEach((event: any) => {
+                event.title = event.user.name + " - " + event.status + " - Práctica libre"
+                event.color = 'green'
+                this.calendar.calendar.addEvent(event)
+              })
             },
             error: (error) => {
               console.error(error);
@@ -300,94 +290,6 @@ export class RoomsComponent {
 
   // * FullCalendar Methods
 
-  toEventApi(timeTables: RoomTimeTable[] | FreeUsage[] | Mentoring[]): EventInput[] {
-    let events: EventInput[] = []
-    timeTables.forEach((timeTable) => {
-      let title = ''
-
-      if (typeof timeTable === 'object') {
-        if (this.instanceOfFreeUsages(timeTable)) {
-          title = (timeTable as FreeUsage).user.name + " - " + (timeTable as FreeUsage).status + " - Práctica libre"
-        } else if (this.instanceOfMentorings(timeTable)) {
-          title = (timeTable as Mentoring).student.name + " - " + (timeTable as Mentoring).status + " - Tutoria"
-        } else {
-          title = (timeTable as RoomTimeTable).status + " - Room Time Table"
-        }
-      }
-
-      events.push({
-        id: timeTable.id!.toString(),
-        title: title,
-        start: new Date(timeTable.start),
-        end: new Date(timeTable.end),
-        allDay: false,
-        source: null,
-        startStr: timeTable.start.split('T')[0],
-        endStr: timeTable.end.split('T')[0],
-        groupId: '',
-        url: '',
-        display: '',
-        startEditable: false,
-        durationEditable: false,
-        constraint: undefined,
-        overlap: false,
-        allow: undefined,
-        backgroundColor: '',
-        borderColor: '',
-        textColor: '',
-        classNames: [],
-        extendedProps: {
-          roomId: '',
-          reccurence: false
-        },
-        rrule: {
-          freq: 'weekly',
-          dtstart: '',
-        },
-        setProp: function (name: string, val: any): void {
-          throw new Error('Function not implemented.');
-        },
-        setExtendedProp: function (name: string, val: any): void {
-          throw new Error('Function not implemented.');
-        },
-        setStart: function (startInput: DateInput, options?: { granularity?: string | undefined; maintainDuration?: boolean | undefined; } | undefined): void {
-          throw new Error('Function not implemented.');
-        },
-        setEnd: function (endInput: DateInput | null, options?: { granularity?: string | undefined; } | undefined): void {
-          throw new Error('Function not implemented.');
-        },
-        setDates: function (startInput: DateInput, endInput: DateInput | null, options?: { allDay?: boolean | undefined; granularity?: string | undefined; } | undefined): void {
-          throw new Error('Function not implemented.');
-        },
-        moveStart: function (deltaInput: DurationInput): void {
-          throw new Error('Function not implemented.');
-        },
-        moveEnd: function (deltaInput: DurationInput): void {
-          throw new Error('Function not implemented.');
-        },
-        moveDates: function (deltaInput: DurationInput): void {
-          throw new Error('Function not implemented.');
-        },
-        setAllDay: function (allDay: boolean, options?: { maintainDuration?: boolean | undefined; } | undefined): void {
-          throw new Error('Function not implemented.');
-        },
-        formatRange: function (formatInput: FormatterInput) {
-          throw new Error('Function not implemented.');
-        },
-        remove: function (): void {
-          throw new Error('Function not implemented.');
-        },
-        toPlainObject: function (settings?: { collapseExtendedProps?: boolean | undefined; collapseColor?: boolean | undefined; } | undefined): au {
-          throw new Error('Function not implemented.');
-        },
-        toJSON: function (): au {
-          throw new Error('Function not implemented.');
-        }
-      })
-    })
-    return events
-  }
-
   handleDateSelect(selectInfo: DateSelectArg) {
     const title = "Ocupado"
     const calendarApi = selectInfo.view.calendar;
@@ -396,11 +298,11 @@ export class RoomsComponent {
     calendarApi.unselect(); // clear date selection
 
     if (title) {
-      if(reccuToggle) {
+      if (reccuToggle) {
 
         let event: EventInput = {
           id: '',
-          extendedProps: { 
+          extendedProps: {
             roomId: this.selectedRoom.id,
             reccurence: true
           },
@@ -410,19 +312,17 @@ export class RoomsComponent {
           startTime: selectInfo.start.toTimeString(),
           endTime: selectInfo.end.toTimeString(),
           startRecur: selectInfo.startStr,
-          allDay: selectInfo.allDay,
+          allDay: false,
           daysOfWeek: [selectInfo.start.getDay()],
           color: 'purple'
         }
-
-        console.log(event)
 
         calendarApi.addEvent(event);
       } else {
 
         let event: EventInput = {
           id: '',
-          extendedProps: { 
+          extendedProps: {
             roomId: this.selectedRoom.id,
             reccurence: false
           },
@@ -431,8 +331,6 @@ export class RoomsComponent {
           end: selectInfo.endStr,
           allDay: selectInfo.allDay
         }
-
-        console.log(event)
 
         calendarApi.addEvent(event);
       }
@@ -452,28 +350,22 @@ export class RoomsComponent {
 
   transformCurrentEventsToTimeTable(): RoomTimeTable[] {
     let roomTimeTable: RoomTimeTable[] = []
-    // this.currentEvents().forEach((event) => {
-    //   if (!event.title.includes("-")) {
-    //     let id = event.id
-    //     let start = event.start?.toISOString()
-    //     let end = event.end?.toISOString()
-    //     let status = "OCCUPIED"
-    //     let roomId = event.extendedProps["roomId"]
-    //     roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId, reccurence: event.extendedProps["reccurence"]})
-    //   }
-    // });
+    let calendarEvents = this.calendar.calendar.getEvents()
 
-    this.calendar.getEvents().forEach((event) => {
+    calendarEvents.forEach((event: any) => {
       if (!event.title.includes("-")) {
         let id = event.id
         let start = event.start?.toISOString()
         let end = event.end?.toISOString()
         let status = "OCCUPIED"
         let roomId = event.extendedProps["roomId"]
-        roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId, reccurence: event.extendedProps["reccurence"]})
+        let dayOfWeek = ''
+        if (event.extendedProps["reccurence"]) {
+          dayOfWeek = event.start?.getDay().toString() ?? ''
+        }
+        roomTimeTable.push({ id: id, start: start!, end: end!, status: status, roomId: roomId, reccurence: event.extendedProps["reccurence"], dayOfWeek: dayOfWeek })
       }
     })
-
 
     return roomTimeTable
   }
