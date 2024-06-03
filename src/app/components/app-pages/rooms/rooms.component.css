@@ -1,0 +1,113 @@
+*:not(.title) {
+    font-size: 16px;
+}
+
+main {
+    display: flex;
+    width: 98%;
+    height: 98%;
+    margin: 20px;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.firstRow {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+}
+
+.secondRow {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+section {
+   border: 1px solid #969696;
+    border-radius: 5px;
+    width: 100%;
+  height: 100%;
+}
+
+.secondRow section {
+    height: 100%;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 10px;
+}
+
+.firstRow .content {
+  height: 325px;
+}
+
+.content {
+    height: 98%;
+    overflow: auto;
+}
+
+td button {
+    margin: .5em 0;
+}
+
+.circleGreen {
+    height: 15px;
+    width: 15px;
+    background-color: green;
+    border-radius: 100%;
+}
+
+.circleRed {
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 100%;
+}
+
+.inline {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.last-column {
+    width: 5%;
+}
+
+form {
+    justify-content: center;
+}
+
+.buttons-group {
+    display: flex;
+    gap: 20px;
+}
+
+.clicked-row {
+    background-color: #D5F1FA !important;
+    font-weight: bold !important;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: #D5F1FA;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.selected-name-class {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.filter-input {
+    width: 40%;
+}

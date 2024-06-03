@@ -58,4 +58,8 @@ td button {
     margin: .5em 0;
 }
 
+.buttons-group {
+    display: flex;
+    gap: 20px;
+}
 

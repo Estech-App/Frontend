@@ -1,0 +1,53 @@
+<main>
+    <div class="firstRow">
+        <p class="title">Salas</p>
+        <div class="content">
+            <table mat-table [dataSource]="rooms">
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Sala </th>
+                    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="group">
+                    <th mat-header-cell *matHeaderCellDef> Grupo </th>
+                    <td mat-cell *matCellDef="let element">{{ element.group }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                    <td mat-cell *matCellDef="let element"><button>Seleccionar</button></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="roomColumns; sticky: true"></tr>
+                <tr mat-row [class.clicked-row]="selectedRow === row" *matRowDef="let row; columns: roomColumns;">
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="secondRow">
+        <div class="title">Crear / Modificar salas</div>
+        <div class="content">
+            <form [formGroup]="form">
+                <mat-form-field>
+                    <input matInput placeholder="Nombre de la sala" formControlName="name" required>
+                </mat-form-field>
+                <mat-form-field formControlName="groups" name="groupSelect" required>
+                    <mat-label>--- Seleccionar grupo ---</mat-label>
+                    <mat-select>
+                        <mat-option>--- Seleccionar ---</mat-option>
+                        <!-- TODO: Descomentar cuando se puedan obtener los grupos -->
+                        <!-- <mat-option *ngFor="let group of groups" [value]="group.id">{{ group }}</mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-checkbox formControlName="studyRoom">Estudio</mat-checkbox>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-checkbox formControlName="mentoringRoom">Tutoria</mat-checkbox>
+                </mat-form-field>
+                <button mat-raised-button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+</main>

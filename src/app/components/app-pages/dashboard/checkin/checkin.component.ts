@@ -43,6 +43,7 @@ export class CheckinComponent {
 
   checkin() {
     let checkin: Checkin = {
+      id: null,
       date: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds()).toString(),
       user: {
         id: sessionStorage.getItem('userId') != null ? sessionStorage.getItem('userId')! : ''
@@ -52,9 +53,11 @@ export class CheckinComponent {
     this.checkinService.checkin(checkin).subscribe({
       next: res => {
         let tmp: CheckinDTO = {
+          id: '',
           date: res.date,
           userId: Number(res.user.id),
-          checkIn: res.checkIn
+          checkIn: res.checkIn,
+          user: ''
         }
         this.checkins = [];
         this.checkins.push(tmp);

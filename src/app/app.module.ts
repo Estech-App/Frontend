@@ -32,6 +32,10 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 
 import {MatSelectModule} from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { CheckinsComponent } from './components/app-pages/checkins/checkins.component';
+import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -48,7 +52,9 @@ import {MatSelectModule} from '@angular/material/select';
     ModulesComponent,
     GroupsDashboardComponent,
     CalendarDashboardComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    CheckinsComponent,
+    RoomsComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +71,9 @@ import {MatSelectModule} from '@angular/material/select';
     MatDatepickerModule,
     MatCardModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTooltipModule,
+    MatCheckboxModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
