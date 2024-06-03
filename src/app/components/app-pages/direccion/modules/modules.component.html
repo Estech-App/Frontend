@@ -5,17 +5,23 @@
             <table mat-table [dataSource]="modules">
 
                 <!-- Name and Teacher Column -->
-                <ng-container matColumnDef="name">
+                <ng-container matColumnDef="nameAndTeacher">
                   <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                  <td mat-cell *matCellDef="let module"> <p>{{module.name}}</p><p>{{module.teacher.name}}</p> </td>
+                  <td mat-cell *matCellDef="let module"> <p>{{module.name}}</p><span style="font-style: italic;">{{module.usersName}}</span> </td>
                 </ng-container>
-            
+
                 <!-- Button Column -->
                 <ng-container matColumnDef="acronym">
                   <th mat-header-cell *matHeaderCellDef> Acrónimo </th>
                   <td mat-cell *matCellDef="let module"> {{module.acronym}} </td>
                 </ng-container>
-            
+
+				<!-- Edit Column -->
+				<ng-container matColumnDef="edit">
+				  <th mat-header-cell *matHeaderCellDef> Editar </th>
+				  <td mat-cell *matCellDef="let module"> <button (click)="getModuleById(module.id)">Editar</button> </td>
+				</ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
@@ -26,11 +32,53 @@
     <article>
         <h2 class="title">Crear/Actualizar Módulos</h2>
         <div class="content">
-            <!-- <form (submit)="createNewCourse()" [formGroup]="form">
-                <input type="text" formControlName="name" placeholder="Nombre" autocomplete="off" />
-                <input type="text" formControlName="acronym" placeholder="Acrónimo" autocomplete="off" />
-                <button type="submit">Crear ciclo</button>
-            </form> -->
+            <form (submit)="createNewModule()" [formGroup]="form">
+				<input type="text" formControlName="id" hidden> <!-- Hidden input to store the id of the user -->
+
+				<mat-form-field>
+				<mat-label>Nombre</mat-label>
+				<input type="text" matInput placeholder="Nombre del módulo" formControlName="name" required>
+				<mat-error *ngIf="nameFormControl.hasError('required') && formError">
+					El nombre es <strong>necesario</strong>
+				</mat-error>
+				</mat-form-field>
+
+				<mat-form-field >
+				<mat-label>Acrónimo</mat-label>
+				<input type="text" matInput placeholder="Acrónimo" formControlName="acronym" required>
+				<mat-error *ngIf="acronymFormControl.hasError('required') && formError">
+					El acrónimo es <strong>necesario</strong>
+				</mat-error>
+				</mat-form-field>
+
+				<mat-form-field>
+				<mat-label>Ciclo</mat-label>
+				<mat-select formControlName="course" name="mySelect" required>
+					<mat-option>--- Elige uno ---</mat-option>
+					<mat-option *ngFor="let course of courses" [value]="course.id">
+					{{course.name}}
+					</mat-option>
+				</mat-select>
+				<mat-error *ngIf="courseFormControl.hasError('required') && formError">Tienes que seleccionar un ciclo</mat-error>
+				</mat-form-field>
+
+				<mat-radio-group aria-label="Selecciona el curso al que pertenece el módulo" formControlName="year">
+					<mat-radio-button value="1" [checked]="form.get('year')?.value == 1">Primer Curso</mat-radio-button>
+					<mat-radio-button value="2" [checked]="form.get('year')?.value == 2">Segundo Curso</mat-radio-button>
+				</mat-radio-group>
+
+				<mat-form-field>
+					<mat-label>Profesores</mat-label>
+					<mat-select formControlName="teachers" [(value)]="selections" name="selections" multiple>
+						<mat-option *ngFor="let teacher of teachers" [value]="teacher.id">{{teacher.name}} {{teacher.lastname}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<div class="buttons-group">
+					<button type="submit">Crear Módulo</button>
+					<button type="reset">Limpiar</button>
+				</div>
+            </form>
         </div>
     </article>
 </section>

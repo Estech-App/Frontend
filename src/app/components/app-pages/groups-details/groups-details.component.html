@@ -1,0 +1,77 @@
+<main>
+    <div class="firstRow">
+        <section class="first-section">
+            <article>
+                <div class="title">Profesores DAM 2º 23/24</div>
+                <div class="content">
+                    <table mat-table [dataSource]="group">
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                            <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="modules">
+                            <th mat-header-cell *matHeaderCellDef>Módulos</th>
+                            <td mat-cell *matCellDef="let element">{{element.modules}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="groupTableColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: groupTableColumns;">
+                        </tr>
+
+                    </table>
+                </div>
+            </article>
+        </section>
+        <section class="second-section">
+            <article>
+                <div class="title">Horario</div>
+                <div class="content">
+                    <full-calendar [options]="calendarOptions"></full-calendar>
+                </div>
+            </article>
+        </section>
+    </div>
+    <div class="secondRow">
+        <section>
+            <article>
+                <div class="title">Alumnos</div>
+                <div class="content">
+                    <table mat-table [dataSource]="students">
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                            <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mentoringsCount">
+                            <th mat-header-cell *matHeaderCellDef>Nº Tutorias</th>
+                            <td mat-cell *matCellDef="let element">{{element.mentorings.count}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="lastMentoring">
+                            <th mat-header-cell *matHeaderCellDef>Ultima tutoria</th>
+                            <td mat-cell *matCellDef="let element">{{element.mentorings.date}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="freeUsagesCount">
+                            <th mat-header-cell *matHeaderCellDef>Nº Practicas libres</th>
+                            <td mat-cell *matCellDef="let element">{{element.freeUsages.count}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="details">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element"><button>></button></td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="studentsTableColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: studentsTableColumns;">
+                        </tr>
+
+                    </table>
+                </div>
+            </article>
+        </section>
+    </div>
+</main>
