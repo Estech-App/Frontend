@@ -10,21 +10,10 @@
 
             <input type="text" name="id" id="id" formControlName="id" hidden>
 
-            <div class="inline">
               <mat-form-field>
                 <input matInput placeholder="YY/YY" formControlName="year" required>
               </mat-form-field>
 
-              <mat-form-field>
-                <mat-label>Módulos</mat-label>
-                <mat-select formControlName="modules" multiple>
-                  <mat-option>---Seleccionar---</mat-option>
-                  <mat-option *ngFor="let module of modules" [value]="module.id">{{module.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div class="inline">
               <mat-form-field>
                 <mat-label>Ciclo</mat-label>
                 <mat-select formControlName="courses">
@@ -34,11 +23,10 @@
               </mat-form-field>
 
               <mat-label>Horario</mat-label>
-              <mat-radio-group formControlName="schedule" aria-label="Horario">
-                <mat-radio-button value="1">Mañana</mat-radio-button>
+              <mat-radio-group formControlName="schedule" aria-label="Horario" (change)="changeCalendarView()">
+                <mat-radio-button value="1" [checked]="true">Mañana</mat-radio-button>
                 <mat-radio-button value="2">Tarde</mat-radio-button>
               </mat-radio-group>
-            </div>
 
             <div class="buttons-group">
               <button mat-raised-button type="submit">Guardar</button>
@@ -92,7 +80,7 @@
           Horario del grupo
         </div>
         <div class="content">
-          <full-calendar [options]="calendarOptions()"></full-calendar>
+          <full-calendar #calendar [options]="calendarOptions()"></full-calendar>
         </div>
       </article>
     </section>
@@ -100,8 +88,8 @@
       <article>
         <div class="title">Modulos</div>
         <div class="content">
-          <div class="card-list">
-            <mat-card *ngFor="let module of modules" class="module-card" >
+          <div #cardList class="card-list">
+            <mat-card *ngFor="let module of modules" class="module-card" [ngStyle]="{'background-color': module.color}">
               <mat-card-content>{{module.acronym}}</mat-card-content>
               <mat-card-content>{{module.usersName}}</mat-card-content>
             </mat-card>

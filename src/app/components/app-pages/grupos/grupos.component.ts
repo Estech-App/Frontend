@@ -5,12 +5,13 @@ import { Course } from 'src/app/models/courses/Course';
 import { Group } from 'src/app/models/groups/Group';
 import { ModuleDTO } from 'src/app/models/module/ModuleDTO';
 import { GroupService } from 'src/app/services/groups/group.service';
-import { Calendar, CalendarOptions, DateInput, DateSelectArg, DurationInput, EventApi, EventClickArg, FormatterInput } from '@fullcalendar/core';
+import { Calendar, CalendarOptions, DateInput, DateSelectArg, DurationInput, EventApi, EventClickArg, EventDropArg, FormatterInput } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { ModuleService } from 'src/app/services/module/module.service';
+import { CourseService } from 'src/app/services/courses/course.service';
 
 @Component({
   selector: 'app-grupos',
@@ -27,6 +28,9 @@ export class GruposComponent {
 
   post = true
 
+  @ViewChild('calendar') calendar!: any;
+  @ViewChild('cardList', { static: true }) cardList!: any
+
   // selectedGroup: Group
 
   currentEvents = signal<EventApi[]>([]);
@@ -35,15 +39,28 @@ export class GruposComponent {
     views: {
       morning: {
         type: 'timeGrid',
-        duration: { days: 5 },
+        duration: { week: 1 },
         buttonText: 'Mañana',
-        slotDuration: '00:30:00',
-        slotLabelInterval: '00:10:00',
+        slotDuration: '00:10:00',
+        slotLabelInterval: '01:50:00',
         slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: false, meridiem: 'short' },
         slotMinTime: '08:30:00',
-        slotMaxTime: '15:00:00',
+        slotMaxTime: '14:30:00',
         allDaySlot: false,
-        expandRows: true
+        expandRows: true,
+
+      },
+      afternoon: {
+        type: 'timeGrid',
+        duration: { week: 1 },
+        buttonText: 'Tarde',
+        slotDuration: '00:10:00',
+        slotLabelInterval: '01:50:00',
+        slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: false, meridiem: 'short' },
+        slotMinTime: '15:30:00',
+        slotMaxTime: '21:30:00',
+        allDaySlot: false,
+        expandRows: true,
       }
     },
     plugins: [
@@ -59,44 +76,88 @@ export class GruposComponent {
     initialView: 'morning',
     weekends: false,
     editable: true,
-    selectable: true,
     selectMirror: true,
+    businessHours: [
+      {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: '8:30',
+        endTime: '10:20'
+      },
+      {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: '10:40',
+        endTime: '12:30'
+      },
+      {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: '12:40',
+        endTime: '14:30'
+      },
+      {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: '15:30',
+        endTime: '17:20'
+      },
+      {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: '17:40',
+        endTime: '19:30'
+      },
+      {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: '19:40',
+        endTime: '21:30'
+      }
+    ],
+    dropAccept: '.module-card',
     locale: esLocale,
-    select: this.handleDateSelect.bind(this),
+    eventOverlap: false,
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
-
+    eventReceive: function (info) {
+      console.log(info)
+    }
   });
 
   constructor(
     private groupService: GroupService,
     private formBuilder: FormBuilder,
     private moduleService: ModuleService,
+    private courseService: CourseService,
     private changeDetector: ChangeDetectorRef
   ) {
-    this.getAllGroups()
     this.form = this.formBuilder.group({
       id: '',
-      name: '',
-      description: ''
+      year: '',
+      modules: [],
+      courses: [],
+      schedule: []
     })
-    // this.selectedGroup = {
-    //   id: null,
-    //   name: '',
-    //   description: '',
-    //   year: null,
-    //   users: [{ id: 0 }],
-    //   files: [{ id: 0 }],
-    //   course: { id: 0 },
-    //   timeTables: [{ id: 0 }],
-    //   room: null
-    // }
+
+
   }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    this.getAllGroups()
     this.getModules()
+    this.getCourses()
+
+    console.log(this.cardList.nativeElement)
+
+    new Draggable(this.cardList.nativeElement, {
+      itemSelector: '.module-card',
+      eventData: function (eventEl) {
+        console.log(eventEl)
+        return {
+          title: eventEl.innerText,
+          duration: '01:50:00',
+          backgroundColor: eventEl.style.backgroundColor,
+          textColor: 'black'
+        }
+      }
+    })
   }
 
   getAllGroups() {
@@ -139,25 +200,18 @@ export class GruposComponent {
     })
   }
 
-  // * FullCalendar Methods
-
-  handleDateSelect(selectInfo: DateSelectArg) {
-    const title = "Ocupado"
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-    console.log(selectInfo)
-
-    if (title) {
-      calendarApi.addEvent({
-        id: '',
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
+  // * Courses Methods
+  getCourses() {
+    this.courseService.getAllCourses().subscribe({
+      next: res => {
+        this.courses = res
+      }, error: err => {
+        console.log(err);
+      }
+    })
   }
+
+  // * FullCalendar Methods
 
   handleEventClick(clickInfo: EventClickArg) {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
@@ -167,9 +221,38 @@ export class GruposComponent {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges();
   }
 
+  handleEventDrop(event: EventDropArg) {
+    console.log(event)
+  }
+
+  // * Form Methods
   
+  changeCalendarView() {
+    let radio = this.form.get('schedule')?.value
+    if (radio == '1') {
+      this.calendarOptions.set({
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'morning'
+        }
+      })
+      this.calendar.calendar.changeView('morning')
+    } else if (radio == '2') {
+      this.calendarOptions.set({
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'afternoon'
+        }
+      })
+      this.calendar.calendar.changeView('afternoon')
+    } 
+  }
+
+
 
 }

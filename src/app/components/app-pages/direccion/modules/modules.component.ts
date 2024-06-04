@@ -43,7 +43,8 @@ export class ModulesComponent {
 			acronym: [''],
 			year: [''],
 			course: [],
-			teachers: []
+			teachers: [],
+			color: ['']
 		})
 	}
 
@@ -92,7 +93,8 @@ export class ModulesComponent {
 					acronym: res.acronym,
 					year: res.year,
 					course: res.courseDTO.id,
-					teachers: this.selections
+					teachers: this.selections,
+					color: res.color
 				})
 			}
 		})
@@ -106,12 +108,13 @@ export class ModulesComponent {
 		let year = this.form.get('year')?.value
 		let course: number = this.form.get('course')?.value
 		let user: number[] = this.form.get('teachers')?.value
+		let color = this.form.get('color')?.value
 
 		if (
 			name == null || name == '' ||
 			acronym == null || acronym == '' ||
 			year == null || year == '' ||
-			course == null
+			course == null || color == null
 		) {
 			this.formError == true
 			return
@@ -122,6 +125,7 @@ export class ModulesComponent {
 		newModule.acronym = acronym
 		newModule.year = year
 		newModule.course.id = course
+		newModule.color = color
 
 		newModule.users = []
 		if (user != null) {
@@ -151,12 +155,13 @@ export class ModulesComponent {
 		let year = this.form.get('year')?.value
 		let course: number = this.form.get('course')?.value
 		let user: number[] = this.form.get('teachers')?.value
+		let color = this.form.get('color')?.value
 
 		if (
 			name == null || name == '' ||
 			acronym == null || acronym == '' ||
 			year == null || year == '' ||
-			course == null
+			course == null || color == null
 		) {
 			this.formError == true
 			return
@@ -168,6 +173,7 @@ export class ModulesComponent {
 		updatedModule.acronym = acronym
 		updatedModule.year = year
 		updatedModule.course.id = course
+		updatedModule.color = color
 
 		updatedModule.users = []
 		if (user != null) {

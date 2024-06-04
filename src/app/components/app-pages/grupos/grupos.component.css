@@ -163,11 +163,21 @@ full-calendar {
     overflow-y: scroll;
 }
 
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .module-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    height: 100px;
+    min-height: 100px;
+    height: max-content;
     width: 150px;
+}
+
+.module-card mat-card-content {
+    word-break: break-all;
 }

@@ -43,6 +43,7 @@ import {  FullCalendarModule  } from '@fullcalendar/angular';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { StockComponent } from './components/app-pages/stock/stock.component';
 import { GroupsDetailsComponent } from './components/app-pages/groups-details/groups-details.component';
+import { NgxColorsModule } from 'ngx-colors';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { GroupsDetailsComponent } from './components/app-pages/groups-details/gr
     MatTooltipModule,
     MatCheckboxModule,
     FullCalendarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    NgxColorsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
