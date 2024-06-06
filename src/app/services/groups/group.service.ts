@@ -19,4 +19,8 @@ export class GroupService {
     return this.http.post<Group>(`${Constants.BASE_URL}api/group`, group, {headers: Constants.headers});
   }
 
+  updateGroup(group: Group): Observable<Group> {
+    return this.http.put<Group>(`${Constants.BASE_URL}api/group`, group, {headers: Constants.headers});
+  }
+
 }
