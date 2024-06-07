@@ -23,3 +23,7 @@ article {
     height: 300px;
     overflow: auto;   
 }
+
+button {
+    margin: 10px auto;
+}

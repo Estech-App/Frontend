@@ -72,7 +72,7 @@ export class GruposComponent {
       timeGridPlugin
     ],
     headerToolbar: {
-      left: '',
+      left: 'prev,next',
       center: '',
       right: ''
     },
@@ -233,7 +233,37 @@ export class GruposComponent {
 
   }
 
-  updateGroup() { }
+  updateGroup() {
+    let group: Group = {
+      id: this.form.get('id')?.value,
+      name: this.form.get('course')?.value.name + ' ' + this.form.get('year')?.value,
+      description: this.form.get('description')?.value,
+      year: this.form.get('year')?.value,
+      roomId: this.form.get('roomId')?.value,
+      courseId: this.form.get('course')?.value.id,
+      users: this.form.get('users')?.value,
+      timeTables: this.transformCurrentEventsToTimeTable(),
+      evening: this.form.get('evening')?.value === '1' ? true : false
+    }
+
+    group.timeTables.forEach((timeTable: TimeTable) => {
+      timeTable.id = null
+    })
+
+    console.log(group)
+
+    this.groupService.updateGroup(group).subscribe({
+      next: res => {
+        console.log(res)
+        this.form.reset()
+        this.getAllGroups()
+        this.calendar.calendar.removeAllEvents()
+        this.selectedModules = []
+      }, error: err => {
+        console.log(err)
+      }
+    })
+  }
 
   addRowToClicked(row: Group) {
     if (this.selectedGroup.id === row.id) {
@@ -273,19 +303,17 @@ export class GruposComponent {
             row.timeTables.forEach((event: any) => {
               event.color = this.modules.find(module => module.id === event.moduleId)?.color
               let startString: Date = new Date(event.start)
-              event.startTime = startString.toString()
+              event.startTime = startString.toTimeString()
               let endString: Date = new Date(event.end)
-              event.endTime = endString.toString()
+              event.endTime = endString.toTimeString()
               event.startRecur = event.startStr
-              event.allDay = false
-              event.daysOfWeek = event.weekday
-              console.log(event.weekday)
-
+              event.daysOfWeek = [event.weekday]
               event.title = this.modules.find(module => module.id === event.moduleId)?.acronym + '\n' + this.modules.find(module => module.id === event.moduleId)?.usersName
               event.textColor = 'black'
               console.log(event)
               this.calendar.calendar.addEvent(event)
             })
+            console.log(this.calendar.calendar.getEvents())
           }, error: err => {
             console.log(err);
           }
@@ -373,7 +401,7 @@ export class GruposComponent {
     } else if (radio == '1') {
       this.calendarOptions.set({
         headerToolbar: {
-          left: '',
+          left: 'prev,next',
           center: '',
           right: ''
         }

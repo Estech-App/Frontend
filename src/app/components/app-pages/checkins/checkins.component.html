@@ -1,244 +1,132 @@
-<!-- <main>
-    <div class="firstRow">
-        <section>
-            <article>
-                <p class="title">Empleados</p>
-                <div class="content">
-                    <table mat-table [dataSource]="employees">
-
-                        <input type="text" hidden >
-
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element"> {{element.name}} {{element.lastname}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="role">
-                            <th mat-header-cell *matHeaderCellDef> Rol </th>
-                            <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="show" stickyEnd>
-                            <th mat-header-cell *matHeaderCellDef></th>
-                            <td mat-cell *matCellDef="let element"> <button (click)="filterCheckinsBySelectedUser(element.id)" *ngIf="selectedRow != element.id">Ver fichajes</button> <button (click)="resetIdFilter()" *ngIf="selectedRow == element.id">X</button> </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedEmployeesColumns; sticky: true;"></tr>
-                        <tr mat-row (click)="addRowIdToSelectedRow(row.id)" [class.clicked-row]="selectedRow === row.id"
-                            *matRowDef="let row; columns: displayedEmployeesColumns;"></tr>
-                    </table>
-                </div>
-            </article>
-        </section>
-        <section>
-            <article>
-                <p class="title">Crear / Modificar fichaje</p>
-                <div class="content">
-                    <form (submit)="post ? checkin() : updateCheckin()" [formGroup]="form">
-                        <p *ngIf="selectedRow != ''" class="selected-name-class">Vas a crear un fichaje para {{ selectedName }}</p>
-                        <input type="text" formControlName="id" hidden>
-
-                        <mat-form-field>
-                            <mat-label>Dia</mat-label>
-                            <input type="date" matInput placeholder="Dia" formControlName="day" required>
-                            <mat-error *ngIf="dayFormControl.hasError('required')">
-                                La fecha es <strong>necesaria</strong>
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Hora</mat-label>
-                            <input type="time" matInput placeholder="Hora" formControlName="hour" required>
-                            <mat-error *ngIf="hourFormControl.hasError('required')">
-                                La hora es <strong>necesaria</strong>
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Entrada / Salida</mat-label>
-                            <mat-select formControlName="checkinSelect" name="mySelect" required>
-                                <mat-option>--- Seleccionar ---</mat-option>
-                                <mat-option [value]="0">Entrada</mat-option>
-                                <mat-option [value]="1">Salida</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="checkinFormControl.hasError('required')">Tienes que seleccionar un tipo de
-                                fichaje</mat-error>
-                        </mat-form-field>
-                        <div class="buttons-group">
-                            <button type="submit" *ngIf="post">Crear fichaje</button>
-                            <button type="submit" *ngIf="!post">Modificar fichaje</button>
-                            <button type="reset">Limpiar</button>
-                        </div>
-                    </form>
-                </div>
-            </article>
-        </section>
-    </div>
-    <div class="secondRow">
-        <section>
-            <article>
-                <p class="title">Fichajes</p>
-                <div class="content">
-                    <table mat-table [dataSource]="checkins">
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element"> {{element.user}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date.split('T')[0].replaceAll('-',
-                                '/').split('/').reverse().join('/')}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="time">
-                            <th mat-header-cell *matHeaderCellDef> Hora </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date.split('T')[1].split('.')[0]}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="checkin">
-                            <th mat-header-cell *matHeaderCellDef class="last-column"> Entrada / Salida </th>
-                            <td mat-cell *matCellDef="let element"> <span class="inline">{{element.checkIn ? 'Entrada' :
-                                    'Salida'}} <div class="{{element.checkIn ? 'circleGreen' : 'circleRed'}}"></div>
-                                </span></td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="icon">
-                            <th mat-header-cell *matHeaderCellDef> </th>
-                            <td mat-cell *matCellDef="let element">
-
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedCheckinsColumns; sticky: true;"></tr>
-                        <tr mat-row (click)="fillForm(row); addRowIdToSelectedRow(row.id)" [class.clicked-row]="selectCheckinRow.id === row.id"
-                        mat-row *matRowDef="let row; columns: displayedCheckinsColumns;"></tr>
-                    </table>
-                </div>
-            </article>
-        </section>
-    </div>
-</main> -->
-
 <main>
-    <div class="firstRow">
-        <section>
-            <article>
-                <p class="title">Empleados</p>
-                <mat-form-field>
-                    <mat-label>Buscar empleado</mat-label>
-                    <input matInput class="filter-input" (keyup)="filterEmployees($event)"
-                        placeholder="Nombre o apellido" required>
-                </mat-form-field>
-                <div class="content">
-                    <table mat-table [dataSource]="employees">
+	<div class="firstRow">
+		<section>
+			<article>
+				<div class="title">
+					<div class="inline">
+						<span class="title-inline">
+							Empleados
+						</span>
+						<span class="title-inline">
+							<input matInput (keyup)="filterEmployees($event)"
+								placeholder="Nombre o apellido" #input>
+						</span>
+					</div>
+				</div>
+				<div class="content">
+					<table mat-table [dataSource]="employees">
 
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element"> {{element.name}} {{element.lastname}} </td>
-                        </ng-container>
+						<ng-container matColumnDef="name">
+							<th mat-header-cell *matHeaderCellDef> Nombre </th>
+							<td mat-cell *matCellDef="let element"> {{element.name}} {{element.lastname}} </td>
+						</ng-container>
 
-                        <ng-container matColumnDef="role">
-                            <th mat-header-cell *matHeaderCellDef> Rol </th>
-                            <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-                        </ng-container>
+						<ng-container matColumnDef="role">
+							<th mat-header-cell *matHeaderCellDef> Rol </th>
+							<td mat-cell *matCellDef="let element"> {{element.role}} </td>
+						</ng-container>
 
-                        <ng-container matColumnDef="show" stickyEnd>
-                            <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                            <td mat-cell *matCellDef="let element">
-                                <div class="buttons-group">
-                                    <button (click)="addRowToClicked(element)">{{clickedEmployeeRow !== element ?
-                                        'Seleccionar' : 'Seleccionado'}}</button>
-                                    <button *ngIf="userIdFilteredById !== element.id"
-                                        (click)="filterCheckinsBySelectedUser(element.id)">Ver fichajes</button>
-                                    <button *ngIf="isFilteringById && userIdFilteredById === element.id"
-                                        (click)="cancelFilter()">X</button>
-                                </div>
-                            </td>
-                        </ng-container>
+						<ng-container matColumnDef="show">
+							<th mat-header-cell *matHeaderCellDef> Acciones </th>
+							<td mat-cell *matCellDef="let element">
+								<div class="buttons-group">
+									<button (click)="addRowToClicked(element)">{{clickedEmployeeRow !== element ?
+										'Seleccionar' : 'Seleccionado'}}</button>
+									<button *ngIf="userIdFilteredById !== element.id"
+										(click)="filterCheckinsBySelectedUser(element.id)">Ver fichajes</button>
+									<button *ngIf="isFilteringById && userIdFilteredById === element.id"
+										(click)="cancelFilter()">X</button>
+								</div>
+							</td>
+						</ng-container>
 
-                        <tr mat-header-row *matHeaderRowDef="employeeColumns; sticky: true;"></tr>
-                        <tr mat-row [class.clicked-row]="clickedEmployeeRow === row"
-                            *matRowDef="let row; columns: employeeColumns;">
-                        </tr>
-                    </table>
-                </div>
-            </article>
-        </section>
-        <section>
-            <article>
-                <p class="title">Crear / Modificar fichaje</p>
-                <div class="content">
-                    <form (submit)="post ? createCheckin() : updateCheckin()" [formGroup]="form">
-                        <p *ngIf="clickedEmployeeRow.name != ''" class="selected-name-class">Vas a crear un fichaje para
-                            {{clickedEmployeeRow.name}}</p>
-                        <input type="text" formControlName="id" hidden>
-                        <mat-form-field>
-                            <mat-label>Dia</mat-label>
-                            <input type="date" matInput placeholder="Día" formControlName="day" required>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Hora</mat-label>
-                            <input type="time" matInput placeholder="Hora" formControlName="hour" required>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Entrada / Salida</mat-label>
-                            <mat-select formControlName="checkinSelect" name="mySelect" required>
-                                <mat-option>--- Seleccionar ---</mat-option>
-                                <mat-option [value]="0">Entrada</mat-option>
-                                <mat-option [value]="1">Salida</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <div class="buttons-group">
-                            <button type="submit" *ngIf="post">Crear fichaje</button>
-                            <button type="submit" *ngIf="!post">Modificar fichaje</button>
-                            <button type="reset">Limpiar</button>
-                        </div>
-                    </form>
-                </div>
-            </article>
-        </section>
-    </div>
-    <div class="secondRow">
-        <section>
-            <article>
-                <p class="title">Fichajes</p>
-                <div class="content">
-                    <table mat-table [dataSource]="checkins">
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element"> {{element.user}} </td>
-                        </ng-container>
 
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date.split('T')[0].replaceAll('-',
-                                '/').split('/').reverse().join('/')}} </td>
-                        </ng-container>
 
-                        <ng-container matColumnDef="time">
-                            <th mat-header-cell *matHeaderCellDef> Hora </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date.split('T')[1].split('.')[0]}} </td>
-                        </ng-container>
 
-                        <ng-container matColumnDef="checkin">
-                            <th mat-header-cell *matHeaderCellDef class="last-column"> Entrada / Salida </th>
-                            <td mat-cell *matCellDef="let element"> <span class="inline">{{element.checkIn ? 'Entrada' :
-                                    'Salida'}} <div class="{{element.checkIn ? 'circleGreen' : 'circleRed'}}"></div>
-                                </span></td>
-                        </ng-container>
+						<tr mat-header-row *matHeaderRowDef="employeeColumns; sticky: true;"></tr>
+						<tr mat-row [class.clicked-row]="clickedEmployeeRow === row"
+							*matRowDef="let row; columns: employeeColumns;">
+						</tr>
+					</table>
+				</div>
+			</article>
+		</section>
+		<section>
+			<article>
+				<p class="title">Crear / Modificar fichaje</p>
+				<div class="content">
+					<form (submit)="post ? createCheckin() : updateCheckin()" [formGroup]="form">
+						<p *ngIf="clickedEmployeeRow.name != ''" class="selected-name-class">Vas a crear un fichaje para
+							{{clickedEmployeeRow.name}}</p>
+						<input type="text" formControlName="id" hidden>
+						<mat-form-field>
+							<mat-label>Dia</mat-label>
+							<input type="date" matInput placeholder="Día" formControlName="day" required>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Hora</mat-label>
+							<input type="time" matInput placeholder="Hora" formControlName="hour" required>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Entrada / Salida</mat-label>
+							<mat-select formControlName="checkinSelect" name="mySelect" required>
+								<mat-option>--- Seleccionar ---</mat-option>
+								<mat-option [value]="0">Entrada</mat-option>
+								<mat-option [value]="1">Salida</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<div class="buttons-group">
+							<button type="submit" *ngIf="post">Crear fichaje</button>
+							<button type="submit" *ngIf="!post">Modificar fichaje</button>
+							<button type="reset">Limpiar</button>
+						</div>
+					</form>
+				</div>
+			</article>
+		</section>
+	</div>
+	<div class="secondRow">
+		<section>
+			<article>
+				<p class="title">Fichajes</p>
+				<div class="content">
+					<table mat-table [dataSource]="checkins">
+						<ng-container matColumnDef="name">
+							<th mat-header-cell *matHeaderCellDef> Nombre </th>
+							<td mat-cell *matCellDef="let element"> {{element.user}} </td>
+						</ng-container>
 
-                        <ng-container matColumnDef="icon">
-                            <th mat-header-cell *matHeaderCellDef> </th>
-                            <td mat-cell *matCellDef="let element">
+						<ng-container matColumnDef="date">
+							<th mat-header-cell *matHeaderCellDef> Fecha </th>
+							<td mat-cell *matCellDef="let element"> {{element.date.split('T')[0].replaceAll('-',
+								'/').split('/').reverse().join('/')}} </td>
+						</ng-container>
 
-                            </td>
-                        </ng-container>
+						<ng-container matColumnDef="time">
+							<th mat-header-cell *matHeaderCellDef> Hora </th>
+							<td mat-cell *matCellDef="let element"> {{element.date.split('T')[1].split('.')[0]}} </td>
+						</ng-container>
 
-                        <tr mat-header-row *matHeaderRowDef="checkinsColumns; sticky: true;"></tr>
-                        <tr mat-row (click)="fillCheckInForm(row)" [class.clicked-row]="clickedCheckinsRow === row"
-                            *matRowDef="let row; columns: checkinsColumns;"></tr>
-                    </table>
-                </div>
-            </article>
-        </section>
-    </div>
+						<ng-container matColumnDef="checkin">
+							<th mat-header-cell *matHeaderCellDef class="last-column"> Entrada / Salida </th>
+							<td mat-cell *matCellDef="let element"> <span class="inline">{{element.checkIn ? 'Entrada' :
+									'Salida'}} <div class="{{element.checkIn ? 'circleGreen' : 'circleRed'}}"></div>
+								</span></td>
+						</ng-container>
+
+						<ng-container matColumnDef="icon">
+							<th mat-header-cell *matHeaderCellDef> </th>
+							<td mat-cell *matCellDef="let element">
+
+							</td>
+						</ng-container>
+
+						<tr mat-header-row *matHeaderRowDef="checkinsColumns; sticky: true;"></tr>
+						<tr mat-row (click)="fillCheckInForm(row)" [class.clicked-row]="clickedCheckinsRow === row"
+							*matRowDef="let row; columns: checkinsColumns;"></tr>
+					</table>
+				</div>
+			</article>
+		</section>
+	</div>
 </main>

@@ -12,15 +12,15 @@ export class GroupService {
   constructor(private http: HttpClient) { }
 
   getAllGroups(): Observable<Group[]> {
-    return this.http.get<Group[]>(`${Constants.BASE_URL}api/group`, {headers: Constants.headers});
+    return this.http.get<Group[]>(`${Constants.BASE_URL}api/group`, { headers: Constants.headers });
   }
 
   createNewGroup(group: Group): Observable<Group> {
-    return this.http.post<Group>(`${Constants.BASE_URL}api/group`, group, {headers: Constants.headers});
+    return this.http.post<Group>(`${Constants.BASE_URL}api/group`, group, { headers: Constants.headers });
   }
 
   updateGroup(group: Group): Observable<Group> {
-    return this.http.put<Group>(`${Constants.BASE_URL}api/group`, group, {headers: Constants.headers});
+    return this.http.put<Group>(`${Constants.BASE_URL}api/group`, group, { headers: Constants.headers });
   }
 
 }

@@ -18,8 +18,7 @@ export class SideMenuComponent {
     { nombre: "Usuarios", src: "../../../assets/Images/sidebar/outlined/Usuarios.svg", srcHover: "../../../assets/Images/sidebar/filled/Usuarios.svg", link: 'usuarios' },
     { nombre: "Fichajes", src: "../../../assets/Images/sidebar/outlined/Fichajes.svg", srcHover: "../../../assets/Images/sidebar/filled/Fichajes.svg", link: 'fichajes' },
     { nombre: "Stock", src: "../../../assets/Images/sidebar/outlined/Stock.svg", srcHover: "../../../assets/Images/sidebar/filled/Stock.svg", link: 'stock' },
-    { nombre: "Salas", src: "../../../assets/Images/sidebar/outlined/Salas.svg", srcHover: "../../../assets/Images/sidebar/filled/Salas.svg", link: 'salas' },
-    { nombre: "Docs", src: "../../../assets/Images/sidebar/outlined/Docs.svg", srcHover: "../../../assets/Images/sidebar/filled/Docs.svg", link: 'docs' }
+    { nombre: "Salas", src: "../../../assets/Images/sidebar/outlined/Salas.svg", srcHover: "../../../assets/Images/sidebar/filled/Salas.svg", link: 'salas' }
   ];
 
   isActiveLink(item: ItemMenu): boolean {

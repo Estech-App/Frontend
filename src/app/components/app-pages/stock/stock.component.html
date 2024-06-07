@@ -23,8 +23,9 @@
             <article>
                 <div class="title">
                     <div class="inline">
-                        <span class="title-inline">Crear o Editar stock</span><span
-                            *ngIf="currentEditStock.id != null"><span class="title-inline">Editando: </span>
+                        <span class="title-inline">Crear o Editar stock</span>
+                        <span *ngIf="currentEditStock.id != null">
+                            <span class="title-inline">Editando: </span>
                             {{currentEditStock.name}}</span>
                     </div>
                 </div>

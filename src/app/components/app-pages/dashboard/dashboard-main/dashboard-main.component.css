@@ -15,7 +15,7 @@ section {
     align-self: flex-start;
 }
 
-span h2{
+span h2 {
     font-size: 20px;
     font-weight: 500;
 }
@@ -47,5 +47,14 @@ app-groups-dashboard {
 }
 
 app-calendar-dashboard {
-    flex: .195;
+    flex: 0.165
+}
+
+.main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }

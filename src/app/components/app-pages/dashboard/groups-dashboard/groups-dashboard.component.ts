@@ -11,7 +11,9 @@ export class GroupsDashboardComponent {
   displayedColumns = ['name', 'year', 'students', 'details']
   groups: Group[] = []
 
-  constructor(private groupService: GroupService) {
+  constructor(private groupService: GroupService) { }
+
+  ngOnInit(): void {
     this.getGroups()
   }
 
@@ -25,5 +27,4 @@ export class GroupsDashboardComponent {
       }
     })
   }
-
 }
