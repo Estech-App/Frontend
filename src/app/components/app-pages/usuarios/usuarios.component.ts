@@ -262,13 +262,16 @@ export class UsuariosComponent {
   }
 
   updateUser() {
-    let user: User = {
+    
+    let user: User | Teacher | Student = {
       id: this.form.get('id')?.value,
       name: this.form.get('name')?.value,
       lastname: this.form.get('lastname')?.value,
       email: this.form.get('email')?.value,
       role: this.form.get('role')?.value,
       password: this.form.get('password')?.value,
+      modules: this.form.get('modules')?.value,
+      groups: this.form.get('group')?.value
     }
 
     console.log(user);

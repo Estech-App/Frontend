@@ -296,6 +296,7 @@ export class GruposComponent {
     } else {
       this.post = false
       this.selectedGroup = row
+      
 
       if (row.courseId !== null) {
         this.moduleService.getModulesByCourseId(row.courseId).subscribe({
@@ -308,9 +309,8 @@ export class GruposComponent {
               course: this.courses.find(course => course.id === row.courseId),
               evening: row.evening ? '1' : '0'
             })
-
             this.selectedModules = row.timeTables.map(timeTable => this.modules.find(module => module.id === timeTable.moduleId)).filter(module => module !== undefined) as ModuleDTO[];
-
+            this.calendar.calendar.removeAllEvents()
             row.timeTables.forEach((event: any) => {
               event.color = this.modules.find(module => module.id === event.moduleId)?.color
               let startString: Date = new Date(event.start)
