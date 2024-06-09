@@ -9,7 +9,6 @@ import { tokenGuard } from './guards/token.guard';
 import { DireccionMainComponent } from './components/app-pages/direccion/direccion-main/direccion-main.component';
 import { UsuariosComponent } from './components/app-pages/usuarios/usuarios.component';
 import { GruposComponent } from './components/app-pages/grupos/grupos.component';
-import { GroupsDetailsComponent } from './components/app-pages/groups-details/groups-details.component';
 import { CheckinsComponent } from './components/app-pages/checkins/checkins.component';
 import { RoomsComponent } from './components/app-pages/rooms/rooms.component';
 import { StockComponent } from './components/app-pages/stock/stock.component';
@@ -22,10 +21,9 @@ const routes: Routes = [
     {path: 'direccion', component: DireccionMainComponent, title: 'Direccion | Estech'},
     {path: 'grupos', component: GruposComponent, title: 'Grupos | Estech'},
     {path: 'usuarios', component: UsuariosComponent, title: 'Usuarios | Estech'},
-    {path: 'detail', component: GroupsDetailsComponent, title: 'Detail | Estech'},
     {path: 'fichajes', component: CheckinsComponent, title: 'Fichajes | Estech'},
     {path: 'salas', component: RoomsComponent, title: 'Salas | Estech'},
-    {path: 'stock', component: StockComponent, title: 'Stock | Estech'}
+    {path: 'stock', component: StockComponent, title: 'Stock | Estech'},
   ], canActivate: [tokenGuard]},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];

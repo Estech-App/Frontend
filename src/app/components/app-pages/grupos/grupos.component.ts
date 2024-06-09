@@ -35,8 +35,6 @@ export class GruposComponent {
   @ViewChild('calendar') calendar!: any;
   @ViewChild('cardList', { static: true }) cardList!: any
 
-  // selectedGroup: Group
-
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     timeZone: 'Europe/Madrid',
@@ -72,7 +70,7 @@ export class GruposComponent {
       timeGridPlugin
     ],
     headerToolbar: {
-      left: 'prev,next',
+      left: '',
       center: '',
       right: ''
     },
@@ -247,7 +245,9 @@ export class GruposComponent {
     }
 
     group.timeTables.forEach((timeTable: TimeTable) => {
-      timeTable.id = null
+      if (timeTable.id === '') {
+        timeTable.id = null
+      }
     })
 
     console.log(group)
@@ -259,6 +259,17 @@ export class GruposComponent {
         this.getAllGroups()
         this.calendar.calendar.removeAllEvents()
         this.selectedModules = []
+        this.selectedGroup = {
+          id: null,
+          name: '',
+          description: '',
+          year: '',
+          roomId: null,
+          courseId: null,
+          users: [],
+          timeTables: [],
+          evening: false
+        }
       }, error: err => {
         console.log(err)
       }
@@ -376,11 +387,11 @@ export class GruposComponent {
       console.log(modules[0].name)
       let start = event.start?.toISOString()
       let end = event.end?.toISOString()
-      let groupId = this.form.get('id')?.value
+      let schoolGroupId = this.form.get('id')?.value
       let moduleId = modules.find((module: ModuleDTO) => module.acronym === event.title.split('\n')[0])?.id
       let weekday = event.start?.getDay().toString()
 
-      timeTables.push({ id, start, end, groupId, moduleId, weekday })
+      timeTables.push({ id, start, end, schoolGroupId, moduleId, weekday })
     });
 
     return timeTables

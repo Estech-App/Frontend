@@ -23,4 +23,8 @@ export class GroupService {
     return this.http.put<Group>(`${Constants.BASE_URL}api/group`, group, { headers: Constants.headers });
   }
 
+  grtGroupById(id: string): Observable<Group> {
+    return this.http.get<Group>(`${Constants.BASE_URL}api/group/${id}`, { headers: Constants.headers });
+  }
+
 }
