@@ -8,7 +8,7 @@ import { GroupService } from 'src/app/services/groups/group.service';
   styleUrls: ['./groups-dashboard.component.css']
 })
 export class GroupsDashboardComponent {
-  displayedColumns = ['name', 'year', 'students', 'details']
+  displayedColumns = ['name', 'year', 'students']
   groups: Group[] = []
 
   constructor(private groupService: GroupService) { }

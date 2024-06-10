@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Group } from 'src/app/models/groups/Group';
+import { Mentoring } from 'src/app/models/mentorings/Mentoring';
+import { Teacher } from 'src/app/models/users/Teacher';
 import { User } from 'src/app/models/users/User';
-import { CourseService } from 'src/app/services/courses/course.service';
-import { GroupService } from 'src/app/services/groups/group.service';
-import { ModuleService } from 'src/app/services/module/module.service';
+import { MentoringService } from 'src/app/services/mentorings/mentoring.service';
 import { UserService } from 'src/app/services/users/user.service';
 
-interface MiscData {
-  courses: number
-  groups: number
-  modules: number
-  students: number
-  teachers: number
+interface Data extends Teacher {
+  mentorings: Mentoring[]
 }
 
 @Component({
@@ -20,33 +17,29 @@ interface MiscData {
   styleUrls: ['./month-hours.component.css']
 })
 export class MonthHoursComponent {
-  displayedColumns = ['courses', 'groups', 'modules', 'students', 'teachers']
-  data: MatTableDataSource<MiscData> = new MatTableDataSource<MiscData>()
+  displayedColumns = ['teachers', 'groups', 'mentorings']
+  teachers: MatTableDataSource<Data> = new MatTableDataSource<Data>()
 
   //TODO: FIX THIS
 
   constructor(
     private userService: UserService,
-    private courseService: CourseService,
-    private groupService: GroupService,
-    private moduleService: ModuleService) {
+    private mentoringService: MentoringService) {
 
   }
 
   ngOnInit(): void {
     this.getUsers()
-    this.getCourses()
-    this.getGroups()
-    this.getModules()
   }
 
   getUsers() {
     this.userService.getUsers().subscribe({
       next: (res) => {
-        const teachers = res.filter((user: User) => user.role === 'TEACHER')
-        const students = res.filter((user: User) => user.role === 'STUDENT')
-        this.data.data[0].teachers = teachers.length
-        this.data.data[0].students = students.length
+        res.forEach((user: User) => {
+          if (user.role === 'TEACHER') {
+            this.getTeacherById(user.id)
+          }
+        })
       },
       error: (error) => {
         console.error(error)
@@ -54,10 +47,10 @@ export class MonthHoursComponent {
     })
   }
 
-  getCourses() {
-    this.courseService.getAllCourses().subscribe({
+  getTeacherById(id: string) {
+    this.userService.getTeacherById(id).subscribe({
       next: (res) => {
-        this.data.data[0].courses = res.length
+        this.getMentoringsByTeacherId(res.id, res)
       },
       error: (error) => {
         console.error(error)
@@ -65,26 +58,16 @@ export class MonthHoursComponent {
     })
   }
 
-  getGroups() {
-    this.groupService.getAllGroups().subscribe({
+  getMentoringsByTeacherId(teacherId: string, teacher: Teacher) {
+    this.mentoringService.getMentoringByTeacherId(teacherId).subscribe({
       next: (res) => {
-        this.data.data[0].groups = res.length
+        this.teachers.data.push({ ...teacher, mentorings: res })
+        this.teachers._updateChangeSubscription()
+        console.log({ teachers: this.teachers.data })
       },
       error: (error) => {
         console.error(error)
       }
     })
   }
-
-  getModules() {
-    this.moduleService.getAllModules().subscribe({
-      next: (res) => {
-        this.data.data[0].modules = res.length
-      },
-      error: (error) => {
-        console.error(error)
-      }
-    })
-  }
-
 }

@@ -25,7 +25,7 @@ export class CoursesComponent {
   ) {
     this.getAllCourses()
     this.form = this.formBuilder.group({
-	  id: '',
+      id: '',
       name: '',
       acronym: ''
     })
@@ -42,14 +42,15 @@ export class CoursesComponent {
     this.courseService.createNewCourse(course).subscribe({
       next: res => {
         this.getAllCourses()
-        this.form.setValue({name: '', acronym: ''})
+        this.form.setValue({id: '', name: '', acronym: '' })
+        location.reload()
       }, error: err => {
         console.log(err);
       }
     })
 
-	this.name = ''
-	this.acronym = ''
+    this.name = ''
+    this.acronym = ''
   }
 
   getAllCourses(): void {
@@ -63,37 +64,38 @@ export class CoursesComponent {
   }
 
   getCourseById(id: number) {
-	 this.courseService.getCourseById(id).subscribe({
-		next: res => {
-			this.form.setValue({
-				id: res.id,
-				name: res.name,
-				acronym: res.acronym
-			})
-		}, error: err => {
-			console.log(err);
-		}
-	 })
-	 this.post = false
+    this.courseService.getCourseById(id).subscribe({
+      next: res => {
+        this.form.setValue({
+          id: res.id,
+          name: res.name,
+          acronym: res.acronym
+        })
+      }, error: err => {
+        console.log(err);
+      }
+    })
+    this.post = false
   }
 
   updateCourse() {
     let course: Course = {
-	  id: this.form.get('id')?.value,
+      id: this.form.get('id')?.value,
       name: this.form.get('name')?.value,
       acronym: this.form.get('acronym')?.value,
       description: ''
     }
 
-	this.courseService.updateCourse(course).subscribe({
-		next: res => {
-			this.getAllCourses()
-			this.form.reset()
-			this.post = true
-		}, error: err => {
-			console.log(err);
-		}
-	})
+    this.courseService.updateCourse(course).subscribe({
+      next: res => {
+        this.getAllCourses()
+        this.form.reset()
+        this.post = true
+        location.reload()
+      }, error: err => {
+        console.log(err);
+      }
+    })
   }
 
 }

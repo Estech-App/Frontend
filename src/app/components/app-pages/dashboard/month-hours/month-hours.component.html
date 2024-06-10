@@ -2,34 +2,24 @@
     <article>
         <p class="title">Horas Mensuales de Profesores</p>
         <div class="content">
-            <table mat-table [dataSource]="data">
+            <table mat-table [dataSource]="teachers">
 
                 <!-- Date Column -->
-                <ng-container matColumnDef="courses">
+                <ng-container matColumnDef="teachers">
                     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                    <td mat-cell *matCellDef="let element"> {{ element }} </td>
+                    <td mat-cell *matCellDef="let element"> {{ element.name + ' ' + element.lastname}} </td>
                 </ng-container>
 
                 <!-- Time Column -->
                 <ng-container matColumnDef="groups">
-                    <th mat-header-cell *matHeaderCellDef> Horas lectivas </th>
-                    <td mat-cell *matCellDef="let element"> {{ element }} </td>
+                    <th mat-header-cell *matHeaderCellDef> Modulos Impartidos </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.modules.length }} </td>
                 </ng-container>
 
                 <!-- Checkin Column -->
-                <ng-container matColumnDef="modules">
-                    <th mat-header-cell *matHeaderCellDef> Horas tutorias </th>
-                    <td mat-cell *matCellDef="let element"> {{ element }} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="students">
-                    <th mat-header-cell *matHeaderCellDef> Horas totales </th>
-                    <td mat-cell *matCellDef="let element"> {{ element }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="teachers">
-                    <th mat-header-cell *matHeaderCellDef> Horas totales </th>
-                    <td mat-cell *matCellDef="let element"> {{ element }}</td>
+                <ng-container matColumnDef="mentorings">
+                    <th mat-header-cell *matHeaderCellDef> Total de tutorias </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.mentorings.length }} </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>

@@ -1,5 +1,5 @@
 export interface Course {
-	id: number | null
+	id: number | null | string
     name: string
     acronym: string
     description: string

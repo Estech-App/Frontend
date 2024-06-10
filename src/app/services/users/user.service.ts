@@ -45,7 +45,15 @@ export class UserService {
     return this.http.put<User>(`${Constants.BASE_URL}api/user/update-user`, user, { headers: Constants.headers });
   }
 
+  updateStudent(user: Student): Observable<Student> {
+    return this.http.put<Student>(`${Constants.BASE_URL}api/user/update-student`, user, { headers: Constants.headers });
+  }
+
+  updateTeacher(user: Teacher): Observable<Teacher> {
+    return this.http.put<Teacher>(`${Constants.BASE_URL}api/user/update-teacher`, user, { headers: Constants.headers });
+  }
+
   getByRoleId(roleId: number): Observable<User[]> {
-	return this.http.get<User[]>(`${Constants.BASE_URL}api/user/find-by-role/${roleId}`, {headers: Constants.headers});
+    return this.http.get<User[]>(`${Constants.BASE_URL}api/user/find-by-role/${roleId}`, { headers: Constants.headers });
   }
 }

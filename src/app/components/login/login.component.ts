@@ -43,6 +43,7 @@ export class LoginComponent {
         console.log(err)
         sessionStorage.removeItem('token')
         sessionStorage.removeItem('username')
+        alert('El usuario o la contraseña son incorrectos. Por favor, inténtelo de nuevo.')
       }
     })
   }
