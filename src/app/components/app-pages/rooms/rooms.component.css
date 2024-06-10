@@ -15,7 +15,7 @@ main {
 .firstRow {
     display: flex;
     flex-direction: column;
-    height: 900px;
+    height: fit-content;
     width: 50%;
     gap: 20px;
 }
@@ -53,7 +53,7 @@ article {
 }
 
 .firstRow .content {
-    height: 360px;
+    height: 320px;
 }
 
 .content {
@@ -160,5 +160,5 @@ full-calendar {
 }
 
 .content.fc {
-    height: 522px !important;
+    height: 444px !important;
 }

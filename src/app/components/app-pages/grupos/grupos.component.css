@@ -20,7 +20,7 @@ main {
     gap: 20px;
 }
 
-.secondRow{
+.secondRow {
     display: flex;
     flex-direction: column;
     height: 850px;
@@ -44,7 +44,7 @@ section {
 }
 
 .secondRow section {
-    height: 100%;
+    height: fit-content;
 }
 
 article {
@@ -151,17 +151,16 @@ td .detail {
 }
 
 .second-section .content {
-    height: 426px;
+    height: 350px;
 }
 
 .secondRow .second-section .content {
-    height: 220px;
+    height: 144px;
 }
 
 full-calendar {
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
 }
 
 .card-list {
