@@ -44,7 +44,7 @@ export class ModulesComponent {
 			year: [''],
 			course: [],
 			teachers: [],
-			color: ['']
+			color: '#009CB5'
 		})
 	}
 
@@ -73,7 +73,6 @@ export class ModulesComponent {
 	}
 
 	getModuleById(id: number) {
-		// TODO - NEEDS TO FILL THE FORM WITH MODULE INFO (INCLUDING TEACHERS)
 		this.post = false
 		this.selections = []
 		this.moduleService.getModuleById(id).subscribe({
@@ -100,8 +99,6 @@ export class ModulesComponent {
 		})
 	}
 
-	// TODO - UPDATE MODULE FUNCTION!!!!!
-
 	createNewModule() {
 		let name = this.form.get('name')?.value
 		let acronym = this.form.get('acronym')?.value
@@ -114,7 +111,7 @@ export class ModulesComponent {
 			name == null || name == '' ||
 			acronym == null || acronym == '' ||
 			year == null || year == '' ||
-			course == null || color == null
+			course == null || color == ''
 		) {
 			this.formError == true
 			return
@@ -161,7 +158,7 @@ export class ModulesComponent {
 			name == null || name == '' ||
 			acronym == null || acronym == '' ||
 			year == null || year == '' ||
-			course == null || color == null
+			course == null || color == ''
 		) {
 			this.formError == true
 			return

@@ -278,6 +278,8 @@ export class UsuariosComponent {
         groups: groupsIds
       }
 
+      console.log({ student })
+
       this.userService.updateStudent(student).subscribe({
         next: res => {
           this.getAllUsers()
