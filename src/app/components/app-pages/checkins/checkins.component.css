@@ -46,11 +46,11 @@ article {
 }
 
 .firstRow .content {
-    height: 310px;
+    height: 300px;
 }
 
 .content {
-    height: 738px;
+    height: 718px;
     overflow: auto;
 }
 

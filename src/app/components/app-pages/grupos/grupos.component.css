@@ -15,7 +15,7 @@ main {
 .firstRow {
     display: flex;
     flex-direction: column;
-    height: 800px;
+    height: fit-content;
     width: 50%;
     gap: 20px;
 }
@@ -23,7 +23,7 @@ main {
 .secondRow {
     display: flex;
     flex-direction: column;
-    height: 850px;
+    height: fit-content;
     width: 100%;
     gap: 20px;
 }
@@ -36,11 +36,11 @@ section {
 }
 
 .first-section {
-    height: 700px;
+    height: 350px;
 }
 
 .secondRow .first-section .content {
-    height: 506px;
+    height: 460px;
 }
 
 .secondRow section {
@@ -151,7 +151,7 @@ td .detail {
 }
 
 .second-section .content {
-    height: 350px;
+    height: 330px;
 }
 
 .secondRow .second-section .content {

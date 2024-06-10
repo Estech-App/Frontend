@@ -50,29 +50,31 @@
 					</mat-form-field>
 				</div>
 
-				<mat-form-field>
-					<mat-label>Ciclo</mat-label>
-					<mat-select formControlName="course" name="mySelect" required>
-						<mat-option>--- Elige uno ---</mat-option>
-						<mat-option *ngFor="let course of courses" [value]="course.id">
-							{{course.name}}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-
 				<mat-radio-group aria-label="Selecciona el curso al que pertenece el módulo" formControlName="year">
 					<mat-radio-button value="1" [checked]="form.get('year')?.value == 1">Primer Curso</mat-radio-button>
 					<mat-radio-button value="2" [checked]="form.get('year')?.value == 2">Segundo
 						Curso</mat-radio-button>
 				</mat-radio-group>
 
-				<mat-form-field>
-					<mat-label>Profesores</mat-label>
-					<mat-select formControlName="teachers" [(value)]="selections" name="selections" multiple>
-						<mat-option *ngFor="let teacher of teachers" [value]="teacher.id">{{teacher.name}}
-							{{teacher.lastname}}</mat-option>
-					</mat-select>
-				</mat-form-field>
+				<div class="inline">
+					<mat-form-field>
+						<mat-label>Ciclo</mat-label>
+						<mat-select formControlName="course" name="mySelect" required>
+							<mat-option>--- Elige uno ---</mat-option>
+							<mat-option *ngFor="let course of courses" [value]="course.id">
+								{{course.name}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Profesores</mat-label>
+						<mat-select formControlName="teachers" [(value)]="selections" name="selections" multiple>
+							<mat-option *ngFor="let teacher of teachers" [value]="teacher.id">{{teacher.name}}
+								{{teacher.lastname}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
 
 				<mat-form-field>
 					<mat-label>Color</mat-label>

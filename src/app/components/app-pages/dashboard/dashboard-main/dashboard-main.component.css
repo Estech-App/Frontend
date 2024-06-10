@@ -30,7 +30,7 @@ span h4 {
     align-items: flex-start;
     justify-content: flex-start;
     width: 98%;
-    height: 50%;
+    height: fit-content;
     gap: 20px;
 }
 
@@ -47,7 +47,7 @@ app-groups-dashboard {
 }
 
 app-calendar-dashboard {
-    flex: 0.165
+    flex: 0.135
 }
 
 .main-container {
