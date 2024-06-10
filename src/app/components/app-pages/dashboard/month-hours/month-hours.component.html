@@ -5,26 +5,21 @@
             <table mat-table [dataSource]="teachers">
 
                 <!-- Date Column -->
-                <ng-container matColumnDef="name">
+                <ng-container matColumnDef="teachers">
                     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    <td mat-cell *matCellDef="let element"> {{ element.name + ' ' + element.lastname}} </td>
                 </ng-container>
 
                 <!-- Time Column -->
-                <ng-container matColumnDef="school">
-                    <th mat-header-cell *matHeaderCellDef> Horas lectivas </th>
-                    <td mat-cell *matCellDef="let element"> {{element.school}} </td>
+                <ng-container matColumnDef="groups">
+                    <th mat-header-cell *matHeaderCellDef> Modulos Impartidos </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.modules.length }} </td>
                 </ng-container>
 
                 <!-- Checkin Column -->
-                <ng-container matColumnDef="mentoring">
-                    <th mat-header-cell *matHeaderCellDef> Horas tutorias </th>
-                    <td mat-cell *matCellDef="let element"> {{element.mentoring}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="total">
-                    <th mat-header-cell *matHeaderCellDef> Horas totales </th>
-                    <td mat-cell *matCellDef="let element"> {{ element.total }}</td>
+                <ng-container matColumnDef="mentorings">
+                    <th mat-header-cell *matHeaderCellDef> Total de tutorias </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.mentorings.length }} </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>

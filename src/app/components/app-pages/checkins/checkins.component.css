@@ -1,4 +1,4 @@
-*:not(.title) {
+*:not(.title, .title-inline) {
     font-size: 16px;
 }
 
@@ -27,14 +27,14 @@ main {
 }
 
 section {
-   border: 1px solid #969696;
+    border: 1px solid #969696;
     border-radius: 5px;
     width: 100%;
-  height: 100%;
+    height: fit-content;
 }
 
 .secondRow section {
-    height: 100%;
+    height: fit-content;
 }
 
 article {
@@ -46,11 +46,11 @@ article {
 }
 
 .firstRow .content {
-  height: 325px;
+    height: 300px;
 }
 
 .content {
-    height: 98%;
+    height: 718px;
     overflow: auto;
 }
 
@@ -110,4 +110,32 @@ form {
 
 .filter-input {
     width: 40%;
+}
+
+th#filter-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+th#filter-input mat-form-field {
+    margin-top: 6%;
+}
+
+.title-inline {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.title-inline input {
+    box-sizing: border-box;
+}
+
+.inline {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
 }

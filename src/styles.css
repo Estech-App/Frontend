@@ -8,6 +8,10 @@
     font-style: normal
 }
 
+body {
+    height: 100vh;
+}
+
 /* Tables Styles */
 
 .bold {

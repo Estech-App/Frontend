@@ -19,12 +19,7 @@
                 <!-- Checkin Column -->
                 <ng-container matColumnDef="students">
                     <th mat-header-cell *matHeaderCellDef> Nº Total Personas </th>
-                    <td mat-cell *matCellDef="let element"> {{element.users.length}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="details">
-                    <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                    <td mat-cell *matCellDef="let element"> <button>Detalles</button></td>
+                    <td mat-cell *matCellDef="let element"> {{element.users != null ? element.users.length : 0}} </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>

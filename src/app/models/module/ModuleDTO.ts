@@ -6,6 +6,7 @@ export interface ModuleDTO {
     name: string,
     acronym: string,
     courseAcronym: string,
-    courseDTO: Course
-    usersName: string[]
+    courseDTO: Course,
+    usersName: string[],
+    color: string,
 }

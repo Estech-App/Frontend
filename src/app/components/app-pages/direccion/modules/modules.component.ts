@@ -43,7 +43,8 @@ export class ModulesComponent {
 			acronym: [''],
 			year: [''],
 			course: [],
-			teachers: []
+			teachers: [],
+			color: '#009CB5'
 		})
 	}
 
@@ -72,7 +73,6 @@ export class ModulesComponent {
 	}
 
 	getModuleById(id: number) {
-		// TODO - NEEDS TO FILL THE FORM WITH MODULE INFO (INCLUDING TEACHERS)
 		this.post = false
 		this.selections = []
 		this.moduleService.getModuleById(id).subscribe({
@@ -92,13 +92,12 @@ export class ModulesComponent {
 					acronym: res.acronym,
 					year: res.year,
 					course: res.courseDTO.id,
-					teachers: this.selections
+					teachers: this.selections,
+					color: res.color
 				})
 			}
 		})
 	}
-
-	// TODO - UPDATE MODULE FUNCTION!!!!!
 
 	createNewModule() {
 		let name = this.form.get('name')?.value
@@ -106,12 +105,13 @@ export class ModulesComponent {
 		let year = this.form.get('year')?.value
 		let course: number = this.form.get('course')?.value
 		let user: number[] = this.form.get('teachers')?.value
+		let color = this.form.get('color')?.value
 
 		if (
 			name == null || name == '' ||
 			acronym == null || acronym == '' ||
 			year == null || year == '' ||
-			course == null
+			course == null || color == ''
 		) {
 			this.formError == true
 			return
@@ -122,6 +122,7 @@ export class ModulesComponent {
 		newModule.acronym = acronym
 		newModule.year = year
 		newModule.course.id = course
+		newModule.color = color
 
 		newModule.users = []
 		if (user != null) {
@@ -151,12 +152,13 @@ export class ModulesComponent {
 		let year = this.form.get('year')?.value
 		let course: number = this.form.get('course')?.value
 		let user: number[] = this.form.get('teachers')?.value
+		let color = this.form.get('color')?.value
 
 		if (
 			name == null || name == '' ||
 			acronym == null || acronym == '' ||
 			year == null || year == '' ||
-			course == null
+			course == null || color == ''
 		) {
 			this.formError == true
 			return
@@ -168,6 +170,7 @@ export class ModulesComponent {
 		updatedModule.acronym = acronym
 		updatedModule.year = year
 		updatedModule.course.id = course
+		updatedModule.color = color
 
 		updatedModule.users = []
 		if (user != null) {

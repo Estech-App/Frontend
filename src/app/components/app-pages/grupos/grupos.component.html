@@ -3,46 +3,47 @@
     <section class="first-section">
       <article>
         <div class="title">
-          <div class="inline"><span>Crear / Modificar Grupos</span><span>
-              <div class="buttons-group">
-                <button mat-raised-button type="submit">Guardar</button>
-                <button mat-raised-button type="reset">Borrar</button>
-              </div>
-            </span></div>
+          Crear / Modificar Grupos
         </div>
         <div class="content">
           <form [formGroup]="form" (submit)="post ? createNewGroup() : updateGroup()">
 
             <input type="text" name="id" id="id" formControlName="id" hidden>
 
+            <mat-form-field>
+              <input matInput placeholder="YY/YY" formControlName="year" required>
+            </mat-form-field>
+
             <div class="inline">
+
               <mat-form-field>
-                <input matInput placeholder="YY/YY" formControlName="year" required>
+                <mat-label>Ciclo</mat-label>
+                <mat-select formControlName="course" (selectionChange)="getModulesByCourseId($event.value.id)">
+                  <mat-option [disabled]="true">---Seleccionar---</mat-option>
+                  <mat-option *ngFor="let course of courses" [value]="course">{{course.name}}</mat-option>
+                </mat-select>
               </mat-form-field>
 
               <mat-form-field>
-                <mat-label>Módulos</mat-label>
-                <mat-select formControlName="modules" multiple>
-                  <mat-option>---Seleccionar---</mat-option>
-                  <mat-option *ngFor="let module of modules" [value]="module.id">{{module.name}}</mat-option>
+                <mat-label>Modulos</mat-label>
+                <mat-select formControlName="modules" multiple
+                  (selectionChange)="addModuleToSelectedModules($event.value)">
+                  <mat-option [disabled]="true">---Seleccionar---</mat-option>
+                  <mat-option *ngFor="let module of modules" [value]="module">{{module.acronym}}</mat-option>
                 </mat-select>
               </mat-form-field>
+
             </div>
 
-            <div class="inline">
-              <mat-form-field>
-                <mat-label>Cursos</mat-label>
-                <mat-select formControlName="courses" multiple>
-                  <mat-option>---Seleccionar---</mat-option>
-                  <mat-option *ngFor="let course of courses" [value]="course.id">{{course.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
+            <mat-label>Horario</mat-label>
+            <mat-radio-group formControlName="evening" aria-label="Horario" (change)="changeCalendarView()">
+              <mat-radio-button value="0" [checked]="true">Mañana</mat-radio-button>
+              <mat-radio-button value="1">Tarde</mat-radio-button>
+            </mat-radio-group>
 
-              <mat-label>Horario</mat-label>
-              <mat-radio-group formControlName="schedule" aria-label="Horario">
-                <mat-radio-button value="1">Mañana</mat-radio-button>
-                <mat-radio-button value="2">Tarde</mat-radio-button>
-              </mat-radio-group>
+            <div class="buttons-group">
+              <button mat-raised-button type="submit">Guardar</button>
+              <button mat-raised-button type="reset">Borrar</button>
             </div>
 
           </form>
@@ -56,28 +57,24 @@
           <table mat-table [dataSource]="groups">
 
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef></th>
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
               <td mat-cell *matCellDef="let element">{{element.name}}</td>
             </ng-container>
 
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let element">{{element.description}}</td>
+              <td mat-cell *matCellDef="let element"></td>
             </ng-container>
 
             <ng-container matColumnDef="year">
-              <th mat-header-cell *matHeaderCellDef></th>
+              <th mat-header-cell *matHeaderCellDef> Año </th>
               <td mat-cell *matCellDef="let element">{{element.year}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="details">
-              <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let element"><button>></button></td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <!-- <tr mat-row [class.clicked-row]="selectedGroup === row" *matRowDef="let row; columns: displayedColumns;"> -->
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            <tr mat-row mat-row [class.clicked-row]="selectedGroup === row" (click)="addRowToClicked(row)"
+              *matRowDef="let row; columns: displayedColumns;">
             </tr>
 
           </table>
@@ -86,13 +83,27 @@
     </section>
   </div>
   <div class="secondRow">
-    <section>
+    <section class="first-section">
       <article>
         <div class="title">
-          <div class="inline"><span>Horario del grupo</span><span><button>Guardar Horario</button></span></div>
+          Horario del grupo
         </div>
         <div class="content">
-          <full-calendar [options]="calendarOptions()"></full-calendar>
+          <full-calendar #calendar [options]="calendarOptions()"></full-calendar>
+        </div>
+      </article>
+    </section>
+    <section class="second-section">
+      <article>
+        <div class="title">Modulos</div>
+        <div class="content">
+          <div #cardList class="card-list">
+            <mat-card *ngFor="let selectedModule of selectedModules" class="module-card"
+              [ngStyle]="{'background-color': selectedModule.color}">
+              <mat-card-content>{{selectedModule.acronym}}</mat-card-content>
+              <mat-card-content>{{selectedModule.usersName}}</mat-card-content>
+            </mat-card>
+          </div>
         </div>
       </article>
     </section>

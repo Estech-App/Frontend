@@ -28,4 +28,8 @@ export class ModuleService {
     return this.http.put<ModuleCreationDTO>(`${Constants.BASE_URL}api/module`, module, { headers: Constants.headers });
   }
 
+  getModulesByCourseId(courseId: number): Observable<ModuleDTO[]> {
+    return this.http.get<ModuleDTO[]>(`${Constants.BASE_URL}api/module/by-course/${courseId}`, { headers: Constants.headers });
+  }
+
 }

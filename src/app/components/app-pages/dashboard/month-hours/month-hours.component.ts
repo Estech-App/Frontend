@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Group } from 'src/app/models/groups/Group';
+import { Mentoring } from 'src/app/models/mentorings/Mentoring';
+import { Teacher } from 'src/app/models/users/Teacher';
 import { User } from 'src/app/models/users/User';
-import { CheckinService } from 'src/app/services/checkin/checkin.service';
+import { MentoringService } from 'src/app/services/mentorings/mentoring.service';
 import { UserService } from 'src/app/services/users/user.service';
+
+interface Data extends Teacher {
+  mentorings: Mentoring[]
+}
 
 @Component({
   selector: 'app-month-hours',
@@ -10,17 +17,29 @@ import { UserService } from 'src/app/services/users/user.service';
   styleUrls: ['./month-hours.component.css']
 })
 export class MonthHoursComponent {
-  displayedColumns = ['name', 'school', 'mentoring', 'total']
-  teachers: MatTableDataSource<User> = new MatTableDataSource<User>()
+  displayedColumns = ['teachers', 'groups', 'mentorings']
+  teachers: MatTableDataSource<Data> = new MatTableDataSource<Data>()
 
-  constructor(private userService: UserService, private checkinsService: CheckinService) {
-    this.getTeachers()
+  //TODO: FIX THIS
+
+  constructor(
+    private userService: UserService,
+    private mentoringService: MentoringService) {
+
   }
 
-  getTeachers() {
+  ngOnInit(): void {
+    this.getUsers()
+  }
+
+  getUsers() {
     this.userService.getUsers().subscribe({
-      next: (teachers) => {
-        this.teachers.data = teachers.filter(teacher => teacher.role === 'TEACHER')
+      next: (res) => {
+        res.forEach((user: User) => {
+          if (user.role === 'TEACHER') {
+            this.getTeacherById(user.id)
+          }
+        })
       },
       error: (error) => {
         console.error(error)
@@ -28,30 +47,27 @@ export class MonthHoursComponent {
     })
   }
 
-  // getCheckinHours(teacher: User) {
-  //   this.checkinsService.getCheckinByUserId(teacher.id).subscribe({
-  //     next: (checkins) => {
-  //       teacher.checkins = checkins.reduce((acc, checkin) => acc + checkin.hours, 0)
-  //     },
-  //     error: (error) => {
-  //       console.error(error)
-  //     }
-  //   })
-  // }
+  getTeacherById(id: string) {
+    this.userService.getTeacherById(id).subscribe({
+      next: (res) => {
+        this.getMentoringsByTeacherId(res.id, res)
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
+  }
 
-  // getMentoringHours() {
-  //   this.checkinsService.getMentoring().subscribe({
-  //     next: (mentoring) => {
-  //       teacher.mentoring = mentoring.reduce((acc, mentoring) => acc + mentoring.hours, 0)
-  //     },
-  //     error: (error) => {
-  //       console.error(error)
-  //     }
-  //   })
-  // }
-
-  // calculateTotalHours(teacher: User) {
-  //   teacher.total = teacher.checkins + teacher.mentoring
-  // }
-
+  getMentoringsByTeacherId(teacherId: string, teacher: Teacher) {
+    this.mentoringService.getMentoringByTeacherId(teacherId).subscribe({
+      next: (res) => {
+        this.teachers.data.push({ ...teacher, mentorings: res })
+        this.teachers._updateChangeSubscription()
+        console.log({ teachers: this.teachers.data })
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
+  }
 }

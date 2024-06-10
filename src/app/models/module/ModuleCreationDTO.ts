@@ -9,4 +9,5 @@ export class ModuleCreationDTO {
 	users = [
 		{ id: 0 }
 	]
+	color: string = ''
 }

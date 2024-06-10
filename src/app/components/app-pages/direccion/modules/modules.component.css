@@ -26,11 +26,18 @@ article {
 
 .content {
     justify-content: center;
-    height: 450px;
+    height: 350px;
     overflow-y: auto;
 }
 
 td {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.inline {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
 }

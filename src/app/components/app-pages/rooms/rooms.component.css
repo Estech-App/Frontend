@@ -15,7 +15,7 @@ main {
 .firstRow {
     display: flex;
     flex-direction: column;
-    height: 800px;
+    height: fit-content;
     width: 50%;
     gap: 20px;
 }
@@ -23,7 +23,7 @@ main {
 .secondRow {
     display: flex;
     flex-direction: column;
-    height: 800px;
+    height: fit-content;
     width: 100%;
     gap: 20px;
 }
@@ -33,15 +33,11 @@ section {
     border: 1px solid #969696;
     border-radius: 5px;
     width: 100%;
-    height: 100%;
+    height: fit-content;
 }
 
 .secondRow .content {
     height: 200px;
-}
-
-.secondRow section {
-    height: 100%;
 }
 
 .secondRow .first-section {
@@ -151,7 +147,7 @@ td .detail {
 }
 
 .second-section {
-    height: 500px !important;
+    height: fit-content !important;
 }
 
 .second-section .content {
@@ -161,4 +157,8 @@ td .detail {
 full-calendar {
     width: 100%;
     height: 100%;
+}
+
+.content.fc {
+    height: 404px !important;
 }

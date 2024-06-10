@@ -2,7 +2,7 @@ section {
     display: flex;
     flex-direction: column;
     margin: 20px;
-    height: 100%;
+    height: 95%;
     gap: 20px;
     align-items: center;
 }
@@ -15,7 +15,7 @@ section {
     align-self: flex-start;
 }
 
-span h2{
+span h2 {
     font-size: 20px;
     font-weight: 500;
 }
@@ -30,7 +30,7 @@ span h4 {
     align-items: flex-start;
     justify-content: flex-start;
     width: 98%;
-    height: 50%;
+    height: fit-content;
     gap: 20px;
 }
 
@@ -47,5 +47,14 @@ app-groups-dashboard {
 }
 
 app-calendar-dashboard {
-    flex: .195;
+    flex: 0.135
+}
+
+.main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }

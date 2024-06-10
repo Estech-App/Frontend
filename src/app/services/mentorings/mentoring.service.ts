@@ -19,4 +19,8 @@ export class MentoringService {
     return this.http.get<Mentoring[]>(`${Constants.BASE_URL}api/mentoring/by-room/${roomId}`, {headers: Constants.headers});
   }
 
+  getMentoringByTeacherId(teacherId: string): Observable<Mentoring[]> {
+    return this.http.get<Mentoring[]>(`${Constants.BASE_URL}api/mentoring/by-teacher/${teacherId}`, {headers: Constants.headers});
+  }
+
 }

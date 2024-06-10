@@ -11,7 +11,7 @@ import { Student } from 'src/app/models/users/Student';
 import { Teacher } from 'src/app/models/users/Teacher';
 import { User } from 'src/app/models/users/User';
 import { CourseService } from 'src/app/services/courses/course.service';
-import { GroupService } from 'src/app/services/group/group.service';
+import { GroupService } from 'src/app/services/groups/group.service';
 import { ModuleService } from 'src/app/services/module/module.service';
 import { RoleService } from 'src/app/services/roles/role.service';
 import { UserService } from 'src/app/services/users/user.service';
@@ -114,7 +114,7 @@ export class UsuariosComponent {
   }
 
   getGroups(): void {
-    this.groupService.getGroups().subscribe({
+    this.groupService.getAllGroups().subscribe({
       next: res => {
         this.groups = res
       }, error: err => {
@@ -142,6 +142,9 @@ export class UsuariosComponent {
 
     if (this.form.get('group')?.value !== null && this.roleName === 'STUDENT') {
       let grp = this.form.get('group')?.value
+      let groupsIds = grp.map((group: any) => {
+        return { id: group }
+      })
       let student = {
         id: '',
         name: this.form.get('name')?.value,
@@ -149,12 +152,10 @@ export class UsuariosComponent {
         email: this.form.get('email')?.value,
         role: this.form.get('role')?.value,
         password: this.form.get('password')?.value,
-        groups: grp.map((group: any) => {
-          return { id: group.id }
-        })
+        groups: groupsIds
       }
 
-      console.log(student)
+      console.log({ student })
 
       this.userService.createNewStudent(student).subscribe({
         next: res => {
@@ -175,10 +176,12 @@ export class UsuariosComponent {
         email: this.form.get('email')?.value,
         role: this.form.get('role')?.value,
         password: this.form.get('password')?.value,
-        modules: modul.map((module: any) => {
-          return { id: module.id }
+        modules: modul.map((module: ModuleDTO) => {
+          return { id: module }
         })
       }
+
+      console.log(teacher)
 
       this.userService.createNewTeacher(teacher).subscribe({
         next: res => {
@@ -260,27 +263,77 @@ export class UsuariosComponent {
   }
 
   updateUser() {
-    let user: User = {
-      id: this.form.get('id')?.value,
-      name: this.form.get('name')?.value,
-      lastname: this.form.get('lastname')?.value,
-      email: this.form.get('email')?.value,
-      role: this.form.get('role')?.value,
-      password: this.form.get('password')?.value,
-    }
-
-    console.log(user);
-
-    this.userService.updateUser(user).subscribe({
-      next: res => {
-        this.getAllUsers()
-        this.form.reset()
-        this.post = true
-      },
-      error: err => {
-        console.log(err);
+    if (this.form.get('group')?.value !== null && this.roleName === 'STUDENT') {
+      let grp = this.form.get('group')?.value
+      let groupsIds = grp.map((group: any) => {
+        return { id: group }
+      })
+      let student = {
+        id: this.form.get('id')?.value,
+        name: this.form.get('name')?.value,
+        lastname: this.form.get('lastname')?.value,
+        email: this.form.get('email')?.value,
+        role: this.form.get('role')?.value,
+        password: this.form.get('password')?.value,
+        groups: groupsIds
       }
-    })
+
+      console.log({ student })
+
+      this.userService.updateStudent(student).subscribe({
+        next: res => {
+          this.getAllUsers()
+          this.form.reset()
+          this.post = true
+        }, error: err => {
+          console.log(err);
+        }
+      })
+
+    } else if (this.form.get('modules')?.value !== null && this.roleName === 'TEACHER') {
+      let modul = this.form.get('modules')?.value
+      let teacher = {
+        id: this.form.get('id')?.value,
+        name: this.form.get('name')?.value,
+        lastname: this.form.get('lastname')?.value,
+        email: this.form.get('email')?.value,
+        role: this.form.get('role')?.value,
+        password: this.form.get('password')?.value,
+        modules: modul.map((module: ModuleDTO) => {
+          return { id: module }
+        })
+      }
+
+      this.userService.updateTeacher(teacher).subscribe({
+        next: res => {
+          this.getAllUsers()
+          this.form.reset()
+          this.post = true
+        }, error: err => {
+          console.log(err);
+        }
+      })
+
+    } else {
+      let user = {
+        id: this.form.get('id')?.value,
+        name: this.form.get('name')?.value,
+        lastname: this.form.get('lastname')?.value,
+        email: this.form.get('email')?.value,
+        role: this.form.get('role')?.value,
+        password: this.form.get('password')?.value,
+      }
+
+      this.userService.updateUser(user).subscribe({
+        next: res => {
+          this.getAllUsers()
+          this.form.reset()
+          this.post = true
+        }, error: err => {
+          console.log(err);
+        }
+      })
+    }
   }
 
   cleanForm() {

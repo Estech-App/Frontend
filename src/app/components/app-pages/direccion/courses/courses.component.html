@@ -1,63 +1,68 @@
 <section>
-    <article>
-        <h2 class="title">Ciclos</h2>
-        <div class="content">
-            <table mat-table [dataSource]="courses">
+  <article>
+    <h2 class="title">Ciclos</h2>
+    <div class="content">
+      <table mat-table [dataSource]="courses">
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                  <td mat-cell *matCellDef="let course"> {{course.name}} </td>
-                </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let course"> {{course.name}} </td>
+        </ng-container>
 
-                <!-- Acronym Column -->
-                <ng-container matColumnDef="acronym">
-                  <th mat-header-cell *matHeaderCellDef> Acrónimo </th>
-                  <td mat-cell *matCellDef="let course"> {{course.acronym}} </td>
-                </ng-container>
+        <!-- Acronym Column -->
+        <ng-container matColumnDef="acronym">
+          <th mat-header-cell *matHeaderCellDef> Acrónimo </th>
+          <td mat-cell *matCellDef="let course"> {{course.acronym}} </td>
+        </ng-container>
 
-                <!-- Nº Groups Column -->
-                <ng-container matColumnDef="n-groups">
-                  <th mat-header-cell *matHeaderCellDef> Nº Grupos </th>
-                  <td mat-cell *matCellDef="let course"> {{0}} </td>
-                </ng-container>
+        <!-- Nº Groups Column -->
+        <ng-container matColumnDef="n-groups">
+          <th mat-header-cell *matHeaderCellDef> Nº Grupos </th>
+          <td mat-cell *matCellDef="let course"> {{0}} </td>
+        </ng-container>
 
-				<!-- Edit Column -->
-				<ng-container matColumnDef="edit">
-				  <th mat-header-cell *matHeaderCellDef> Editar </th>
-				  <td mat-cell *matCellDef="let course"> <button (click)="getCourseById(course.id)">Editar</button> </td>
-				</ng-container>
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Editar </th>
+          <td mat-cell *matCellDef="let course"> <button (click)="getCourseById(course.id)">Editar</button> </td>
+        </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </div>
-    </article>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </article>
 </section>
 <section>
-    <article>
-        <h2 class="title">Crear/Actualizar Ciclos</h2>
-        <div class="content">
-            <form (submit)="post ? createNewCourse() : updateCourse()" [formGroup]="form">
-				<input type="text" formControlName="id" hidden> <!-- Hidden input to store the id of the user -->
-                <mat-form-field class="example-form-field">
-                  <mat-label>Nombre del ciclo</mat-label>
-                  <input matInput type="text" formControlName="name" [(ngModel)]="name">
-                  <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
-                    <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
-                  </button>
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                  <mat-label>Acrónimo</mat-label>
-                  <input matInput #message formControlName="acronym" maxlength="10" placeholder="Acrónimo del Ciclo" [(ngModel)]="acronym">
-                  <mat-hint align="start"><strong>Longitud máxima de 10 caracteres</strong> </mat-hint>
-                  <mat-hint align="end">{{acronym.length}} / 10</mat-hint>
-                </mat-form-field>
-                <div class="buttons-group">
-                  <button type="submit">Crear ciclo</button>
-                  <button type="reset">Limpiar</button>
-                </div>
-            </form>
+  <article>
+    <h2 class="title">Crear/Actualizar Ciclos</h2>
+    <div class="content">
+      <form (submit)="post ? createNewCourse() : updateCourse()" [formGroup]="form">
+
+        <input type="text" formControlName="id" hidden> <!-- Hidden input to store the id of the user -->
+
+        <mat-form-field class="example-form-field">
+          <mat-label>Nombre del ciclo</mat-label>
+          <input matInput type="text" formControlName="name" [(ngModel)]="name">
+          <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+            <mat-icon aria-hidden="false" aria-label="clear-input" fontIcon="close"></mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Acrónimo</mat-label>
+          <input matInput #message formControlName="acronym" maxlength="10" placeholder="Acrónimo del Ciclo"
+            [(ngModel)]="acronym">
+          <mat-hint align="start"><strong>Longitud máxima de 10 caracteres</strong> </mat-hint>
+          <mat-hint align="end">{{acronym.length}} / 10</mat-hint>
+        </mat-form-field>
+        
+        <div class="buttons-group">
+          <button type="submit">Crear ciclo</button>
+          <button type="reset">Limpiar</button>
         </div>
-    </article>
+      </form>
+    </div>
+  </article>
 </section>
