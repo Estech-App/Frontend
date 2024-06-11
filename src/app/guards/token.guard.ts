@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { UserService } from '../services/users/user.service';
 
 export const tokenGuard: CanActivateFn = (route, state) => {
   let token = sessionStorage.getItem('token')

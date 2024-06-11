@@ -17,6 +17,7 @@ export class CoursesComponent {
   name = ''
   acronym = ''
   post = true
+  selectedCourse: Course | null = null
 
   constructor(
     private courseService: CourseService,
@@ -63,14 +64,26 @@ export class CoursesComponent {
     })
   }
 
+  selectCourse(course: Course) {
+    console.log(this.selectedCourse);
+    
+    if (this.selectedCourse != null) {
+      if (this.selectedCourse.id == course.id) {
+        this.selectedCourse = null
+        this.form.setValue({ id: '', name: '', acronym: '' })
+        this.post = true
+      }
+    } else {
+      this.getCourseById(Number(course.id))
+    }
+  }
+
   getCourseById(id: number) {
     this.courseService.getCourseById(id).subscribe({
       next: res => {
-        this.form.setValue({
-          id: res.id,
-          name: res.name,
-          acronym: res.acronym
-        })
+        this.form.patchValue(res)
+        this.selectedCourse = res
+        this.post = false
       }, error: err => {
         console.log(err);
       }

@@ -8,7 +8,7 @@
 							Empleados
 						</span>
 						<span class="title-inline">
-							<input matInput (keyup)="filterEmployees($event)" placeholder="Nombre o apellido" #input>
+							<input matInput (keyup)="filterEmployees($event)" placeholder="Nombre, apellido o rol" #input>
 						</span>
 					</div>
 				</div>
@@ -79,7 +79,7 @@
 						<div class="buttons-group">
 							<button type="submit" *ngIf="post">Crear fichaje</button>
 							<button type="submit" *ngIf="!post">Modificar fichaje</button>
-							<button type="reset" (click)="clearForm()">Limpiar</button>
+							<button class="clean-button" type="reset" (click)="clearForm()">Limpiar</button>
 						</div>
 					</form>
 				</div>
@@ -130,7 +130,7 @@
 										{{clickedCheckinsRow !== element ?
 										'Editar' : 'Editando'}}
 									</button>
-									<button (click)="deleteCheckin(element)">Eliminar</button>
+									<button class="delete-button" (click)="deleteCheckin(element)">Eliminar</button>
 								</div>
 							</td>
 						</ng-container>

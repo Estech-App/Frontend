@@ -108,3 +108,14 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.delete-button {
+    background-color: #FF0000 !important;
+    color: white !important;
+}
+
+.clean-button {
+    background-color: transparent !important;
+    border: #009CB5 solid 1px !important;
+    color: #009CB5 !important;
+}

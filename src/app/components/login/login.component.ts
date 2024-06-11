@@ -27,16 +27,20 @@ export class LoginComponent {
 
     this.tokenService.login(login).subscribe({
       next: res => {
-        if(sessionStorage.getItem('token') != null) {
-          sessionStorage.removeItem('token')
-        }
-        if(sessionStorage.getItem('email') != null) {
-          sessionStorage.removeItem('email')
-        }
-        sessionStorage.setItem('token', res.token)
-        sessionStorage.setItem('email', res.username)
-        if(res.token != null) {
-          this.router.navigateByUrl('/dashboard')
+        if (res.roles[0].authority === 'ROLE_ADMIN') {
+          if (sessionStorage.getItem('token') != null) {
+            sessionStorage.removeItem('token')
+          }
+          if (sessionStorage.getItem('email') != null) {
+            sessionStorage.removeItem('email')
+          }
+          sessionStorage.setItem('token', res.token)
+          sessionStorage.setItem('email', res.username)
+          if (res.token != null) {
+            this.router.navigateByUrl('/dashboard')
+          }
+        } else {
+          alert('No tienes permisos para acceder a esta aplicación.')
         }
       },
       error: err => {

@@ -135,6 +135,14 @@ export class RoomsComponent {
         this.getRooms()
         this.calendar.calendar.removeAllEvents()
         this.reccurenceForm.setValue({ recurrToggle: false })
+        this.selectedRoom = {
+          id: null,
+          name: '',
+          description: '',
+          mentoringRoom: false,
+          studyRoom: false,
+          timeTables: []
+        }
       },
       error: (error) => {
         console.error(error)
