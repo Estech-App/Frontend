@@ -180,6 +180,7 @@ export class RoomsComponent {
     } else {
       this.post = false
       this.selectedRoom = row
+	  this.calendar.calendar.removeAllEvents()
 
       this.form.setValue({
         id: row.id,
