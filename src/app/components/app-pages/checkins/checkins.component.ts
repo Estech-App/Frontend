@@ -22,7 +22,7 @@ export class CheckinsComponent {
 	userIdFilteredById: string = ''
 
 	//* Parte de checkins
-	checkinsColumns = ['name', 'date', 'time', 'checkin', 'icon']
+	checkinsColumns = ['name', 'date', 'time', 'checkin', 'icon', 'actions']
 	checkins = new MatTableDataSource<CheckinDTO>()
 	clickedCheckinsRow: CheckinDTO
 
@@ -81,6 +81,7 @@ export class CheckinsComponent {
 				role: '',
 				password: ''
 			}
+			this.post = true
 			return
 		}
 
@@ -99,6 +100,8 @@ export class CheckinsComponent {
 				hour: '',
 				checkinSelect: ''
 			})
+
+			this.post = true
 		}
 
 
@@ -139,17 +142,8 @@ export class CheckinsComponent {
 
 	fillCheckInForm(checkin: CheckinDTO) {
 
-		this.post = false
-
 		if (this.clickedCheckinsRow === checkin) {
-			this.clickedCheckinsRow = {
-				id: '',
-				date: '',
-				userId: 0,
-				checkIn: false,
-				user: ''
-			}
-			this.form.reset()
+			this.clearForm()
 			this.post = true
 		} else {
 			this.clickedCheckinsRow = checkin
@@ -160,6 +154,14 @@ export class CheckinsComponent {
 				hour: checkin.date.substring(11, 19),
 				checkinSelect: checkin.checkIn ? 0 : 1
 			})
+			this.clickedEmployeeRow = {
+				id: '',
+				name: '',
+				lastname: '',
+				email: '',
+				role: '',
+				password: ''
+			}
 		}
 	}
 
@@ -173,24 +175,29 @@ export class CheckinsComponent {
 			checkIn: this.form.get('checkinSelect')?.value == '0' ? true : false
 		}
 
-		this.checkinService.checkin(checkin).subscribe({
-			next: res => {
-				let tmp: CheckinDTO = {
-					id: '',
-					date: res.date,
-					userId: Number(res.user.id),
-					checkIn: res.checkIn,
-					user: ''
+		if (this.clickedEmployeeRow.id == '') {
+			alert('Debes seleccionar un empleado')
+			return
+		} else {
+			this.checkinService.checkin(checkin).subscribe({
+				next: res => {
+					let tmp: CheckinDTO = {
+						id: '',
+						date: res.date,
+						userId: Number(res.user.id),
+						checkIn: res.checkIn,
+						user: ''
+					}
+					this.checkins.data = [];
+					this.checkins.data.push(tmp);
+					this.clearForm()
+					this.getCheckins();
+				},
+				error: err => {
+					console.log(err);
 				}
-				this.checkins.data = [];
-				this.checkins.data.push(tmp);
-				this.form.reset();
-				this.getCheckins();
-			},
-			error: err => {
-				console.log(err);
-			}
-		})
+			})
+		}
 	}
 
 	updateCheckin() {
@@ -216,13 +223,47 @@ export class CheckinsComponent {
 				this.checkins.data = [];
 				this.checkins.data.push(tmp);
 				this.post = true
-				this.form.reset();
+				this.clearForm();
 				this.getCheckins();
 			},
 			error: err => {
 				console.log(err);
 			}
 		})
+	}
+
+	deleteCheckin(checkin: CheckinDTO) {
+		let id: number = Number(checkin.id)
+		if (confirm(`Vas a eliminar el CHECKIN del usuario ${checkin.user}, con fecha ${checkin.date.split('T')[0]} a las ${checkin.date.split('T')[1].split('.')[0]}. ¿Estás seguro?`)) {
+			this.checkinService.deleteCheckin(id).subscribe({
+				next: res => {
+					this.getCheckins()
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
+		}
+	}
+
+	clearForm() {
+		this.form.reset()
+		this.post = true
+		this.clickedCheckinsRow = {
+			id: '',
+			date: '',
+			userId: 0,
+			checkIn: false,
+			user: ''
+		}
+		this.clickedEmployeeRow = {
+			id: '',
+			name: '',
+			lastname: '',
+			email: '',
+			role: '',
+			password: ''
+		}
 	}
 
 }

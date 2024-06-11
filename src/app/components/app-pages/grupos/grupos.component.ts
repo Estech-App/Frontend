@@ -27,10 +27,13 @@ export class GruposComponent {
   modules: ModuleDTO[] = []
   selectedModules: ModuleDTO[] = []
   courses: Course[] = []
-  displayedColumns = ['name', 'description', 'year']
+  displayedColumns = ['name', 'description', 'year', 'actions']
   form: FormGroup
 
   post = true
+  editFlag: number | null = null
+
+  groupNameRegex = new RegExp('^[0-9][0-9]\/[0-9][0-9]$')
 
   @ViewChild('calendar') calendar!: any;
   @ViewChild('cardList', { static: true }) cardList!: any
@@ -199,10 +202,10 @@ export class GruposComponent {
   }
 
   createNewGroup(): void {
-
+    let yearOfGroup = this.form.get('evening')?.value === '1' ? '2º' : '1º'
     let group: Group = {
       id: null,
-      name: this.form.get('course')?.value.name + ' ' + this.form.get('year')?.value,
+      name: this.form.get('course')?.value.acronym + ' ' + yearOfGroup,
       description: this.form.get('description')?.value,
       year: this.form.get('year')?.value,
       roomId: this.form.get('roomId')?.value,
@@ -214,17 +217,21 @@ export class GruposComponent {
 
     console.log(group)
 
-    this.groupService.createNewGroup(group).subscribe({
-      next: res => {
-        console.log(res)
-        this.form.reset()
-        this.getAllGroups()
-        this.calendar.calendar.removeAllEvents()
-        this.selectedModules = []
-      }, error: err => {
-        console.log(err)
-      }
-    })
+    if (this.groupNameRegex.test(group.year.toString())) {
+      this.groupService.createNewGroup(group).subscribe({
+        next: res => {
+          console.log(res)
+          this.form.reset()
+          this.getAllGroups()
+          this.calendar.calendar.removeAllEvents()
+          this.selectedModules = []
+        }, error: err => {
+          console.log(err)
+        }
+      })
+    } else {
+      alert("El año del grupo debe seguir el siguiente formato: AA/AA")
+    }
   }
 
   getGroupById(id: number) {
@@ -232,9 +239,12 @@ export class GruposComponent {
   }
 
   updateGroup() {
+    this.post = true
+    let yearOfGroup = this.form.get('evening')?.value === '1' ? '2º' : '1º'
+    console.log(yearOfGroup)
     let group: Group = {
       id: this.form.get('id')?.value,
-      name: this.form.get('course')?.value.name + ' ' + this.form.get('year')?.value,
+      name: this.form.get('course')?.value.acronym + ' ' + yearOfGroup,
       description: this.form.get('description')?.value,
       year: this.form.get('year')?.value,
       roomId: this.form.get('roomId')?.value,
@@ -252,28 +262,33 @@ export class GruposComponent {
 
     console.log(group)
 
-    this.groupService.updateGroup(group).subscribe({
-      next: res => {
-        console.log(res)
-        this.form.reset()
-        this.getAllGroups()
-        this.calendar.calendar.removeAllEvents()
-        this.selectedModules = []
-        this.selectedGroup = {
-          id: null,
-          name: '',
-          description: '',
-          year: '',
-          roomId: null,
-          courseId: null,
-          users: [],
-          timeTables: [],
-          evening: false
+    if (this.groupNameRegex.test(group.year.toString())) {
+      this.groupService.updateGroup(group).subscribe({
+        next: res => {
+          console.log(res)
+          this.form.reset()
+          this.getAllGroups()
+          this.calendar.calendar.removeAllEvents()
+          this.selectedModules = []
+          this.selectedGroup = {
+            id: null,
+            name: '',
+            description: '',
+            year: '',
+            roomId: null,
+            courseId: null,
+            users: [],
+            timeTables: [],
+            evening: false
+          }
+          this.editFlag = null
+        }, error: err => {
+          console.log(err)
         }
-      }, error: err => {
-        console.log(err)
-      }
-    })
+      })
+    } else {
+      alert("El año del grupo debe seguir el siguiente formato: AA/AA")
+    }
   }
 
   addRowToClicked(row: Group) {
@@ -293,11 +308,10 @@ export class GruposComponent {
       this.calendar.calendar.removeAllEvents()
       this.post = true
       this.selectedModules = []
+      this.changeCalendarView()
     } else {
       this.post = false
       this.selectedGroup = row
-      
-
       if (row.courseId !== null) {
         this.moduleService.getModulesByCourseId(row.courseId).subscribe({
           next: res => {
@@ -309,7 +323,19 @@ export class GruposComponent {
               course: this.courses.find(course => course.id === row.courseId),
               evening: row.evening ? '1' : '0'
             })
-            this.selectedModules = row.timeTables.map(timeTable => this.modules.find(module => module.id === timeTable.moduleId)).filter(module => module !== undefined) as ModuleDTO[];
+
+            this.changeCalendarView()
+
+
+            this.selectedModules = row.timeTables.reduce((acc: ModuleDTO[], timeTable: TimeTable) => {
+              let module = this.modules.find(module => module.id === timeTable.moduleId)
+              if (module !== undefined && !acc.includes(module)) {
+                acc.push(module)
+              }
+              console.log({ acc })
+              return acc
+            }, [])
+
             this.calendar.calendar.removeAllEvents()
             row.timeTables.forEach((event: any) => {
               event.color = this.modules.find(module => module.id === event.moduleId)?.color
@@ -321,10 +347,8 @@ export class GruposComponent {
               event.daysOfWeek = [event.weekday]
               event.title = this.modules.find(module => module.id === event.moduleId)?.acronym + '\n' + this.modules.find(module => module.id === event.moduleId)?.usersName
               event.textColor = 'black'
-              console.log(event)
               this.calendar.calendar.addEvent(event)
             })
-            console.log(this.calendar.calendar.getEvents())
           }, error: err => {
             console.log(err);
           }
@@ -403,7 +427,7 @@ export class GruposComponent {
     if (radio == '0') {
       this.calendarOptions.set({
         headerToolbar: {
-          left: 'prev,next',
+          left: '',
           center: '',
           right: ''
         }
@@ -412,12 +436,61 @@ export class GruposComponent {
     } else if (radio == '1') {
       this.calendarOptions.set({
         headerToolbar: {
-          left: 'prev,next',
+          left: '',
           center: '',
           right: ''
         }
       })
       this.calendar.calendar.changeView('afternoon')
     }
+    this.calendar.calendar
+  }
+
+  deleteGroup(group: Group) {
+    let id = Number(group.id)
+    if (confirm(`Vas a eliminar el GRUPO llamado ${group.name}. ¿Estás seguro?`)) {
+      this.groupService.deleteGroup(id).subscribe({
+        next: res => {
+          console.log(res)
+          this.getAllGroups()
+          this.form.reset()
+          this.post = true
+          this.selectedGroup = {
+            id: null,
+            name: '',
+            description: '',
+            year: '',
+            roomId: null,
+            courseId: null,
+            users: [],
+            timeTables: [],
+            evening: false
+          }
+          this.selectedModules = []
+          this.calendar.calendar.removeAllEvents()
+        }, error: err => {
+          console.log(err)
+        }
+      })
+    }
+  }
+
+  clearAll() {
+    this.form.reset()
+    this.selectedGroup = {
+      id: null,
+      name: '',
+      description: '',
+      year: '',
+      roomId: null,
+      courseId: null,
+      users: [],
+      timeTables: [],
+      evening: false
+    }
+    this.selectedModules = []
+    this.calendar.calendar.removeAllEvents()
+    this.post = true
+
   }
 }

@@ -32,4 +32,8 @@ export class ModuleService {
     return this.http.get<ModuleDTO[]>(`${Constants.BASE_URL}api/module/by-course/${courseId}`, { headers: Constants.headers });
   }
 
+  deleteModule(id: number): Observable<ModuleDTO> {
+    return this.http.delete<ModuleDTO>(`${Constants.BASE_URL}api/module/${id}`, { headers: Constants.headers });
+  }
+
 }

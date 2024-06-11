@@ -20,8 +20,10 @@
 
 				<!-- Edit Column -->
 				<ng-container matColumnDef="edit">
-					<th mat-header-cell *matHeaderCellDef> Editar </th>
-					<td mat-cell *matCellDef="let module"> <button (click)="getModuleById(module.id)">Editar</button>
+					<th mat-header-cell *matHeaderCellDef> Acciones </th>
+					<td mat-cell *matCellDef="let module">
+						<button (click)="selectModule(module)">{{selectedModule == null ? 'Editar' : 'Cancelar'}}</button>
+						<button class="delete-button" (click)="deleteModule(module)">Eliminar</button>
 					</td>
 				</ng-container>
 
@@ -82,8 +84,8 @@
 				</mat-form-field>
 
 				<div class="buttons-group">
-					<button type="submit">Crear Módulo</button>
-					<button type="reset">Limpiar</button>
+					<button type="submit">{{post ? 'Crear Módulo' : 'Actualizar Módulo'}}</button>
+					<button class="clean-button" type="reset">Limpiar</button>
 				</div>
 			</form>
 		</div>

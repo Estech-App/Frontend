@@ -66,6 +66,16 @@ td button {
     display: flex;
     gap: 20px;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
+.clicked-row {
+    background-color: #D5F1FA !important;
+    font-weight: bold !important;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}

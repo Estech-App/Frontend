@@ -7,7 +7,7 @@
                     <div [ngClass]="(lastFourCheckins.length > 0 && checkins[checkins.length - 1].checkIn) ? 'bigCircleRed' : 'bigCircleGreen'">
                         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="{{(lastFourCheckins.length > 0 && checkins[checkins.length - 1].checkIn) ? 'stop' : 'play_arrow'}}"></mat-icon>
                     </div>
-                    <p>Vas a fichar la {{(lastFourCheckins.length > 0 && lastFourCheckins[lastFourCheckins.length - 1].checkIn) ? 'entrada' : 'salida'}}
+                    <p>Vas a fichar la {{currentCheckinString}}
                     </p>
                 </span>
                 <span class="date">

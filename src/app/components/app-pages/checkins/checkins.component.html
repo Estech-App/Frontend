@@ -8,8 +8,7 @@
 							Empleados
 						</span>
 						<span class="title-inline">
-							<input matInput (keyup)="filterEmployees($event)"
-								placeholder="Nombre o apellido" #input>
+							<input matInput (keyup)="filterEmployees($event)" placeholder="Nombre, apellido o rol" #input>
 						</span>
 					</div>
 				</div>
@@ -59,14 +58,16 @@
 						<p *ngIf="clickedEmployeeRow.name != ''" class="selected-name-class">Vas a crear un fichaje para
 							{{clickedEmployeeRow.name}}</p>
 						<input type="text" formControlName="id" hidden>
-						<mat-form-field>
-							<mat-label>Dia</mat-label>
-							<input type="date" matInput placeholder="Día" formControlName="day" required>
-						</mat-form-field>
-						<mat-form-field>
-							<mat-label>Hora</mat-label>
-							<input type="time" matInput placeholder="Hora" formControlName="hour" required>
-						</mat-form-field>
+						<div class="inline">
+							<mat-form-field>
+								<mat-label>Dia</mat-label>
+								<input type="date" matInput placeholder="Día" formControlName="day" required>
+							</mat-form-field>
+							<mat-form-field>
+								<mat-label>Hora</mat-label>
+								<input type="time" matInput placeholder="Hora" formControlName="hour" required>
+							</mat-form-field>
+						</div>
 						<mat-form-field>
 							<mat-label>Entrada / Salida</mat-label>
 							<mat-select formControlName="checkinSelect" name="mySelect" required>
@@ -78,7 +79,7 @@
 						<div class="buttons-group">
 							<button type="submit" *ngIf="post">Crear fichaje</button>
 							<button type="submit" *ngIf="!post">Modificar fichaje</button>
-							<button type="reset">Limpiar</button>
+							<button class="clean-button" type="reset" (click)="clearForm()">Limpiar</button>
 						</div>
 					</form>
 				</div>
@@ -121,8 +122,24 @@
 							</td>
 						</ng-container>
 
+						<ng-container matColumnDef="actions">
+							<th mat-header-cell *matHeaderCellDef>Acciones</th>
+							<td mat-cell *matCellDef="let element">
+								<div class="buttons-group">
+									<button (click)="fillCheckInForm(element)">
+										{{clickedCheckinsRow !== element ?
+										'Editar' : 'Editando'}}
+									</button>
+									<button class="delete-button" (click)="deleteCheckin(element)">Eliminar</button>
+								</div>
+							</td>
+						</ng-container>
+
+
+
+
 						<tr mat-header-row *matHeaderRowDef="checkinsColumns; sticky: true;"></tr>
-						<tr mat-row (click)="fillCheckInForm(row)" [class.clicked-row]="clickedCheckinsRow === row"
+						<tr mat-row [class.clicked-row]="clickedCheckinsRow === row"
 							*matRowDef="let row; columns: checkinsColumns;"></tr>
 					</table>
 				</div>

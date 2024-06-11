@@ -22,4 +22,8 @@ export class RoomService {
   updateRoom(room: Room): Observable<Room> {
     return this.http.put<Room>(`${Constants.BASE_URL}api/room`, room, {headers: Constants.headers});
   }
+
+  deleteRoom(id: number): Observable<Room> {
+    return this.http.delete<Room>(`${Constants.BASE_URL}api/room/${id}`, {headers: Constants.headers});
+  }
 }

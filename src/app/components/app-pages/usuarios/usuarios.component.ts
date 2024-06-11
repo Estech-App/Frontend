@@ -30,16 +30,16 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 
 export class UsuariosComponent {
-  [x: string]: any;
+
   users: User[] = []
   staff: User[] = []
-  students: User[] = []
+  students: User[] | Student[] = []
   roles: Role[] = []
   groups: Group[] = []
   courses: Course[] = []
   modules: ModuleDTO[] = []
   displayedTeachersColumns = ['name', 'role', 'edit']
-  displayedStudentsColumns = ['name', 'course', 'group', 'edit']
+  displayedStudentsColumns = ['name', 'course', 'edit']
   form: FormGroup
   post = true
   roleName = ''
@@ -162,6 +162,8 @@ export class UsuariosComponent {
           this.getAllUsers()
           this.form.reset()
           this.post = true
+          this.form.controls['role'].enable()
+
         }, error: err => {
           console.log(err);
         }
@@ -188,6 +190,7 @@ export class UsuariosComponent {
           this.getAllUsers()
           this.form.reset()
           this.post = true
+          this.form.controls['role'].enable()
         }, error: err => {
           console.log(err);
         }
@@ -208,6 +211,8 @@ export class UsuariosComponent {
           this.getAllUsers()
           this.form.reset()
           this.post = true
+          this.form.controls['role'].enable()
+
         }, error: err => {
           console.log(err);
         }
@@ -222,6 +227,7 @@ export class UsuariosComponent {
       next: res => {
         let user = res
         this.form.patchValue(user)
+        this.form.controls['role'].disable()
       }, error: err => {
         console.log(err);
       }
@@ -238,6 +244,7 @@ export class UsuariosComponent {
         this.form.patchValue({
           group: student.groups.map(group => group.id)
         })
+        this.form.controls['role'].disable()
       }, error: err => {
         console.log(err);
       }
@@ -255,6 +262,7 @@ export class UsuariosComponent {
         this.form.patchValue({
           modules: teacher.modules.map(module => module.id)
         })
+        this.form.controls['role'].disable()
       },
       error: err => {
         console.log(err);
@@ -285,6 +293,7 @@ export class UsuariosComponent {
           this.getAllUsers()
           this.form.reset()
           this.post = true
+          this.form.controls['role'].enable()
         }, error: err => {
           console.log(err);
         }
@@ -309,6 +318,7 @@ export class UsuariosComponent {
           this.getAllUsers()
           this.form.reset()
           this.post = true
+          this.form.controls['role'].enable()
         }, error: err => {
           console.log(err);
         }
@@ -329,6 +339,7 @@ export class UsuariosComponent {
           this.getAllUsers()
           this.form.reset()
           this.post = true
+          this.form.controls['role'].enable()
         }, error: err => {
           console.log(err);
         }
@@ -337,6 +348,20 @@ export class UsuariosComponent {
   }
 
   cleanForm() {
-    window.location.reload()
+    this.form.reset()
+    this.post = true
+    this.form.controls['role'].enable()
+  }
+
+  deleteUser(user: User) {
+    if (confirm(`Vas a borrar al usuario llamado ${user.name}. ¿Estás seguro?`)) {
+      this.userService.deleteUser(user.id).subscribe({
+        next: res => {
+          this.getAllUsers()
+        }, error: err => {
+          console.log(err);
+        }
+      })
+    }
   }
 }

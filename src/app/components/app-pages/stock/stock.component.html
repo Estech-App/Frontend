@@ -30,7 +30,9 @@
                     </div>
                 </div>
                 <div class="content">
-                    <form [formGroup]="form">
+                    <form [formGroup]="form" (submit)="post ? addStockToRoom() : updateStock()">
+
+                        <input type="text" formControlName="id" hidden>
 
                         <div class="inline">
                             <mat-form-field>
@@ -51,17 +53,17 @@
                         </mat-form-field>
 
                         <mat-form-field>
-                            <mat-label>Aula</mat-label>
+                            <mat-label>Sala</mat-label>
                             <mat-select name="room" formControlName="room" required>
                                 <mat-option *ngFor="let room of rooms.data" [value]="room.id">{{room.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                         <div class="buttons-group">
-                            <button mat-raised-button (click)="post ? addStockToRoom() : updateStock()">
+                            <button mat-raised-button>
                                 {{post ? 'Crear' : 'Editar'}}
                             </button>
-                            <button mat-raised-button type="reset">Cancelar</button>
+                            <button class="clean-button" mat-raised-button type="reset">Limpiar</button>
                         </div>
 
                     </form>
@@ -97,7 +99,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="room">
-                            <th mat-header-cell *matHeaderCellDef>Aula</th>
+                            <th mat-header-cell *matHeaderCellDef>Sala</th>
                             <td mat-cell *matCellDef="let element">{{element.room.name}}</td>
                         </ng-container>
 
@@ -109,9 +111,12 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef>Acciones</th>
                             <td mat-cell *matCellDef="let element">
-                                <button mat-raised-button (click)="editStock(element)">{{currentEditStock.id ===
-                                    element.id ?
-                                    'Cancelar' : 'Editar'}}</button>
+                                <div class="inline">
+                                    <button mat-raised-button (click)="editStock(element)">{{currentEditStock.id ===
+                                        element.id ?
+                                        'Cancelar' : 'Editar'}}</button>
+                                    <button class="delete-button" mat-raised-button (click)="deleteStock(element)">Eliminar</button>
+                                </div>
                             </td>
                         </ng-container>
 

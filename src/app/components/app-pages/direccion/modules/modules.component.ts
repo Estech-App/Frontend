@@ -26,6 +26,7 @@ export class ModulesComponent {
 	formError = false
 	selections: string[] = []
 	post = true
+	selectedModule: ModuleDTO | null = null
 
 	constructor(
 		private courseService: CourseService,
@@ -72,6 +73,26 @@ export class ModulesComponent {
 		})
 	}
 
+	selectModule(module: ModuleDTO) {
+		if (this.selectedModule != null) {
+			if (this.selectedModule.id == module.id) {
+				this.selectedModule = null
+				this.form.setValue({
+					id: '',
+					name: '',
+					acronym: '',
+					year: '',
+					course: '',
+					teachers: [],
+					color: ''
+				})
+				this.post = true
+			}
+		} else {
+			this.getModuleById(Number(module.id))
+		}
+	}
+
 	getModuleById(id: number) {
 		this.post = false
 		this.selections = []
@@ -84,8 +105,6 @@ export class ModulesComponent {
 						}
 					})
 				})
-				console.log(this.selections);
-				console.log(res)
 				this.form.setValue({
 					id: res.id,
 					name: res.name,
@@ -95,6 +114,8 @@ export class ModulesComponent {
 					teachers: this.selections,
 					color: res.color
 				})
+				this.selectedModule = res
+				this.post = false
 			}
 		})
 	}
@@ -194,6 +215,19 @@ export class ModulesComponent {
 
 		// FIND ANOTHER WAY TO RESET THE FORM FIELDS
 		this.form.reset()
+	}
+
+	deleteModule(module: ModuleDTO) {
+		let id: number = Number(module.id)
+		if (confirm(`Vas a eliminar el MODULO llamado ${module.name}. ¿Estás seguro?`)) {
+			this.moduleService.deleteModule(id).subscribe({
+				next: res => {
+					this.getAllModules()
+				}, error: err => {
+					console.log(err);
+				}
+			})
+		}
 	}
 
 }

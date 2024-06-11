@@ -17,6 +17,7 @@ export class CheckinComponent {
   lastFourCheckins: CheckinDTO[] = []
   displayedColumns: string[] = ['date', 'time', 'checkin', 'icon'];
   buttonText: string = 'Entrar';
+  currentCheckinString: string = '';
 
   constructor(private checkinService: CheckinService) {
     this.updateCurrentHour();
@@ -50,24 +51,27 @@ export class CheckinComponent {
       },
       checkIn: this.lastFourCheckins.length == 0 ? true : this.checkinStatus(this.lastFourCheckins[0])
     }
-    this.checkinService.checkin(checkin).subscribe({
-      next: res => {
-        let tmp: CheckinDTO = {
-          id: '',
-          date: res.date,
-          userId: Number(res.user.id),
-          checkIn: res.checkIn,
-          user: ''
-        }
-        this.checkins = [];
-        this.checkins.push(tmp);
-        this.getCheckins();
-      },
-      error: err => {
-        console.log(err);
-      }
-    })
 
+    if (confirm(`Vas a fichar ${checkin.checkIn ? 'entrada' : 'salida'} a las ${this.hour} del día ${this.date} ¿Estás seguro?`)) {
+      this.checkinService.checkin(checkin).subscribe({
+        next: res => {
+          let tmp: CheckinDTO = {
+            id: '',
+            date: res.date,
+            userId: Number(res.user.id),
+            checkIn: res.checkIn,
+            user: ''
+          }
+          console.log({res});
+          this.checkins = [];
+          this.checkins.push(tmp);
+          this.getCheckins();
+        },
+        error: err => {
+          console.log(err);
+        }
+      })
+    }
   }
 
   getCheckins() {
@@ -91,6 +95,7 @@ export class CheckinComponent {
     }).slice(-4);
     this.lastFourCheckins = this.lastFourCheckins.reverse();
     this.buttonText = this.checkinStatus(this.lastFourCheckins[0]) ? 'Entrar' : 'Salir';
+    this.currentCheckinString = this.checkinStatus(this.lastFourCheckins[0]) ? 'entrada' : 'salida';
   }
 
   checkinStatus(checkin: CheckinDTO) {

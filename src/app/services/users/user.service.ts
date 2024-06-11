@@ -56,4 +56,8 @@ export class UserService {
   getByRoleId(roleId: number): Observable<User[]> {
     return this.http.get<User[]>(`${Constants.BASE_URL}api/user/find-by-role/${roleId}`, { headers: Constants.headers });
   }
+
+  deleteUser(id: string): Observable<User> {
+    return this.http.delete<User>(`${Constants.BASE_URL}api/user/${id}`, { headers: Constants.headers });
+  }
 }
