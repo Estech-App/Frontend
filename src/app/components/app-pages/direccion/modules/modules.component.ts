@@ -196,4 +196,17 @@ export class ModulesComponent {
 		this.form.reset()
 	}
 
+	deleteModule(module: ModuleDTO) {
+		let id: number = Number(module.id)
+		if (confirm(`Vas a eliminar el MODULO llamado ${module.name}. ¿Estás seguro?`)) {
+			this.moduleService.deleteModule(id).subscribe({
+				next: res => {
+					this.getAllModules()
+				}, error: err => {
+					console.log(err);
+				}
+			})
+		}
+	}
+
 }

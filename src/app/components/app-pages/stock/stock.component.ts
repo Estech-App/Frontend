@@ -142,13 +142,31 @@ export class StockComponent {
   }
 
   updateStock() {
-    const stock: Stock = this.form.value;
-    stock.room = this.currentRoom;
+    const stock: Stock = {
+      id: this.form.get('id')?.value,
+      name: this.form.get('name')?.value,
+      description: this.form.get('description')?.value,
+      quantity: this.form.get('quantity')?.value,
+      room: {
+        id: this.form.get('room')?.value,
+        name: ''
+      }
+    }
     this.stockService.updateStock(stock).subscribe({
       next: (data) => {
         this.getStocks();
         this.form.reset();
         this.post = true;
+        this.currentEditStock = {
+          id: null,
+          name: '',
+          description: '',
+          quantity: 0,
+          room: {
+            id: null,
+            name: ''
+          }
+        }
       },
       error: (error) => {
         console.log(error);
@@ -196,7 +214,6 @@ export class StockComponent {
       this.form.get('room')?.setValue(stock.room.id);
 
       this.post = false;
-      console.log(stock)
     }
   }
 
@@ -205,6 +222,20 @@ export class StockComponent {
   searchFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.stocks.filter = filterValue.trim().toLowerCase();
+  }
+
+  deleteStock(stock: Stock) {
+    let id = Number(stock.id);
+    if (confirm(`Vas a eliminar el stock llamado ${stock.name}. ¿Estás seguro?`)) {
+      this.stockService.removeStock(id).subscribe({
+        next: (data) => {
+          this.getStocks();
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
+    }
   }
 
 }

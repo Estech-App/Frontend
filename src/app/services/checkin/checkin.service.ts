@@ -15,7 +15,7 @@ export class CheckinService {
   constructor(private http: HttpClient) { }
 
   checkin(checkin: Checkin): Observable<Checkin> {
-    return this.http.post<Checkin>(`${Constants.BASE_URL}api/check-in/new`, checkin, {headers: this.httpHeaders});
+    return this.http.post<Checkin>(`${Constants.BASE_URL}api/check-in/new`, checkin, { headers: this.httpHeaders });
   }
 
   getCheckIn(): Observable<CheckinDTO[]> {
@@ -23,10 +23,14 @@ export class CheckinService {
   }
 
   updateCheckin(checkin: Checkin): Observable<Checkin> {
-    return this.http.put<Checkin>(`${Constants.BASE_URL}api/check-in/update-checkin`, checkin, {headers: this.httpHeaders});
+    return this.http.put<Checkin>(`${Constants.BASE_URL}api/check-in/update-checkin`, checkin, { headers: this.httpHeaders });
   }
 
   getCheckinByUserId(userId: String): Observable<Checkin[]> {
     return this.http.get<Checkin[]>(`${Constants.BASE_URL}api/check-in/by-user/${userId}`);
+  }
+
+  deleteCheckin(id: number): Observable<Checkin> {
+    return this.http.delete<Checkin>(`${Constants.BASE_URL}api/check-in/${id}`, { headers: this.httpHeaders });
   }
 }

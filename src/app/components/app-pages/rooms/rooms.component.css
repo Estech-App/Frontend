@@ -82,7 +82,8 @@ td button {
 .inline {
     display: flex;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .last-column {

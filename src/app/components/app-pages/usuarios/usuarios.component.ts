@@ -30,16 +30,16 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 
 export class UsuariosComponent {
-  [x: string]: any;
+  
   users: User[] = []
   staff: User[] = []
-  students: User[] = []
+  students: User[] | Student[] = []
   roles: Role[] = []
   groups: Group[] = []
   courses: Course[] = []
   modules: ModuleDTO[] = []
   displayedTeachersColumns = ['name', 'role', 'edit']
-  displayedStudentsColumns = ['name', 'course', 'group', 'edit']
+  displayedStudentsColumns = ['name', 'course', 'edit']
   form: FormGroup
   post = true
   roleName = ''
@@ -337,6 +337,19 @@ export class UsuariosComponent {
   }
 
   cleanForm() {
-    window.location.reload()
+    this.form.reset()
+    this.post = true
+  }
+
+  deleteUser(user: User) {
+    if(confirm(`Vas a borrar al usuario llamado ${user.name}. ¿Estás seguro?`)) {
+      this.userService.deleteUser(user.id).subscribe({
+        next: res => {
+          this.getAllUsers()
+        }, error: err => {
+          console.log(err);
+        }
+      })
+    }
   }
 }

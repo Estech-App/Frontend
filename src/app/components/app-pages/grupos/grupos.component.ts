@@ -27,7 +27,7 @@ export class GruposComponent {
   modules: ModuleDTO[] = []
   selectedModules: ModuleDTO[] = []
   courses: Course[] = []
-  displayedColumns = ['name', 'description', 'year']
+  displayedColumns = ['name', 'description', 'year', 'actions']
   form: FormGroup
 
   post = true
@@ -232,6 +232,7 @@ export class GruposComponent {
   }
 
   updateGroup() {
+    this.post = true
     let group: Group = {
       id: this.form.get('id')?.value,
       name: this.form.get('course')?.value.name + ' ' + this.form.get('year')?.value,
@@ -296,7 +297,7 @@ export class GruposComponent {
     } else {
       this.post = false
       this.selectedGroup = row
-      
+
 
       if (row.courseId !== null) {
         this.moduleService.getModulesByCourseId(row.courseId).subscribe({
@@ -323,6 +324,7 @@ export class GruposComponent {
               event.textColor = 'black'
               console.log(event)
               this.calendar.calendar.addEvent(event)
+              this.changeCalendarView()
             })
             console.log(this.calendar.calendar.getEvents())
           }, error: err => {
@@ -403,21 +405,71 @@ export class GruposComponent {
     if (radio == '0') {
       this.calendarOptions.set({
         headerToolbar: {
-          left: 'prev,next',
+          left: '',
           center: '',
           right: ''
         }
       })
       this.calendar.calendar.changeView('morning')
+      this.calendar.calendar.removeAllEvents()
     } else if (radio == '1') {
       this.calendarOptions.set({
         headerToolbar: {
-          left: 'prev,next',
+          left: '',
           center: '',
           right: ''
         }
       })
       this.calendar.calendar.changeView('afternoon')
+      this.calendar.calendar.removeAllEvents()
     }
+  }
+
+  deleteGroup(group: Group) {
+    let id = Number(group.id)
+    if (confirm(`Vas a eliminar el GRUPO llamado ${group.name}. ¿Estás seguro?`)) {
+      this.groupService.deleteGroup(id).subscribe({
+        next: res => {
+          console.log(res)
+          this.getAllGroups()
+          this.form.reset()
+          this.post = true
+          this.selectedGroup = {
+            id: null,
+            name: '',
+            description: '',
+            year: '',
+            roomId: null,
+            courseId: null,
+            users: [],
+            timeTables: [],
+            evening: false
+          }
+          this.selectedModules = []
+          this.calendar.calendar.removeAllEvents()
+        }, error: err => {
+          console.log(err)
+        }
+      })
+    }
+  }
+
+  clearAll() {
+    this.form.reset()
+    this.selectedGroup = {
+      id: null,
+      name: '',
+      description: '',
+      year: '',
+      roomId: null,
+      courseId: null,
+      users: [],
+      timeTables: [],
+      evening: false
+    }
+    this.selectedModules = []
+    this.calendar.calendar.removeAllEvents()
+    this.post = true
+
   }
 }

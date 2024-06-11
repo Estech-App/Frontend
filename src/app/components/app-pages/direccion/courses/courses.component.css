@@ -25,3 +25,8 @@ article {
     height: 250px;
     overflow: auto;   
 }
+
+
+button {
+    margin: 10px;
+}

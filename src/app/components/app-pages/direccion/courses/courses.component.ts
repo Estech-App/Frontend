@@ -42,7 +42,7 @@ export class CoursesComponent {
     this.courseService.createNewCourse(course).subscribe({
       next: res => {
         this.getAllCourses()
-        this.form.setValue({id: '', name: '', acronym: '' })
+        this.form.setValue({ id: '', name: '', acronym: '' })
         location.reload()
       }, error: err => {
         console.log(err);
@@ -96,6 +96,19 @@ export class CoursesComponent {
         console.log(err);
       }
     })
+  }
+
+  deleteCourse(course: Course) {
+    let id: number = Number(course.id)
+    if (confirm(`Vas a eliminar el CURSO llamado ${course.name}. ¿Estás seguro?`)) {
+      this.courseService.deleteCourse(id).subscribe({
+        next: res => {
+          window.location.reload()
+        }, error: err => {
+          console.log(err);
+        }
+      })
+    }
   }
 
 }

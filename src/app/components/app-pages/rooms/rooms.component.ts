@@ -369,4 +369,28 @@ export class RoomsComponent {
 
     return roomTimeTable
   }
+
+  deleteRoom(room: Room) {
+    let id: number = Number(room.id)
+    if (confirm(`Vas a eliminar la sala ${room.name}. ¿Estás seguro?`)) {
+      this.roomService.deleteRoom(id).subscribe({
+        next: (res) => {
+          this.getRooms()
+          this.selectedRoom = {
+            id: null,
+            name: '',
+            description: '',
+            mentoringRoom: false,
+            studyRoom: false,
+            timeTables: []
+          }
+          this.form.reset()
+          this.calendar.calendar.removeAllEvents()
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      })
+    }
+  }
 }
